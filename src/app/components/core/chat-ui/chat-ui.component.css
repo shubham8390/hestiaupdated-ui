@@ -1,0 +1,628 @@
+/* Custom animations and styles */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Expand button animation */
+.expand-button {
+  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  animation: slideInFromLeft 0.3s ease-out;
+}
+
+.expand-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.expand-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(147, 51, 234, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.expand-button:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Upload popup animations */
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: slideInUp 0.5s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Upload popup styles */
+.upload-popup {
+  animation: slideInFromBottom 0.2s ease-out;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.upload-option {
+  transition: all 0.15s ease-in-out;
+}
+
+.upload-option:hover {
+  transform: translateX(4px);
+  background-color: rgba(55, 65, 81, 0.8);
+}
+
+.upload-option:active {
+  transform: translateX(2px);
+}
+
+.upload-icon {
+  transition: all 0.15s ease-in-out;
+}
+
+.upload-option:hover .upload-icon {
+  transform: scale(1.1);
+}
+
+/* Upload button styles */
+.upload-button {
+  transition: all 0.15s ease-in-out;
+}
+
+.upload-button:hover {
+  transform: scale(1.05);
+  background-color: rgba(55, 65, 81, 0.6);
+}
+
+.upload-button:active {
+  transform: scale(0.95);
+}
+
+/* File preview styles */
+.file-preview {
+  transition: all 0.2s ease-in-out;
+}
+
+.file-preview:hover {
+  transform: scale(1.02);
+}
+
+.file-preview-image {
+  transition: all 0.2s ease-in-out;
+}
+
+.file-preview-image:hover {
+  transform: scale(1.05);
+}
+
+/* Custom scrollbar for message area */
+.chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 2px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Gradient text animation */
+.gradient-text {
+  background: linear-gradient(270deg, #8b5cf6, #ec4899, #8b5cf6);
+  background-size: 400% 400%;
+  animation: gradientShift 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Pulse animation for loading dots */
+.pulse-dot {
+  animation: pulse 1.5s infinite;
+}
+
+.pulse-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.pulse-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Custom focus styles */
+.custom-focus:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+}
+
+/* Hover animations */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Glass morphism effect */
+.glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Message bubble animations */
+.message-bubble {
+  animation: slideInUp 0.4s ease-out;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.75rem 1rem;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6b7280;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: scale(0.75);
+    opacity: 0.5;
+  }
+  30% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Thinking animation container */
+.thinking-animation {
+  background: transparent;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.thinking-animation .typing-indicator {
+  background: rgba(55, 65, 81, 0.3);
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* User Message Styling */
+.user-message-content {
+  color: #f9fafb;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.user-message-content .formatted-content {
+  margin: 0;
+  padding: 0;
+}
+
+.user-message-content h1,
+.user-message-content h2,
+.user-message-content h3,
+.user-message-content h4,
+.user-message-content h5,
+.user-message-content h6 {
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.user-message-content p {
+  margin-bottom: 0.75rem;
+  color: #f9fafb;
+  line-height: 1.6;
+}
+
+.user-message-content strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.user-message-content em {
+  color: #f3f4f6;
+  font-style: italic;
+}
+
+.user-message-content code {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fbbf24;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.user-message-content a {
+  color: #93c5fd;
+  text-decoration: underline;
+  text-underline-offset: 0.125rem;
+}
+
+.user-message-content a:hover {
+  color: #dbeafe;
+}
+
+/* Enhanced Assistant Message Styling */
+.assistant-message-content {
+  color: #e5e7eb;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+.assistant-message-content .formatted-content {
+  /* Reset default margins */
+  margin: 0;
+  padding: 0;
+}
+
+.assistant-message-content h1,
+.assistant-message-content h2,
+.assistant-message-content h3,
+.assistant-message-content h4,
+.assistant-message-content h5,
+.assistant-message-content h6 {
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.assistant-message-content h1 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid #374151;
+  padding-bottom: 0.5rem;
+}
+
+.assistant-message-content h2 {
+  font-size: 1.25rem;
+}
+
+.assistant-message-content h3 {
+  font-size: 1.125rem;
+}
+
+.assistant-message-content p {
+  margin-bottom: 1rem;
+  color: #e5e7eb;
+  line-height: 1.7;
+}
+
+.assistant-message-content strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.assistant-message-content em {
+  color: #d1d5db;
+  font-style: italic;
+}
+
+/* Enhanced List Styling */
+.numbered-list-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  line-height: 1.6;
+}
+
+.numbered-list-item span:first-child {
+  color: #60a5fa;
+  font-weight: 600;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  min-width: 1.5rem;
+}
+
+.bullet-list-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  line-height: 1.6;
+}
+
+.bullet-list-item span:first-child {
+  color: #34d399;
+  font-size: 1.2rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+/* Enhanced Code Styling */
+.assistant-message-content code {
+  background-color: #1f2937;
+  color: #34d399;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #374151;
+}
+
+.assistant-message-content pre {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  position: relative;
+}
+
+.assistant-message-content pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #34d399;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  display: block;
+  white-space: pre;
+}
+
+/* Enhanced Link Styling */
+.assistant-message-content a {
+  color: #60a5fa;
+  text-decoration: underline;
+  text-underline-offset: 0.125rem;
+  transition: color 0.2s ease;
+}
+
+.assistant-message-content a:hover {
+  color: #93c5fd;
+}
+
+/* Table Styling */
+.assistant-message-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.assistant-message-content th,
+.assistant-message-content td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #374151;
+}
+
+.assistant-message-content th {
+  background-color: #1f2937;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.assistant-message-content tr:nth-child(even) {
+  background-color: #111827;
+}
+
+/* Blockquote Styling */
+.assistant-message-content blockquote {
+  border-left: 4px solid #60a5fa;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #d1d5db;
+  font-style: italic;
+  background-color: #1f2937;
+  padding: 1rem;
+  border-radius: 0.375rem;
+}
+
+/* Enhanced prose styling */
+.prose {
+  color: #e5e7eb;
+  max-width: none;
+}
+
+.prose-invert {
+  color: #e5e7eb;
+}
+
+.prose-lg {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth animations for content */
+.formatted-content {
+  animation: fadeInContent 0.3s ease-out;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced scrollbar for formatted content */
+.formatted-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.formatted-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.formatted-content::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 2px;
+}
+
+.formatted-content::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 1024px) {
+  /* Ensure sidebar takes full width on mobile */
+  .mobile-sidebar {
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+  
+  /* Prevent body scroll when sidebar is open */
+  .mobile-sidebar-open {
+    overflow: hidden;
+  }
+  
+  /* Improve overlay appearance */
+  .sidebar-overlay {
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+}
+
+/* Fix header spacing for mobile */
+@media (max-width: 768px) {
+  .mobile-header-spacing {
+    padding-top: 4rem;
+  }
+  
+  .chat-container {
+    padding-top: 1rem;
+  }
+  
+  /* Adjust upload popup for mobile */
+  .upload-popup {
+    width: 280px !important;
+    right: 8px !important;
+  }
+}
+
+/* Ensure proper background inheritance */
+.main-container {
+  background: #111827;
+  min-height: 100vh;
+}
+
+/* Prevent text selection issues on mobile */
+@media (max-width: 768px) {
+  .mobile-no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}

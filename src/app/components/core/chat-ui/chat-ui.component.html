@@ -1,0 +1,315 @@
+<!-- Main Container -->
+<div class="min-h-screen bg-gray-900 text-white relative" (click)="onDocumentClick($event)">
+  <!-- Header Component -->
+  <app-header 
+    [hasMessages]="messages.length > 0" 
+    [isHistorySidebarOpen]="isHistorySidebarOpen"
+    [isPropertiesSidebarOpen]="isPropertiesSidebarOpen"
+    (clearChatEvent)="clearChat()"
+    (toggleHistorySidebarEvent)="toggleHistorySidebar()"
+    (togglePropertiesSidebarEvent)="togglePropertiesSidebar()">
+  </app-header>
+
+  <!-- Main Layout with Sidebars -->
+  <div class="flex h-screen pt-16">
+    
+    <!-- Expand Button (visible when sidebar is collapsed) -->
+    <div *ngIf="!isHistorySidebarOpen" class="fixed left-4 z-[110]" style="top: 6.5rem;">
+      <button 
+        (click)="onExpandSidebar()"
+        class="expand-button p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-all duration-200 shadow-lg border border-gray-600 hover:border-gray-500"
+        title="Expand chat history">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- History Sidebar (Left) -->
+    <div class="fixed left-0 w-full lg:w-80 bg-gray-800 border-r border-gray-700 transform transition-transform duration-300 z-[100] lg:z-[35]"
+         [class.top-16]="true"
+         [class.h-[calc(100vh-4rem)]]="true"
+         [class.translate-x-0]="isHistorySidebarOpen"
+         [class.-translate-x-full]="!isHistorySidebarOpen"
+         [style.top.rem]="5">
+      
+      <app-save-history 
+        [currentMessages]="messages"
+        [currentSessionId]="sessionId"
+        (loadConversation)="onLoadConversation($event)"
+        (clearCurrentChat)="onClearCurrentChat()"
+        (collapseSidebar)="toggleHistorySidebar()"
+        class="block h-full">
+      </app-save-history>
+    </div>
+
+    <!-- History Sidebar Overlay for Mobile -->
+    <div *ngIf="isHistorySidebarOpen" 
+         (click)="toggleHistorySidebar()"
+         class="fixed bg-black bg-opacity-50 z-[50] lg:hidden"
+         [style.top.rem]="5"
+         [style.left.px]="0"
+         [style.right.px]="0"
+         [style.bottom.px]="0">
+    </div>
+
+    <!-- Chat Area -->
+    <div class="flex-1 flex flex-col transition-all duration-300"
+         [class.lg:ml-80]="isHistorySidebarOpen"
+         [class.lg:mr-80]="isPropertiesSidebarOpen">
+
+      <!-- Main Content -->
+      <main class="max-w-4xl mx-auto px-4 py-8 pb-32 lg:pb-24">
+        <!-- Welcome Section (shown when no messages) -->
+        <div *ngIf="messages.length === 0" class="text-center mb-12">
+          <div class="mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Where knowledge begins
+            </h2>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+              Ask anything and get instant, intelligent answers powered by advanced AI
+            </p>
+          </div>
+          
+          <!-- Suggestions -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <button 
+              *ngFor="let suggestion of suggestions"
+              (click)="onSuggestionClick(suggestion)"
+              class="p-4 bg-gray-800 hover:bg-gray-700 rounded-xl text-left transition-colors border border-gray-700 hover:border-gray-600">
+              <span class="text-gray-300">{{ suggestion }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div *ngIf="messages.length > 0" class="space-y-8 mb-8">
+          <div *ngFor="let message of messages" class="animate-in slide-in-from-bottom-4 duration-500">
+            <!-- User Message -->
+            <div *ngIf="message.type === 'user'" class="flex justify-end mb-6">
+              <div class="max-w-3xl bg-gray-700 text-white rounded-2xl px-6 py-4 ml-12 shadow-lg">
+                <div class="user-message-content">
+                  <div [innerHTML]="formatMessage(message.content)" class="formatted-content text-gray-100"></div>
+                </div>
+                
+                <!-- File Preview -->
+                <div *ngIf="message.file" class="file-preview mt-4 pt-4 border-t border-gray-600">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                      <svg *ngIf="message.file.type.startsWith('image/')" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                      </svg>
+                      <svg *ngIf="!message.file.type.startsWith('image/')" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                    </div>
+                    <div class="flex-1">
+                      <p class="text-sm font-medium text-white">{{ message.file.name }}</p>
+                      <p class="text-xs text-gray-300">{{ (message.file.size / 1024 / 1024).toFixed(2) }} MB</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Image Preview -->
+                  <div *ngIf="message.file.type.startsWith('image/')" class="mt-3">
+                    <img [src]="message.file.url" [alt]="message.file.name" class="file-preview-image max-w-full h-auto rounded-lg max-h-48 object-cover">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Assistant Message -->
+            <div *ngIf="message.type === 'assistant'" class="flex justify-start mb-8">
+              <div class="max-w-full w-full">
+                <div class="flex items-start space-x-4 mb-4">
+                  <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="assistant-message-content">
+                      <div class="prose prose-invert prose-lg max-w-none">
+                        <div [innerHTML]="formatMessage(message.content)" class="formatted-content"></div>
+                      </div>
+                    </div>
+                    
+                    <!-- Sources -->
+                    <div *ngIf="message.sources && message.sources.length > 0" class="mt-6 pt-4 border-t border-gray-700">
+                      <h4 class="text-sm font-semibold text-gray-400 mb-3 flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                        </svg>
+                        Sources
+                      </h4>
+                      <div class="space-y-2">
+                        <a 
+                          *ngFor="let source of message.sources" 
+                          href="{{ source.url }}" 
+                          target="_blank"
+                          class="group flex items-center p-3 bg-gray-800/50 hover:bg-gray-700/50 rounded-lg border border-gray-700/50 hover:border-gray-600/50 transition-all duration-200">
+                          <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mr-3 group-hover:bg-blue-500/30 transition-colors">
+                            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                          </div>
+                          <div class="flex-1 min-w-0">
+                            <span class="text-gray-300 text-sm group-hover:text-white transition-colors line-clamp-2">{{ source.title }}</span>
+                          </div>
+                          <svg class="w-4 h-4 text-gray-500 group-hover:text-gray-400 transition-colors ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="flex justify-start mb-8">
+            <div class="flex items-start space-x-4">
+              <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mt-1">
+                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="thinking-animation">
+                  <div class="flex items-center space-x-2">
+                    <div class="typing-indicator">
+                      <div class="typing-dot"></div>
+                      <div class="typing-dot"></div>
+                      <div class="typing-dot"></div>
+                    </div>
+                    <span class="text-gray-400 text-sm ml-2">Thinking...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Fixed Chat Input at Bottom -->
+      <div class="fixed bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-md border-t border-gray-800 p-4 z-[55] transition-all duration-300"
+           [class.lg:left-80]="isHistorySidebarOpen"
+           [class.lg:left-0]="!isHistorySidebarOpen"
+           [class.lg:right-80]="isPropertiesSidebarOpen"
+           [class.lg:right-0]="!isPropertiesSidebarOpen">
+        <div class="relative max-w-4xl mx-auto upload-popup-container">
+          
+          <!-- Upload Popup -->
+          <div *ngIf="isUploadPopupOpen" 
+               class="absolute bottom-full mb-2 right-0 w-64 bg-gray-800 border border-gray-700 rounded-xl shadow-lg p-2 z-[60] upload-popup">
+            <div class="space-y-1">
+              <!-- Upload Image -->
+              <button 
+                (click)="onUploadImage()"
+                class="upload-option w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-700 rounded-lg">
+                <div class="upload-icon w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-white">Upload Image</p>
+                  <p class="text-xs text-gray-400">JPG, PNG, GIF up to 10MB</p>
+                </div>
+              </button>
+
+              <!-- Upload Document -->
+              <button 
+                (click)="onUploadDocument()"
+                class="upload-option w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-700 rounded-lg">
+                <div class="upload-icon w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-white">Upload Document</p>
+                  <p class="text-xs text-gray-400">PDF, DOC, TXT up to 25MB</p>
+                </div>
+              </button>
+
+              <!-- Google Drive -->
+              <button 
+                (click)="onUploadFromGoogleDrive()"
+                class="upload-option w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-700 rounded-lg">
+                <div class="upload-icon w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972-3.332 0-6.033-2.701-6.033-6.032s2.701-6.032 6.033-6.032c1.498 0 2.866.549 3.921 1.453l2.814-2.814C17.503 2.988 15.139 2 12.545 2 7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748L12.545 10.239z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-white">Google Drive</p>
+                  <p class="text-xs text-gray-400">Import from your Drive</p>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div class="relative">
+            <input 
+              [(ngModel)]="searchQuery"
+              (keyup.enter)="onSearch()"
+              type="text" 
+              placeholder="Ask anything..." 
+              class="w-full px-6 py-4 pr-24 bg-gray-800 border border-gray-700 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all text-lg shadow-lg"
+              [disabled]="isLoading">
+            
+            <!-- Upload Button -->
+            <button 
+              (click)="toggleUploadPopup()"
+              class="upload-button absolute right-14 top-1/2 transform -translate-y-1/2 p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-xl"
+              title="Upload files">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+              </svg>
+            </button>
+            
+            <!-- Send Button -->
+            <button 
+              (click)="onSearch()"
+              [disabled]="!searchQuery.trim() || isLoading"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-xl transition-colors shadow-md">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Input Helper Text -->
+          <div class="mt-2 text-center">
+            <p class="text-xs text-gray-500">
+              Press Enter to search or click the send button
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Properties Sidebar (Right) -->
+    <div class="fixed right-0 w-full lg:w-80 bg-gray-800 border-l border-gray-700 transform transition-transform duration-300 z-[100] lg:z-[35]"
+         [class.top-16]="true"
+         [class.h-[calc(100vh-4rem)]]="true"
+         [class.translate-x-0]="isPropertiesSidebarOpen"
+         [class.translate-x-full]="!isPropertiesSidebarOpen"
+         [style.top.rem]="5">
+      
+      <app-property-listing class="block h-full"></app-property-listing>
+    </div>
+
+    <!-- Properties Sidebar Overlay for Mobile -->
+    <div *ngIf="isPropertiesSidebarOpen" 
+         (click)="togglePropertiesSidebar()"
+         class="fixed bg-black bg-opacity-50 z-[50] lg:hidden"
+         [style.top.rem]="5"
+         [style.left.px]="0"
+         [style.right.px]="0"
+         [style.bottom.px]="0">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+/* Property Listing Component Styles */
+.property-listing-container {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Ensure proper scrolling behavior on mobile */
+.property-list-scroll {
+  height: calc(100vh - 8rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .property-card {
+    margin: 0.5rem;
+  }
+  
+  .property-image {
+    height: 180px;
+  }
+}
+
+/* Custom scrollbar for property list */
+.property-list-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.property-list-scroll::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.property-list-scroll::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 2px;
+}
+
+.property-list-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Smooth transitions */
+.property-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.property-card:hover {
+  transform: translateY(-1px);
+}
+
+/* Ensure text doesn't wrap awkwardly on mobile */
+.property-title {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
