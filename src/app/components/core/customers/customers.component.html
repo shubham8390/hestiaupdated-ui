@@ -1,0 +1,192 @@
+<div class="min-h-screen bg-gray-900 text-white p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
+        Customers
+      </h1>
+      <p class="text-gray-400 text-lg">
+        Manage your customer relationships and track their status
+      </p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-400 text-sm">Total Customers</p>
+            <p class="text-2xl font-bold text-white">{{ customers.length }}</p>
+          </div>
+          <div class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-400 text-sm">Leads</p>
+            <p class="text-2xl font-bold text-yellow-400">{{ getStatusCount('lead') }}</p>
+          </div>
+          <div class="w-10 h-10 bg-yellow-600 rounded-full flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-400 text-sm">Prospects</p>
+            <p class="text-2xl font-bold text-blue-400">{{ getStatusCount('prospect') }}</p>
+          </div>
+          <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-400 text-sm">Buyers</p>
+            <p class="text-2xl font-bold text-green-400">{{ getStatusCount('buyer') }}</p>
+          </div>
+          <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-gray-800 rounded-lg p-6 mb-6 border border-gray-700">
+      <div class="flex flex-col md:flex-row md:items-center gap-4">
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-300 mb-2">Search Customers</label>
+          <div class="relative">
+            <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              (input)="onSearchChange()"
+              placeholder="Search by name or email..."
+              class="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+
+        <div class="md:w-48">
+          <label class="block text-sm font-medium text-gray-300 mb-2">Filter by Status</label>
+          <select
+            [(ngModel)]="selectedStatus"
+            (change)="onStatusFilterChange()"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          >
+            <option value="all">All Statuses</option>
+            <option value="lead">Lead</option>
+            <option value="prospect">Prospect</option>
+            <option value="buyer">Buyer</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Table -->
+    <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <!-- Table Header -->
+          <thead class="bg-gray-700">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Customer Name
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Status
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Email
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Phone
+              </th>
+              <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Date Added
+              </th>
+            </tr>
+          </thead>
+          <!-- Table Body -->
+          <tbody class="divide-y divide-gray-700">
+            <tr *ngFor="let customer of filteredCustomers; trackBy: trackByCustomerId" 
+                class="hover:bg-gray-750 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                    {{ customer.name.charAt(0).toUpperCase() }}
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-white">{{ customer.name }}</div>
+                    <div class="text-sm text-gray-400">ID: {{ customer.id }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span [class]="getStatusColor(customer.status) + ' inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white capitalize'">
+                  {{ customer.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                {{ customer.email }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                {{ customer.phone }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                {{ customer.dateAdded | date:'MMM d, yyyy' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredCustomers.length === 0" class="text-center py-12">
+        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-300 mb-2">No customers found</h3>
+        <p class="text-gray-400">Try adjusting your search or filter criteria</p>
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    <div class="mt-6 text-center text-gray-400">
+      Showing {{ filteredCustomers.length }} of {{ customers.length }} customers
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-8 text-center">
+      <button 
+        (click)="goBack()" 
+        class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 border border-gray-700">
+        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to Chat
+      </button>
+    </div>
+  </div>
+</div>

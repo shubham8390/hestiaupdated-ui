@@ -1,13 +1,13 @@
-/* User Settings Popup Styles */
+/* User Settings Popup Styles - Dark Theme */
 .user-settings-popup {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(31, 41, 55, 0.95);
+  border: 1px solid rgba(75, 85, 99, 0.8);
   box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.1), 
-    0 10px 10px -5px rgba(0, 0, 0, 0.04),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+    0 20px 25px -5px rgba(0, 0, 0, 0.4), 
+    0 10px 10px -5px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(75, 85, 99, 0.1);
 }
 
 /* Backdrop overlay styles */
@@ -47,19 +47,19 @@
 /* Menu item hover effects */
 .menu-item {
   transition: all 0.15s ease-in-out;
-  border-radius: 8px;
-  margin: 0 8px;
+  border-radius: 6px;
+  margin: 0 4px;
 }
 
 .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(75, 85, 99, 0.6);
   transform: translateX(2px);
   backdrop-filter: blur(10px);
 }
 
 .menu-item:active {
   transform: translateX(1px);
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(75, 85, 99, 0.4);
 }
 
 /* Icon animations */
@@ -80,6 +80,15 @@
   transform: scale(1.1);
 }
 
+/* Theme toggle switch animation */
+.user-settings-popup .w-10.h-5 {
+  transition: all 0.3s ease-in-out;
+}
+
+.user-settings-popup .w-4.h-4 {
+  transition: transform 0.3s ease-in-out;
+}
+
 /* Divider styling */
 .user-settings-popup .border-t {
   opacity: 0.6;
@@ -96,7 +105,7 @@
     margin: 0;
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-    background: rgba(255, 255, 255, 0.98);
+    background: rgba(31, 41, 55, 0.95);
   }
 }
 
@@ -107,7 +116,7 @@
     left: 4px !important;
     width: auto !important;
     max-width: calc(100vw - 16px) !important;
-    border-radius: 16px;
+    border-radius: 8px;
   }
   
   /* Adjust menu items for mobile */
@@ -131,7 +140,7 @@
 }
 
 .user-settings-popup::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #6b7280;
   border-radius: 2px;
 }
 
@@ -142,7 +151,7 @@
 /* Focus styles for accessibility */
 .menu-item:focus {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(75, 85, 99, 0.5);
   box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.3);
   backdrop-filter: blur(10px);
 }
@@ -152,25 +161,29 @@
   transition: all 0.15s ease-in-out;
 }
 
-/* Special styling for the Help item with arrow */
-.menu-item .w-4.h-4 {
-  transition: transform 0.15s ease-in-out;
-}
-
-.menu-item:hover .w-4.h-4 {
-  transform: translateX(2px);
-}
-
-/* Logout button special styling */
+/* Sign out button special styling */
 .menu-item:last-child:hover {
-  background-color: rgba(254, 242, 242, 0.6);
+  background-color: rgba(220, 38, 38, 0.1);
   backdrop-filter: blur(10px);
 }
 
 .menu-item:last-child:hover span {
-  color: #dc2626;
+  color: #ef4444;
 }
 
 .menu-item:last-child:hover svg {
-  color: #dc2626;
+  color: #ef4444;
+}
+
+/* Theme toggle specific styles */
+.menu-item:first-child:hover {
+  background-color: rgba(147, 51, 234, 0.1);
+}
+
+.menu-item:first-child:hover span {
+  color: #a855f7;
+}
+
+.menu-item:first-child:hover svg {
+  color: #a855f7;
 }

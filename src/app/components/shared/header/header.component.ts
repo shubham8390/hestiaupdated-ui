@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { UserSettingsComponent } from '../user-settings/user-settings.component';
 
 @Component({
@@ -21,6 +22,11 @@ export class HeaderComponent {
   // User settings popup state
   isUserSettingsOpen: boolean = false;
 
+  // Discover dropdown state
+  isDiscoverDropdownOpen: boolean = false;
+
+  constructor(private router: Router) {}
+
   onClearChat() {
     this.clearChatEvent.emit();
   }
@@ -40,5 +46,38 @@ export class HeaderComponent {
 
   onCloseUserSettings() {
     this.isUserSettingsOpen = false;
+  }
+
+  // Discover dropdown methods
+  onToggleDiscoverDropdown() {
+    this.isDiscoverDropdownOpen = !this.isDiscoverDropdownOpen;
+  }
+
+  onDiscoverOptionSelect(option: string) {
+    console.log('Selected discover option:', option);
+    
+    // Handle navigation based on the selected option
+    switch(option) {
+      case 'Manage Projects':
+        this.router.navigate(['/manage-projects']);
+        break;
+      case 'Admin':
+        // Add admin route navigation here when created
+        console.log('Admin route not implemented yet');
+        break;
+      case 'Research':
+        // Add research route navigation here when created
+        console.log('Research route not implemented yet');
+        break;
+      case 'Users':
+        // Add users route navigation here when created
+        console.log('Users route not implemented yet');
+        break;
+      case 'Customers':
+        this.router.navigate(['/customers']);
+        break;
+    }
+    
+    this.isDiscoverDropdownOpen = false;
   }
 }

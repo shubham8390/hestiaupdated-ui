@@ -1,0 +1,147 @@
+/* Custom styles for customers component */
+
+/* Table hover effects */
+.hover\:bg-gray-750:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+/* Smooth transitions for all interactive elements */
+.transition-colors {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Focus styles for form inputs */
+input:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+/* Custom scrollbar for table */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #374151;
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Status badge animations */
+.status-badge {
+  transition: all 0.2s ease-in-out;
+}
+
+.status-badge:hover {
+  transform: scale(1.05);
+}
+
+/* Card hover effects */
+.stats-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Avatar hover effects */
+.customer-avatar {
+  transition: transform 0.2s ease-in-out;
+}
+
+.customer-avatar:hover {
+  transform: scale(1.1);
+}
+
+/* Table row animations */
+tbody tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
+tbody tr:hover {
+  background-color: rgba(55, 65, 81, 0.3);
+}
+
+/* Search input icon animation */
+.search-icon {
+  transition: color 0.2s ease-in-out;
+}
+
+.search-input:focus + .search-icon {
+  color: #a855f7;
+}
+
+/* Button hover effects */
+.btn-back {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-back:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive table adjustments */
+@media (max-width: 768px) {
+  .table-container {
+    font-size: 0.875rem;
+  }
+  
+  .table-container th,
+  .table-container td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .customer-avatar {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+/* Loading state animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Empty state styling */
+.empty-state {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.empty-state svg {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Filter section styling */
+.filter-section {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}

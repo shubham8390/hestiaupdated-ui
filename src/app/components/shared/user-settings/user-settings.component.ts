@@ -14,9 +14,13 @@ export class UserSettingsComponent implements OnInit {
   
   userEmail: string = 'shubs390@gmail.com';
   userName: string = 'Shubham';
+  isDarkTheme: boolean = true; // Default to dark theme
 
   ngOnInit() {
-    // You can load user data from a service here
+    // Load theme preference from localStorage
+    const savedTheme = localStorage.getItem('theme');
+    this.isDarkTheme = savedTheme === 'dark' || savedTheme === null; // Default to dark if no preference
+    this.applyTheme();
   }
 
   // Close popup when clicking outside
@@ -28,35 +32,33 @@ export class UserSettingsComponent implements OnInit {
     }
   }
 
-  onUpgradePlan() {
-    console.log('Upgrade plan clicked');
-    // Implement upgrade plan logic
-    this.closePopup.emit();
+  onToggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light');
+    this.applyTheme();
+    console.log('Theme toggled to:', this.isDarkTheme ? 'dark' : 'light');
   }
 
-  onCustomizeChatGPT() {
-    console.log('Customize ChatGPT clicked');
-    // Implement customization logic
-    this.closePopup.emit();
+  private applyTheme() {
+    const htmlElement = document.documentElement;
+    if (this.isDarkTheme) {
+      htmlElement.classList.add('dark');
+      htmlElement.classList.remove('light');
+    } else {
+      htmlElement.classList.add('light');
+      htmlElement.classList.remove('dark');
+    }
   }
 
-  onSettings() {
-    console.log('Settings clicked');
-    // Implement settings logic
-    this.closePopup.emit();
-  }
-
-  onHelp() {
-    console.log('Help clicked');
-    // Implement help logic
-    this.closePopup.emit();
-  }
-
-  onLogOut() {
-    console.log('Log out clicked');
-    // Implement logout logic
-    if (confirm('Are you sure you want to log out?')) {
-      // Clear user session, redirect to login, etc.
+  onSignOut() {
+    console.log('Sign out clicked');
+    if (confirm('Are you sure you want to sign out?')) {
+      // Clear user session and any stored data
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userName');
+      // Add any other logout logic here
+      console.log('User signed out successfully');
       this.closePopup.emit();
     }
   }

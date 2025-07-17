@@ -1,0 +1,134 @@
+<div class="min-h-screen bg-gray-900 text-white p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
+        Manage Projects
+      </h1>
+      <p class="text-gray-400 text-lg">
+        Discover and manage your property broker projects
+      </p>
+    </div>
+
+    <!-- Project Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      
+      <!-- Card 1: Elite Property Solutions -->
+      <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg card-hover">
+        <div class="flex h-64 card-mobile">
+          <!-- Image Half -->
+          <div class="w-1/2 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center image-overlay image-section">
+            <img 
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop" 
+              alt="Elite Property Solutions" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <!-- Content Half -->
+          <div class="w-1/2 p-6 flex flex-col justify-center">
+            <h3 class="text-xl font-bold text-white mb-3">Elite Property Solutions</h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              Specializing in luxury residential and commercial properties. Our expert team delivers exceptional results with personalized service and market expertise.
+            </p>
+            <div class="mt-4">
+              <span class="inline-block bg-purple-600 text-white px-3 py-1 rounded-full text-xs tag">
+                Premium
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Metropolitan Realty Group -->
+      <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg card-hover">
+        <div class="flex h-64 card-mobile">
+          <!-- Image Half -->
+          <div class="w-1/2 bg-gradient-to-br from-green-600 to-teal-600 flex items-center justify-center image-overlay image-section">
+            <img 
+              src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop" 
+              alt="Metropolitan Realty Group" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <!-- Content Half -->
+          <div class="w-1/2 p-6 flex flex-col justify-center">
+            <h3 class="text-xl font-bold text-white mb-3">Metropolitan Realty Group</h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              Urban property specialists focusing on downtown developments and metropolitan investments. Leading the way in modern real estate solutions.
+            </p>
+            <div class="mt-4">
+              <span class="inline-block bg-green-600 text-white px-3 py-1 rounded-full text-xs tag">
+                Urban Focus
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Coastal Properties Inc -->
+      <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg card-hover">
+        <div class="flex h-64 card-mobile">
+          <!-- Image Half -->
+          <div class="w-1/2 bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center image-overlay image-section">
+            <img 
+              src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop" 
+              alt="Coastal Properties Inc" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <!-- Content Half -->
+          <div class="w-1/2 p-6 flex flex-col justify-center">
+            <h3 class="text-xl font-bold text-white mb-3">Coastal Properties Inc</h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              Waterfront and coastal property experts with over 15 years of experience. Specializing in beachfront homes and vacation rentals.
+            </p>
+            <div class="mt-4">
+              <span class="inline-block bg-cyan-600 text-white px-3 py-1 rounded-full text-xs tag">
+                Waterfront
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Heritage Estate Partners -->
+      <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg card-hover">
+        <div class="flex h-64 card-mobile">
+          <!-- Image Half -->
+          <div class="w-1/2 bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center image-overlay image-section">
+            <img 
+              src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop" 
+              alt="Heritage Estate Partners" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <!-- Content Half -->
+          <div class="w-1/2 p-6 flex flex-col justify-center">
+            <h3 class="text-xl font-bold text-white mb-3">Heritage Estate Partners</h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              Boutique real estate firm specializing in historic properties and family estates. Preserving architectural heritage while maximizing investment potential.
+            </p>
+            <div class="mt-4">
+              <span class="inline-block bg-amber-600 text-white px-3 py-1 rounded-full text-xs tag">
+                Historic
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-12 text-center">
+      <button 
+        (click)="goBack()" 
+        class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 border border-gray-700">
+        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to Chat
+      </button>
+    </div>
+  </div>
+</div>
