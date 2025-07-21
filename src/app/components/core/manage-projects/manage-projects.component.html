@@ -1,5 +1,90 @@
-<div class="min-h-screen bg-gray-900 text-white p-8">
-  <div class="max-w-7xl mx-auto">
+<div class="min-h-screen bg-gray-900 text-white relative">
+  <!-- Navigation Sidebar -->
+  <app-navigation-sidebar 
+    [hasMessages]="false" 
+    [isHistorySidebarOpen]="isHistorySidebarOpen"
+    [isPropertiesSidebarOpen]="isPropertiesSidebarOpen"
+    [isExpanded]="isNavigationSidebarExpanded"
+    (clearChatEvent)="onClearChat()"
+    (toggleHistorySidebarEvent)="onToggleHistory()"
+    (togglePropertiesSidebarEvent)="onToggleProperties()"
+    (toggleSidebarEvent)="toggleNavigationSidebar()"
+    (newChatEvent)="onNewChat()">
+  </app-navigation-sidebar>
+
+  <!-- History Sidebar (Left) -->
+  <div class="fixed w-full lg:w-80 bg-gray-800 border-r border-gray-700 transform transition-transform duration-300 z-[100] lg:z-[35]"
+       [class.left-16]="!isNavigationSidebarExpanded && !isMobileView"
+       [class.left-64]="isNavigationSidebarExpanded && !isMobileView"
+       [class.left-0]="isMobileView"
+       [class.top-0]="true"
+       [class.h-full]="true"
+       [class.translate-x-0]="isHistorySidebarOpen"
+       [class.-translate-x-full]="!isHistorySidebarOpen">
+    
+    <app-save-history 
+      [currentMessages]="[]"
+      [currentSessionId]="null"
+      (loadConversation)="onLoadConversation($event)"
+      (clearCurrentChat)="onClearCurrentChat()"
+      (collapseSidebar)="onToggleHistory()"
+      class="block h-full">
+    </app-save-history>
+  </div>
+
+  <!-- History Sidebar Overlay for Mobile -->
+  <div *ngIf="isHistorySidebarOpen" 
+       (click)="onToggleHistory()"
+       class="fixed bg-black bg-opacity-50 z-[50] lg:hidden"
+       [style.top.px]="0"
+       [style.left.px]="0"
+       [style.right.px]="0"
+       [style.bottom.px]="0">
+  </div>
+
+  <!-- Properties Sidebar (Right) -->
+  <div class="fixed right-0 w-full lg:w-80 bg-gray-800 border-l border-gray-700 transform transition-transform duration-300 z-[100] lg:z-[35]"
+       [class.top-0]="true"
+       [class.h-full]="true"
+       [class.translate-x-0]="isPropertiesSidebarOpen"
+       [class.translate-x-full]="!isPropertiesSidebarOpen">
+    
+    <app-property-listing 
+      class="block h-full"
+      (closeSidebar)="onToggleProperties()">
+    </app-property-listing>
+  </div>
+
+  <!-- Properties Sidebar Overlay for Mobile -->
+  <div *ngIf="isPropertiesSidebarOpen" 
+       (click)="onToggleProperties()"
+       class="fixed bg-black bg-opacity-50 z-[50] lg:hidden"
+       [style.top.px]="0"
+       [style.left.px]="0"
+       [style.right.px]="0"
+       [style.bottom.px]="0">
+  </div>
+
+  <!-- Main Content -->
+  <div class="transition-all duration-300"
+       [class.ml-16]="!isNavigationSidebarExpanded && !isMobileView"
+       [class.ml-64]="isNavigationSidebarExpanded && !isMobileView"
+       [class.ml-0]="isMobileView">
+    
+    <!-- Mobile Menu Button -->
+    <div *ngIf="isMobileView" class="fixed top-4 left-4 z-[110]">
+      <button 
+        (click)="toggleNavigationSidebar()"
+        class="p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all duration-200 shadow-lg border border-gray-600 hover:border-gray-500"
+        title="Open menu">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="p-8">
+      <div class="max-w-7xl mx-auto">
     <!-- Header -->
     <div class="mb-8">
       <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
@@ -117,18 +202,6 @@
         </div>
       </div>
 
-    </div>
-
-    <!-- Back Button -->
-    <div class="mt-12 text-center">
-      <button 
-        (click)="goBack()" 
-        class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors duration-200 border border-gray-700">
-        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-        </svg>
-        Back to Chat
-      </button>
     </div>
   </div>
 </div>

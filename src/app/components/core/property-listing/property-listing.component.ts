@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Property {
@@ -22,6 +22,8 @@ interface Property {
   styleUrl: './property-listing.component.css'
 })
 export class PropertyListingComponent {
+  @Output() closeSidebar = new EventEmitter<void>();
+  
   properties: Property[] = [
     {
       id: 1,
@@ -84,6 +86,10 @@ export class PropertyListingComponent {
       status: 'For Sale'
     }
   ];
+
+  onCloseSidebar() {
+    this.closeSidebar.emit();
+  }
 
   onPropertyClick(property: Property) {
     console.log('Property clicked:', property);
