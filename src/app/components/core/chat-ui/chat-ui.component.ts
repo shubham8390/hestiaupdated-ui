@@ -12,6 +12,14 @@ interface ChatMessage {
   timestamp: Date;
   liked?: boolean;
   disliked?: boolean;
+  files?: File[];
+}
+
+interface Tool {
+  id: string;
+  name: string;
+  description: string;
+  icon?: string;
 }
 
 @Component({
@@ -29,12 +37,26 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
   currentMessage: string = '';
   isLoading: boolean = false;
   sessionId: string | null = null;
+  uploadedFiles: File[] = [];
+  
+  // Tools functionality
+  selectedTool: Tool | null = null;
+  isToolsPopupOpen: boolean = false;
   
   // Sidebar states
   isNavigationSidebarExpanded: boolean = true;
   isHistorySidebarOpen: boolean = false;
   isPropertiesSidebarOpen: boolean = false;
   isMobileView: boolean = false;
+
+  // Available tools
+  private tools: Tool[] = [
+    {
+      id: 'property-search',
+      name: 'Property Search',
+      description: 'Search and analyze properties with AI'
+    }
+  ];
 
   suggestions: string[] = [
     "What factors affect property valuation?",
@@ -65,6 +87,14 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
   // Close dropdowns when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const toolsButton = target.closest('.tools-button-container');
+    const toolsPopup = target.closest('.tools-popup');
+    
+    // Close popup if clicking outside both the button and popup
+    if (this.isToolsPopupOpen && !toolsButton && !toolsPopup) {
+      this.isToolsPopupOpen = false;
+    }
     // This will be handled by child components
   }
 
@@ -93,11 +123,26 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
     this.isPropertiesSidebarOpen = !this.isPropertiesSidebarOpen;
   }
 
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // Add selected files to uploadedFiles array
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        // Check file size (max 10MB per file)
+        if (file.size <= 10 * 1024 * 1024) {
+          this.uploadedFiles.push(file);
+        } else {
+          console.warn(`File ${file.name} is too large. Maximum size is 10MB.`);
+        }
+      }
+    }
+    // Clear the input value so the same file can be selected again if needed
+    event.target.value = '';
+  }
 
-
-  onSuggestionClick(suggestion: string) {
-    this.currentMessage = suggestion;
-    this.sendMessage();
+  removeFile(index: number) {
+    this.uploadedFiles.splice(index, 1);
   }
 
   onKeyDown(event: KeyboardEvent) {
@@ -114,65 +159,22 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
     this.adjustTextareaHeight();
   }
 
-  sendMessage() {
-    if (!this.currentMessage.trim() || this.isLoading) return;
-
-    const userMessage: ChatMessage = {
-      type: 'user',
-      content: this.currentMessage.trim(),
-      timestamp: new Date()
-    };
-
-    this.messages.push(userMessage);
-    const messageContent = this.currentMessage.trim();
-    this.currentMessage = '';
-    this.adjustTextareaHeight();
-    this.isLoading = true;
-
-    // Prepare request object based on whether session exists
-    const requestObj = {
-      session_id: this.sessionId || "",
-      query: messageContent
-    };
-
-    this.apiService.getChatResponse(requestObj).subscribe({
-      next: (response) => {
-        if (response) {
-          // If this is the first message, store the session ID
-          if (!this.sessionId && response.session_id) {
-            this.sessionId = response.session_id;
-          }
-
-          const assistantMessage: ChatMessage = {
-            type: 'assistant',
-            content: response.answer,
-            timestamp: new Date()
-          };
-          
-          this.messages.push(assistantMessage);
-        }
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error sending message:', error);
-        
-        const errorMessage: ChatMessage = {
-          type: 'assistant',
-          content: 'Sorry, I encountered an error while processing your request. Please try again.',
-          timestamp: new Date()
-        };
-        
-        this.messages.push(errorMessage);
-        this.isLoading = false;
-      }
-    });
+  toggleToolsPopup() {
+    this.isToolsPopupOpen = !this.isToolsPopupOpen;
   }
 
-  clearChat() {
-    this.messages = [];
-    this.sessionId = null;
-    this.currentMessage = '';
-    this.adjustTextareaHeight();
+
+
+  selectTool(toolId: string) {
+    const tool = this.tools.find(t => t.id === toolId);
+    if (tool) {
+      this.selectedTool = tool;
+      this.isToolsPopupOpen = false;
+    }
+  }
+
+  clearSelectedTool() {
+    this.selectedTool = null;
   }
 
   onLikeMessage(index: number) {
@@ -259,5 +261,82 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
     } catch (err) {
       console.error('Error scrolling to bottom:', err);
     }
+  }
+
+  sendMessage() {
+    if ((!this.currentMessage.trim() && this.uploadedFiles.length === 0) || this.isLoading) return;
+
+    const userMessage: ChatMessage = {
+      type: 'user',
+      content: this.currentMessage.trim() || 'Uploaded files',
+      timestamp: new Date(),
+      files: this.uploadedFiles.length > 0 ? [...this.uploadedFiles] : undefined
+    };
+
+    this.messages.push(userMessage);
+    const messageContent = this.currentMessage.trim();
+    const messageFiles = [...this.uploadedFiles];
+    const currentTool = this.selectedTool;
+    
+    // Clear current input and files
+    this.currentMessage = '';
+    this.uploadedFiles = [];
+    this.adjustTextareaHeight();
+    this.isLoading = true;
+
+    // Prepare request object with tool context if selected
+    let queryPrefix = '';
+    if (currentTool && currentTool.id === 'property-search') {
+      queryPrefix = '[PROPERTY_SEARCH] ';
+    }
+
+    const requestObj = {
+      session_id: this.sessionId || "",
+      query: queryPrefix + (messageContent || "I've uploaded some files for you to analyze.")
+    };
+
+    // Note: File upload to API would need to be implemented based on your API requirements
+    // For now, we'll send the text message only
+    this.apiService.getChatResponse(requestObj).subscribe({
+      next: (response) => {
+        if (response) {
+          // If this is the first message, store the session ID
+          if (!this.sessionId && response.session_id) {
+            this.sessionId = response.session_id;
+          }
+
+          const assistantMessage: ChatMessage = {
+            type: 'assistant',
+            content: response.answer,
+            timestamp: new Date()
+          };
+          
+          this.messages.push(assistantMessage);
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error sending message:', error);
+        
+        const errorMessage: ChatMessage = {
+          type: 'assistant',
+          content: 'Sorry, I encountered an error while processing your request. Please try again.',
+          timestamp: new Date()
+        };
+        
+        this.messages.push(errorMessage);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  clearChat() {
+    this.messages = [];
+    this.sessionId = null;
+    this.currentMessage = '';
+    this.uploadedFiles = [];
+    this.selectedTool = null;
+    this.isToolsPopupOpen = false;
+    this.adjustTextareaHeight();
   }
 }
