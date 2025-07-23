@@ -13,6 +13,16 @@ export const routes: Routes = [
     },
 
     {
+      path: 'add-project',
+      loadComponent: () => import('./components/core/add-project/add-project.component').then(m => m.AddProjectComponent),
+    },
+
+    {
+      path: 'project-details/:id',
+      loadComponent: () => import('./components/core/project-details/project-details.component').then(m => m.ProjectDetailsComponent),
+    },
+
+    {
       path: 'customers',
       loadComponent: () => import('./components/core/customers/customers.component').then(m => m.CustomersComponent),
     },
