@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://property-ai-1ab8.onrender.com/',
+  apiBaseUrl: 'http://127.0.0.1:8000/',
 };

@@ -1,10 +1,12 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavigationSidebarComponent } from '../../shared/navigation-sidebar/navigation-sidebar.component';
 import { PropertyListingComponent } from '../property-listing/property-listing.component';
 import { SaveHistoryComponent } from '../save-history/save-history.component';
+import { ApiService } from '../Services/api.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface TeamMember {
   id: string;
@@ -16,14 +18,28 @@ interface TeamMember {
   isActive?: boolean;
 }
 
+interface Units {
+  unit_type: string;
+  unit_size: string;
+  unit_price_low: string;
+  unit_price_high: string;
+  unit_available: string;
+  unit_total: string;
+  unit_sold: string;
+
+}
+
 interface Milestone {
   id: string;
   title: string;
   description: string;
-  dueDate: string;
+  due_date: string;
   status: 'pending' | 'in-progress' | 'completed';
   progress: number;
 }
+
+
+
 
 interface ProjectFile {
   id: string;
@@ -52,8 +68,11 @@ export class AddProjectComponent implements OnInit {
   projectForm!: FormGroup;
   milestones: Milestone[] = [];
   projectFiles: ProjectFile[] = [];
-  teamMembers: TeamMember[] = [];
-  
+  teamMembers: any[] = [];
+  units: Units[] = [];
+
+  // form for add units
+
   // File upload states
   bannerImageFile: File | null = null;
   profileImageFile: File | null = null;
@@ -63,15 +82,26 @@ export class AddProjectComponent implements OnInit {
   // UI states
   isSubmitting: boolean = false;
   showMilestoneForm: boolean = false;
+  showunitsForm: boolean = false;
   editingMilestone: Milestone | null = null;
+  editingunits: Units | null = null;
   dragActive: boolean = false;
-  
+
   showMemberForm: boolean = false;
   editingMember: TeamMember | null = null;
 
   // Milestone form
   milestoneForm!: FormGroup;
   memberForm!: FormGroup;
+  unitsForm!: FormGroup;
+
+  bannerImageId: any
+  profileImageId: any
+  knowledgeId: any
+
+  projecteditId: any
+  projectData: any
+  isEdit: boolean = false;
 
   // Accepted file types
   acceptedDocumentTypes = [
@@ -82,12 +112,23 @@ export class AddProjectComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private apiservice: ApiService,
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {
     this.initializeForms();
   }
 
   ngOnInit() {
+    debugger
+    const editId = this.route.snapshot.queryParamMap.get('edit');
+    if (editId) {
+      this.projecteditId = editId;
+      this.isEdit = true;
+      this.getProjectDetails(this.projecteditId);
+    }
+
     this.checkMobileView();
     // Start collapsed on desktop for hover-to-expand experience
     if (!this.isMobileView) {
@@ -116,9 +157,9 @@ export class AddProjectComponent implements OnInit {
       budget: ['', [Validators.required, Validators.min(0)]],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      clientName: ['', Validators.required],
-      clientEmail: ['', [Validators.required, Validators.email]],
-      clientPhone: ['', Validators.required],
+      clientName: [''],
+      clientEmail: ['', Validators.email],
+      clientPhone: [''],
       priority: ['medium', Validators.required],
       status: ['planning', Validators.required]
     });
@@ -127,7 +168,7 @@ export class AddProjectComponent implements OnInit {
     this.milestoneForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', Validators.required],
-      dueDate: ['', Validators.required],
+      due_date: ['', Validators.required],
       status: ['pending', Validators.required],
       progress: [0, [Validators.min(0), Validators.max(100)]]
     });
@@ -137,6 +178,16 @@ export class AddProjectComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       designation: ['', Validators.required]
+    });
+
+    this.unitsForm = this.fb.group({
+      unit_type: ['', Validators.required],
+      unit_size: [0, Validators.required],
+      unit_price_low: [0, Validators.required],
+      unit_price_high: [0, Validators.required],
+      unit_available: [0, [Validators.min(0)]],
+      unit_total: [0, [Validators.min(0)]],
+      unit_sold: [0, [Validators.min(0)]]
     });
   }
 
@@ -158,15 +209,15 @@ export class AddProjectComponent implements OnInit {
   }
 
   onLoadConversation(messages: any[]) {
-    this.router.navigate(['/']);
+    this.router.navigate(['/chat']);
   }
 
   onClearCurrentChat() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/chat']);
   }
 
   onNewChat() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/chat']);
   }
 
   goBack() {
@@ -178,6 +229,11 @@ export class AddProjectComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.bannerImageFile = input.files[0];
+      this.apiservice.uploadImage(this.bannerImageFile).subscribe(res => {
+        this.bannerImageId = res.image_id
+      }, error => {
+
+      })
       this.createImagePreview(input.files[0], 'banner');
     }
   }
@@ -186,6 +242,11 @@ export class AddProjectComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.profileImageFile = input.files[0];
+      this.apiservice.uploadImage(this.profileImageFile).subscribe(res => {
+        this.profileImageId = res.image_id
+      }, error => {
+
+      })
       this.createImagePreview(input.files[0], 'profile');
     }
   }
@@ -206,7 +267,7 @@ export class AddProjectComponent implements OnInit {
   onDocumentDrop(event: DragEvent) {
     event.preventDefault();
     this.dragActive = false;
-    
+
     if (event.dataTransfer && event.dataTransfer.files) {
       this.handleDocumentFiles(event.dataTransfer.files);
     }
@@ -224,7 +285,14 @@ export class AddProjectComponent implements OnInit {
 
   onDocumentChange(event: Event) {
     const input = event.target as HTMLInputElement;
+    debugger
     if (input.files) {
+
+      this.apiservice.uploadDocuments(input.files[0]).subscribe(res => {
+        this.knowledgeId = res.knowledge_id;
+      }, error => {
+      })
+
       this.handleDocumentFiles(input.files);
     }
   }
@@ -242,7 +310,9 @@ export class AddProjectComponent implements OnInit {
         };
         this.projectFiles.push(projectFile);
       } else {
-        alert(`File type ${file.type} is not supported`);
+
+        this.toastr.warning('File type ${file.type} is not supported');
+
       }
     });
   }
@@ -282,6 +352,7 @@ export class AddProjectComponent implements OnInit {
 
   // Milestone management methods
   openMilestoneForm(milestone?: Milestone) {
+    debugger
     if (milestone) {
       this.editingMilestone = milestone;
       this.milestoneForm.patchValue(milestone);
@@ -295,38 +366,111 @@ export class AddProjectComponent implements OnInit {
     this.showMilestoneForm = true;
   }
 
+
+
   closeMilestoneForm() {
     this.showMilestoneForm = false;
     this.editingMilestone = null;
     this.milestoneForm.reset();
   }
 
-  saveMilestone() {
+  openaddunitsform(units?: Units) {
+    if (units) {
+      this.editingunits = units;
+      this.unitsForm.patchValue(units);
+    }
+    else {
+      this.editingunits = null;
+      this.unitsForm.reset();
+    }
+    this.showunitsForm = true;
+  }
+  closeunitsform() {
+    debugger
+    this.showunitsForm = false;
+    this.unitsForm.reset();
+
+  }
+  saveunit() {
+    debugger
+    if (this.unitsForm.valid) {
+      const unitsData = this.unitsForm.value;
+
+      if (this.editingunits) {
+        const index = this.units.findIndex(m => m.unit_type === this.editingunits!.unit_type);
+        if (index > -1) {
+          this.units[index] = { ...this.editingunits, ...unitsData };
+        }
+      }
+      else {
+        const newMilestone: Units = {
+          ...unitsData
+        };
+        this.units.push(unitsData);
+      }
+
+    }
+    else {
+      this.toastr.error("Enter Valid entries")
+    }
+    this.closeunitsform();
+
+    ////
     if (this.milestoneForm.valid) {
       const milestoneData = this.milestoneForm.value;
-      
+      debugger
       if (this.editingMilestone) {
         // Update existing milestone
-        const index = this.milestones.findIndex(m => m.id === this.editingMilestone!.id);
+        const index = this.milestones.findIndex(m => m.title === this.editingMilestone!.title);
         if (index > -1) {
           this.milestones[index] = { ...this.editingMilestone, ...milestoneData };
         }
       } else {
         // Add new milestone
         const newMilestone: Milestone = {
-          id: this.generateId(),
           ...milestoneData
         };
         this.milestones.push(newMilestone);
       }
-      
+
+      this.closeMilestoneForm();
+    }
+  }
+
+  deleteUnits(unit_type: string) {
+    if (confirm('Are you sure you want to delete this milestone?')) {
+      this.units = this.units.filter(m => m.unit_type !== unit_type);
+    }
+  }
+
+
+  saveMilestone() {
+    debugger
+    if (this.milestoneForm.valid) {
+      const milestoneData = this.milestoneForm.value;
+      debugger
+      if (this.editingMilestone) {
+        // Update existing milestone
+        const index = this.milestones.findIndex(m => m.title === this.editingMilestone!.title);
+        if (index > -1) {
+          this.milestones[index] = { ...this.editingMilestone, ...milestoneData };
+        }
+      } else {
+        // Add new milestone
+        const newMilestone: Milestone = {
+          ...milestoneData
+        };
+        this.milestones.push(newMilestone);
+      }
+
       this.closeMilestoneForm();
     }
   }
 
   deleteMilestone(milestoneId: string) {
     if (confirm('Are you sure you want to delete this milestone?')) {
-      this.milestones = this.milestones.filter(m => m.id !== milestoneId);
+      debugger
+      this.milestones = this.milestones.filter(m => m.title !== milestoneId);
     }
   }
 
@@ -334,7 +478,7 @@ export class AddProjectComponent implements OnInit {
   openMemberForm(member?: TeamMember) {
     this.editingMember = member || null;
     this.showMemberForm = true;
-    
+
     if (member) {
       this.memberForm.patchValue({
         name: member.name,
@@ -356,10 +500,10 @@ export class AddProjectComponent implements OnInit {
   saveMember() {
     if (this.memberForm.valid) {
       const memberData = this.memberForm.value;
-      
+
       if (this.editingMember) {
         // Update existing member
-        const index = this.teamMembers.findIndex(m => m.id === this.editingMember!.id);
+        const index = this.teamMembers.findIndex(m => m.email === this.editingMember!.email);
         if (index !== -1) {
           this.teamMembers[index] = {
             ...this.editingMember,
@@ -368,28 +512,25 @@ export class AddProjectComponent implements OnInit {
         }
       } else {
         // Add new member
-        const newMember: TeamMember = {
-          id: this.generateId(),
+        const newMember = {
           name: memberData.name,
           email: memberData.email,
           phone: memberData.phone,
           designation: memberData.designation,
-          joinDate: new Date().toISOString().split('T')[0],
-          isActive: true
         };
         this.teamMembers.push(newMember);
       }
-      
+
       this.closeMemberForm();
     }
   }
 
   deleteMember(memberId: string) {
-    this.teamMembers = this.teamMembers.filter(member => member.id !== memberId);
+    this.teamMembers = this.teamMembers.filter(member => member.email !== memberId);
   }
 
   toggleMemberStatus(memberId: string) {
-    const member = this.teamMembers.find(m => m.id === memberId);
+    const member = this.teamMembers.find(m => m.email === memberId);
     if (member) {
       member.isActive = !member.isActive;
     }
@@ -417,7 +558,7 @@ export class AddProjectComponent implements OnInit {
 
   // Helper method to get designation color
   getDesignationColor(designation: string): string {
-    const designationColors: {[key: string]: string} = {
+    const designationColors: { [key: string]: string } = {
       'project manager': 'text-purple-400 bg-purple-900/30',
       'architect': 'text-blue-400 bg-blue-900/30',
       'engineer': 'text-green-400 bg-green-900/30',
@@ -427,7 +568,7 @@ export class AddProjectComponent implements OnInit {
       'manager': 'text-indigo-400 bg-indigo-900/30',
       'lead': 'text-orange-400 bg-orange-900/30'
     };
-    
+
     const key = designation.toLowerCase();
     return designationColors[key] || 'text-gray-400 bg-gray-900/30';
   }
@@ -440,29 +581,52 @@ export class AddProjectComponent implements OnInit {
   onSubmit() {
     if (this.projectForm.valid) {
       this.isSubmitting = true;
-      
+
       // Simulate API call
       setTimeout(() => {
-        const projectData = {
-          ...this.projectForm.value,
-          milestones: this.milestones,
-          documents: this.projectFiles.map(file => ({
-            name: file.name,
-            type: file.type,
-            size: file.size
-          })),
-          teamMembers: this.teamMembers,
-          bannerImage: this.bannerImageFile?.name,
-          profileImage: this.profileImageFile?.name,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-        
-        console.log('Project data to be saved:', projectData);
-        
+
+        let projectData = {
+          "project_name": this.projectForm.value.projectName,
+          "description": this.projectForm.value.description,
+          "category": this.projectForm.value.category,
+          "location": this.projectForm.value.location,
+          "banner_id": this.bannerImageId || '',
+          "image_id": this.profileImageId,
+          "user_id": "6872166531b8abcca37c2d2c",
+          "start_date": this.projectForm.value.startDate,
+          "end_date": this.projectForm.value.endDate,
+          "priority": this.projectForm.value.priority,
+          "status": this.projectForm.value.status,
+          "knowledge_id": this.knowledgeId || '',
+          "budget": this.projectForm.value.budget,
+          "milestones": this.milestones || [],
+          "units": this.units || [],
+          "team_members": this.teamMembers || []
+        }
+
+
+        if (this.isEdit) {
+          this.apiservice.updateProject(projectData, this.projecteditId).subscribe(res => {
+            this.toastr.success('project Updated Succesfully', 'Success');
+
+          }, error => {
+
+          })
+        } else {
+          this.apiservice.savedProject(projectData).subscribe(res => {
+            this.toastr.success('Project Saved Succesfully', 'Success');
+            this.router.navigate(['/createtask'], { queryParams: { projectId: res.id } });
+
+          }, error => {
+            this.toastr.warning('unable to save project');
+
+          })
+        }
+
+
         this.isSubmitting = false;
         // Navigate back to manage projects
-        this.router.navigate(['/manage-projects']);
+
       }, 2000);
     } else {
       // Mark all fields as touched to show validation errors
@@ -509,5 +673,45 @@ export class AddProjectComponent implements OnInit {
       case 'low': return 'text-green-400';
       default: return 'text-gray-400';
     }
+  }
+
+  getProjectDetails(projectId: any) {
+    this.apiservice.getProjectDetails(projectId).subscribe(res => {
+      this.projectData = res;
+      this.bindProjectData(this.projectData)
+    }, error => {
+
+    })
+  }
+
+  bindProjectData(projectData: any) {
+    this.milestones = projectData.milestones;
+    this.units = projectData.units;
+    this.teamMembers = projectData.team_members;
+    this.knowledgeId = projectData.knowledge_id;
+    this.profileImageId = projectData.banner_id;
+    this.bannerImageId = projectData.image_id;
+
+    this.projectForm.patchValue({
+      projectName: projectData.project_name,
+      description: projectData.description,
+      category: projectData.category,
+      location: projectData.location,
+      // Assuming you want to store banner_id and image_id separately
+      // If these are in the form, add them too
+      startDate: projectData.start_date,
+      endDate: projectData.end_date,
+      priority: projectData.priority,
+      status: projectData.status,
+      budget: projectData.budget
+      // Optional fields (if you have these controls)
+      // clientName: projectData.client_name,
+      // clientEmail: projectData.client_email,
+      // clientPhone: projectData.client_phone,
+    });
+
+
+
+
   }
 } 

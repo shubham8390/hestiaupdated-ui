@@ -1,0 +1,109 @@
+
+<!-- Back Button --> 
+<div class="mb-6">
+    <button (click)="goBack()"
+      class="flex items-center text-blue-200 hover:text-blue-300 transition-colors duration-200">
+      <i class="fas fa-arrow-left mr-2"></i>
+      Back to Properties
+    </button>
+  </div>
+  
+  <!-- Loan EMI Calculator -->
+  <form [formGroup]="loanForm"
+    class="max-w-5xl mx-auto p-6 bg-gray-800 rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold text-white mb-6">Loan EMI Calculator</h2>
+  
+    <!-- Horizontal Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Property Selection -->
+      <div *ngIf="propertyUnits">
+        <label class="block text-gray-300 font-medium mb-2">Select Property</label>
+        <select class="w-full p-2 rounded bg-gray-700 text-white"
+          (change)="onPropertySelect($event)">
+          <option value="" disabled selected>Select a unit</option>
+          <option *ngFor="let unit of propertyUnits" [value]="unit.unit_type">
+            {{ unit.unit_type }}
+          </option>
+        </select>
+      </div>
+  
+      <!-- Total Price -->
+      <div>
+        <label class="block text-gray-300 font-medium mb-2">Total Price</label>
+        <span class="text-white font-medium block mb-2">₹{{ loanForm.value.totalPrice || 0 }}</span>
+      </div>
+  
+      <!-- Down Payment -->
+      <!-- Down Payment -->
+<div>
+    <label class="block text-gray-300 font-medium mb-2">Down Payment</label>
+    <span class="text-white font-medium block mb-2">₹{{ loanForm.value.downPayment || 0 }}</span>
+    
+    <input type="range"
+           formControlName="downPayment"
+           min="0"
+           [max]="loanForm.value.totalPrice || 0"
+           step="10000"
+           class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+           (input)="calculateEMI()">
+  
+    <div class="flex justify-between text-xs text-gray-400 mt-1">
+      <span>₹0</span>
+      <span>₹{{ loanForm.value.totalPrice || '0' }}</span>
+    </div>
+  </div>
+  
+  
+      <!-- Tenure -->
+      <div>
+        <label class="block text-gray-300 font-medium mb-2">Tenure (years)</label>
+        <span class="text-white font-medium block mb-2">{{ loanForm.value.tenure || 1 }} years</span>
+        <input type="range" formControlName="tenure" min="1" max="30" step="1"
+          class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          (input)="calculateEMI()">
+        <div class="flex justify-between text-xs text-gray-400 mt-1">
+          <span>1 year</span>
+          <span>30 years</span>
+        </div>
+      </div>
+  
+      <!-- Interest Rate -->
+      <div class="md:col-span-2 lg:col-span-4">
+        <label class="block text-gray-300 font-medium mb-2">Interest Rate</label>
+        <span class="text-white font-medium block mb-2">{{ loanForm.value.interestRate || 0 }}%</span>
+        <input type="range" formControlName="interestRate" min="5" max="20" step="0.1"
+          class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          (input)="calculateEMI()">
+        <div class="flex justify-between text-xs text-gray-400 mt-1">
+          <span>5%</span>
+          <span>20%</span>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  <!-- Loan Breakdown -->
+  <div *ngIf="emiDetails"
+    class="max-w-5xl mx-auto mt-8 p-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+    <h3 class="text-lg font-semibold text-white mb-4 border-b border-gray-700 pb-2">Loan Breakdown</h3>
+  
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div>
+        <span class="text-gray-300">Monthly EMI:</span>
+        <div class="text-white font-medium">₹{{ emiDetails.monthlyEMI | number:'1.0-0' }}</div>
+      </div>
+      <div>
+        <span class="text-gray-300">Principal Amount:</span>
+        <div class="text-white font-medium">₹{{ emiDetails.principal | number:'1.0-0' }}</div>
+      </div>
+      <div>
+        <span class="text-gray-300">Interest Payable:</span>
+        <div class="text-white font-medium">₹{{ emiDetails.totalInterest | number:'1.0-0' }}</div>
+      </div>
+      <div>
+        <span class="text-gray-300">Total Amount Payable:</span>
+        <div class="text-blue-400 font-semibold">₹{{ emiDetails.totalPayable | number:'1.0-0' }}</div>
+      </div>
+    </div>
+  </div>
+  

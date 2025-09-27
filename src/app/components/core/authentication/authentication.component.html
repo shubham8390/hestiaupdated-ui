@@ -1,0 +1,107 @@
+<div class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-900 to-black">
+  <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-blue-500"></div>
+
+  <div class="max-w-md w-full bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800">
+    <!-- Header -->
+    <div class="p-8 text-center border-b border-gray-800">
+      <div class="flex justify-center mb-6">
+        <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center hestia-glow">
+          <img src="../../../../assets/images/hestiaLogo.png" alt="hestiaLogo" class="w-20 h-15">
+        </div>
+      </div>
+      <h1 class="text-3xl font-bold text-white">Welcome to <span class="gradient-text">Hestia</span></h1>
+      <p class="text-gray-400 mt-2">Sign in to continue to your dashboard</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="p-8">
+      <form class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+          <input type="email"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
+            placeholder="Enter your email">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+          <input type="password"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
+            placeholder="Enter your password">
+        </div>
+
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <input type="checkbox" id="remember"
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded bg-gray-800">
+            <label for="remember" class="ml-2 block text-sm text-gray-400">Remember me</label>
+          </div>
+          <a href="#" class="text-sm text-blue-400 hover:text-blue-300">Forgot password?</a>
+        </div>
+
+        <button type="submit"
+          class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Sign In
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="flex items-center my-6">
+        <div class="flex-grow border-t border-gray-700"></div>
+        <span class="mx-4 text-gray-500">or continue with</span>
+        <div class="flex-grow border-t border-gray-700"></div>
+      </div>
+
+      <!-- Google Sign-in Button -->
+      <div>
+        <button (click)="signIn()"
+          class="w-full flex items-center justify-center gap-3 py-3 px-4 bg-gray-800 hover:bg-gray-750 text-white rounded-lg font-medium border border-gray-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+          <!-- Google SVG -->
+          <svg class="w-5 h-5" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M533.5 278.4c0-18.5-1.5-37-4.7-55H272v104.2h146.9c-6.3 34-25.1 62.7-53.4 81.9v67h86.1c50.4-46.4 81.9-114.9 81.9-198.1z"
+              fill="#4285F4" />
+            <path
+              d="M272 544.3c72.6 0 133.6-24 178.1-65.1l-86.1-67c-23.9 16-54.5 25.5-92 25.5-70.9 0-131-47.8-152.5-112.1h-89.2v70.6c44.1 87.1 135.2 148.1 241.7 148.1z"
+              fill="#34A853" />
+            <path d="M119.5 325.6c-10.9-32.6-10.9-67.4 0-100l-89.2-70.6c-39.6 79.1-39.6 173.2 0 252.3l89.2-70.6z"
+              fill="#FBBC05" />
+            <path
+              d="M272 107.7c38.7-.6 75.9 13.6 104.3 39.8l77.9-77.9C405.6 24 344.6 0 272 0 165.5 0 74.4 61 30.3 148.1l89.2 70.6C141 155.5 201.1 107.7 272 107.7z"
+              fill="#EA4335" />
+          </svg>
+
+          Sign in with Google
+        </button>
+         <button (click)="signInwithMicrosoft()"
+          class="w-full flex items-center justify-center gap-3 py-3 px-4 bg-gray-800 hover:bg-gray-750 text-white rounded-lg font-medium border border-gray-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+          <!-- Google SVG -->
+          <svg class="w-5 h-5" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M533.5 278.4c0-18.5-1.5-37-4.7-55H272v104.2h146.9c-6.3 34-25.1 62.7-53.4 81.9v67h86.1c50.4-46.4 81.9-114.9 81.9-198.1z"
+              fill="#4285F4" />
+            <path
+              d="M272 544.3c72.6 0 133.6-24 178.1-65.1l-86.1-67c-23.9 16-54.5 25.5-92 25.5-70.9 0-131-47.8-152.5-112.1h-89.2v70.6c44.1 87.1 135.2 148.1 241.7 148.1z"
+              fill="#34A853" />
+            <path d="M119.5 325.6c-10.9-32.6-10.9-67.4 0-100l-89.2-70.6c-39.6 79.1-39.6 173.2 0 252.3l89.2-70.6z"
+              fill="#FBBC05" />
+            <path
+              d="M272 107.7c38.7-.6 75.9 13.6 104.3 39.8l77.9-77.9C405.6 24 344.6 0 272 0 165.5 0 74.4 61 30.3 148.1l89.2 70.6C141 155.5 201.1 107.7 272 107.7z"
+              fill="#EA4335" />
+          </svg>
+
+          Sign in with MicroSoft
+        </button>
+      </div>
+      
+
+      <!-- Footer -->
+      <div class="p-8 text-center border-t border-gray-800">
+        <p class="text-gray-500">Don't have an account?
+          <a href="#" class="text-blue-400 hover:text-blue-300 font-medium">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </div>

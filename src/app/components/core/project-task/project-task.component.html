@@ -1,0 +1,91 @@
+<form [formGroup]="projectForm"  class="bg-gray-900 p-6 rounded-lg shadow-lg max-w-2xl mx-auto border border-gray-700">
+<div class="mb-4">
+    <button type="button" (click)="goBack()"
+            class="flex items-center text-gray-300 hover:text-white font-medium px-3 py-2 rounded-md transition-colors bg-gray-700 hover:bg-gray-600">
+      ← Back
+    </button>
+  </div>
+
+  <h2 class="text-2xl font-bold text-white mb-6">Task Form</h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Project ID -->
+    <!-- <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-300">Project ID</label>
+      <input formControlName="project_id" readonly
+             class="bg-gray-700 text-gray-300 border border-gray-600 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div> -->
+
+    <!-- Name -->
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-300">Task Name</label>
+      <input formControlName="name"
+             class="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- Assignee -->
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-300">Assignee</label>
+      <input formControlName="assignee"
+             class="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- Due Date -->
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-300">Due Date</label>
+      <input type="date" formControlName="due_date"
+             class="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- Priority -->
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-300">Priority</label>
+      <select formControlName="priority"
+              class="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="HIGH">High</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="LOW">Low</option>
+      </select>
+    </div>
+
+    <!-- Status -->
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-300">Status</label>
+      <select formControlName="status"
+              class="bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="TO DO">TO DO</option>
+        <option value="IN PROGRESS">IN PROGRESS</option>
+        <option value="DONE">DONE</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Comments Section -->
+  <div formArrayName="comments" class="mt-6">
+    <label class="block text-sm font-medium text-gray-300 mb-2">Comments</label>
+    <div *ngFor="let comment of comments.controls; let i = index" class="mb-2 flex">
+      <input [formControlName]="i"
+             class="bg-gray-700 text-white border border-gray-600 rounded-l-md px-3 py-2 flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <button type="button" (click)="removeComment(i)"
+              class="bg-red-600 hover:bg-red-700 text-white px-3 rounded-r-md transition-colors">
+        ×
+      </button>
+    </div>
+    <button type="button" (click)="addComment('')"
+            class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+      Add Comment
+    </button>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="mt-8">
+    <button *ngIf="!isUpdate" type="submit" (click)="submit()"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+      Submit Task
+    </button>
+    <button *ngIf="isUpdate" type="submit" (click)="UpdateTask()"
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
+      Update Task
+    </button>
+  </div>
+</form>

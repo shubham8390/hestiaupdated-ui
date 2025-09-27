@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { NavigationSidebarComponent } from '../../shared/navigation-sidebar/navigation-sidebar.component';
 import { SaveHistoryComponent } from '../save-history/save-history.component';
 import { PropertyListingComponent } from '../property-listing/property-listing.component';
+import { PropertyDetailsComponent } from '../../shared/property-details/property-details.component';
 import { ApiService } from '../Services/api.service';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 interface ChatMessage {
   type: 'user' | 'assistant';
@@ -25,7 +27,7 @@ interface Tool {
 @Component({
   selector: 'app-chat-ui',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavigationSidebarComponent, SaveHistoryComponent, PropertyListingComponent],
+  imports: [CommonModule, FormsModule, NavigationSidebarComponent, SaveHistoryComponent, PropertyListingComponent, PropertyDetailsComponent],
   templateUrl: './chat-ui.component.html',
   styleUrl: './chat-ui.component.css'
 })
@@ -38,23 +40,38 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
   isLoading: boolean = false;
   sessionId: string | null = null;
   uploadedFiles: File[] = [];
-  
+  isSessionCreated:any=false;
   // Tools functionality
   selectedTool: Tool | null = null;
   isToolsPopupOpen: boolean = false;
-  
+    isCalender:boolean=false;
   // Sidebar states
   isNavigationSidebarExpanded: boolean = true;
   isHistorySidebarOpen: boolean = false;
   isPropertiesSidebarOpen: boolean = false;
+  showPropertyDetails: boolean = false;
   isMobileView: boolean = false;
+  propertyserach:boolean=false;
+  showPropertyResearchPopup: boolean = false;
+  propertyResearch:any=false;
 
+  projecteditId:any
   // Available tools
   private tools: Tool[] = [
     {
       id: 'property-search',
       name: 'Property Search',
       description: 'Search and analyze properties with AI'
+    },
+     {
+      id: 'deep-search',
+      name: 'Deep Search',
+      description: 'Search and analyze properties with AI'
+    },
+     {
+      id: 'calender',
+      name: 'calender',
+      description: 'Search and analyze schedule'
     }
   ];
 
@@ -65,9 +82,28 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
     "Guide me through the home buying process"
   ];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService,  private route: ActivatedRoute,private router:Router ) {}
 
   ngOnInit() {
+    debugger
+
+    this.route.queryParams.subscribe(params => {
+      var code = params['code'];
+      localStorage.setItem('token',code);
+      
+    });
+     const projectId = this.route.snapshot.queryParamMap.get('projectId');
+      if (projectId) {
+   this.projecteditId=projectId;
+  }
+
+ let id=sessionStorage?.getItem('sessionId');
+
+    if(id){
+      this.sessionId=id;
+      this.getHistoryofChat();
+    }
+
     this.adjustTextareaHeight();
     this.checkMobileView();
     // Start collapsed on desktop for hover-to-expand experience
@@ -170,11 +206,18 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
     if (tool) {
       this.selectedTool = tool;
       this.isToolsPopupOpen = false;
+      if(toolId==='property-search'){
+        this.propertyserach=true;
+      }
+       else if(toolId==='calender'){
+        this.isCalender=true;
+      }
     }
   }
 
   clearSelectedTool() {
     this.selectedTool = null;
+    this.propertyserach=false;
   }
 
   onLikeMessage(index: number) {
@@ -208,13 +251,27 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  onLoadConversation(messages: ChatMessage[]) {
-    this.messages = messages;
-    setTimeout(() => this.scrollToBottom(), 100);
+ // Save History Event Handlers
+  onLoadConversation(messages: any[]) {
+    debugger
+    this.messages=[]
+    messages.forEach(element => {
+       this.messages.push({   
+        type: element.role,
+        content:element.content,
+        timestamp: new Date()
+        })
+    });
+    // Scroll to top of the chat
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }
+
 
   onClearCurrentChat() {
     this.clearChat();
+    this.propertyserach=false;
   }
 
   formatMessageContent(content: string): string {
@@ -264,18 +321,66 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
   }
 
   sendMessage() {
-    if ((!this.currentMessage.trim() && this.uploadedFiles.length === 0) || this.isLoading) return;
-
-    const userMessage: ChatMessage = {
-      type: 'user',
-      content: this.currentMessage.trim() || 'Uploaded files',
-      timestamp: new Date(),
-      files: this.uploadedFiles.length > 0 ? [...this.uploadedFiles] : undefined
-    };
-
-    this.messages.push(userMessage);
-    const messageContent = this.currentMessage.trim();
-    const messageFiles = [...this.uploadedFiles];
+    debugger
+    let requstObj;
+ if (this.currentMessage.trim()) {
+      this.messages.push({
+        type: 'user',
+        content: this.currentMessage,
+        timestamp: new Date()
+      });
+      
+      this.isLoading = true;
+      let id=sessionStorage?.getItem('sessionId');
+      if(id){
+        this.sessionId=id;
+      }
+       if(this.propertyserach){
+        if(this.sessionId){
+             requstObj={
+       "session_id": this.sessionId,
+       "query": this.currentMessage,
+        "properties": true,
+        "research": this.propertyResearch,
+         "calendar": this.isCalender,
+  "user_id": "6872166531b8abcca37c2d2c",
+  "project_id": ''
+    }
+        }else{
+      requstObj={
+       "session_id": "",
+       "query": this.currentMessage,
+        "properties": true,
+        "research": this.propertyResearch,
+         "calendar": this.isCalender,
+  "user_id": "6872166531b8abcca37c2d2c",
+  "project_id": ''
+    }
+        }}else{
+           if(this.sessionId){
+             requstObj={
+       "session_id": this.sessionId,
+       "query": this.currentMessage,
+        "properties": false,
+        "research": this.propertyResearch,
+         "calendar": this.isCalender,
+  "user_id": "6872166531b8abcca37c2d2c",
+  "project_id": this.projecteditId
+    }
+        }else{
+      requstObj={
+       "session_id": "",
+       "query": this.currentMessage,
+        "properties": false,
+        "research": this.propertyResearch,
+         "calendar": this.isCalender,
+  "user_id": "6872166531b8abcca37c2d2c",
+  "project_id": this.projecteditId
+    }
+        }
+      }}
+      
+   
     const currentTool = this.selectedTool;
     
     // Clear current input and files
@@ -284,26 +389,22 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
     this.adjustTextareaHeight();
     this.isLoading = true;
 
-    // Prepare request object with tool context if selected
-    let queryPrefix = '';
-    if (currentTool && currentTool.id === 'property-search') {
-      queryPrefix = '[PROPERTY_SEARCH] ';
-    }
+  
 
-    const requestObj = {
-      session_id: this.sessionId || "",
-      query: queryPrefix + (messageContent || "I've uploaded some files for you to analyze.")
-    };
+   ;
 
+   
     // Note: File upload to API would need to be implemented based on your API requirements
     // For now, we'll send the text message only
-    this.apiService.getChatResponse(requestObj).subscribe({
-      next: (response) => {
+    this.apiService.getChatResponse(requstObj).subscribe({
+      next: (response:any) => {
         if (response) {
           // If this is the first message, store the session ID
-          if (!this.sessionId && response.session_id) {
-            this.sessionId = response.session_id;
-          }
+          this.isSessionCreated=true;
+          this.sessionId=response.session_id
+          if(this.sessionId)
+          sessionStorage.setItem('sessionId', this.sessionId)
+          this.isLoading = false;
 
           const assistantMessage: ChatMessage = {
             type: 'assistant',
@@ -330,13 +431,64 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
     });
   }
 
+
+  
+
   clearChat() {
     this.messages = [];
     this.sessionId = null;
+    this.propertyserach=false;
     this.currentMessage = '';
     this.uploadedFiles = [];
     this.selectedTool = null;
     this.isToolsPopupOpen = false;
+    this.projecteditId=''
     this.adjustTextareaHeight();
+    sessionStorage.removeItem('sessionId')
+    this.propertyResearch=false
+   this.router.navigate(['/chat']);
+  }
+
+
+    getHistoryofChat(){
+    this.apiService.getHistoryofChat(this.sessionId).subscribe((res:any)=>{
+     res.history.forEach((element :any) => {
+        this.messages.push({   
+        type: element.role,
+        content:element.content,
+        timestamp: new Date()
+        })
+      });
+    },error=>{
+
+    })
+  }
+
+  // Property Research functionality
+  onPropertyResearchClick() {
+    // Toggle the property research state (backend)
+    this.propertyserach = !this.propertyserach;
+    
+    // Show the popup
+    this.showPropertyResearchPopup = true;
+    this.propertyResearch=this.propertyserach;
+    
+    // Auto-close popup after 5 seconds
+    setTimeout(() => {
+      this.showPropertyResearchPopup = false;
+    }, 2000);
+  }
+
+  closePropertyResearchPopup() {
+    this.showPropertyResearchPopup = false;
+    this.propertyserach=false;
+  }
+
+  onExpandPropertiesSidebar() {
+    this.showPropertyDetails = true;
+  }
+
+  onClosePropertyDetails() {
+    this.showPropertyDetails = false;
   }
 }

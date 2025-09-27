@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NavigationSidebarComponent } from '../../shared/navigation-sidebar/navigation-sidebar.component';
 import { PropertyListingComponent } from '../property-listing/property-listing.component';
 import { SaveHistoryComponent } from '../save-history/save-history.component';
+import { ApiService } from '../Services/api.service';
 
 interface Customer {
   id: number;
@@ -28,82 +29,19 @@ export class CustomersComponent implements OnInit {
   isHistorySidebarOpen: boolean = false;
   isPropertiesSidebarOpen: boolean = false;
   isMobileView: boolean = false;
-  
-  customers: Customer[] = [
-    {
-      id: 1,
-      name: 'John Smith',
-      status: 'lead',
-      email: 'john.smith@email.com',
-      phone: '+1 (555) 123-4567',
-      dateAdded: '2024-01-15'
-    },
-    {
-      id: 2,
-      name: 'Sarah Johnson',
-      status: 'prospect',
-      email: 'sarah.johnson@email.com',
-      phone: '+1 (555) 234-5678',
-      dateAdded: '2024-01-14'
-    },
-    {
-      id: 3,
-      name: 'Michael Brown',
-      status: 'buyer',
-      email: 'michael.brown@email.com',
-      phone: '+1 (555) 345-6789',
-      dateAdded: '2024-01-13'
-    },
-    {
-      id: 4,
-      name: 'Emily Davis',
-      status: 'lead',
-      email: 'emily.davis@email.com',
-      phone: '+1 (555) 456-7890',
-      dateAdded: '2024-01-12'
-    },
-    {
-      id: 5,
-      name: 'David Wilson',
-      status: 'prospect',
-      email: 'david.wilson@email.com',
-      phone: '+1 (555) 567-8901',
-      dateAdded: '2024-01-11'
-    },
-    {
-      id: 6,
-      name: 'Jessica Miller',
-      status: 'buyer',
-      email: 'jessica.miller@email.com',
-      phone: '+1 (555) 678-9012',
-      dateAdded: '2024-01-10'
-    },
-    {
-      id: 7,
-      name: 'Robert Taylor',
-      status: 'lead',
-      email: 'robert.taylor@email.com',
-      phone: '+1 (555) 789-0123',
-      dateAdded: '2024-01-09'
-    },
-    {
-      id: 8,
-      name: 'Amanda Anderson',
-      status: 'prospect',
-      email: 'amanda.anderson@email.com',
-      phone: '+1 (555) 890-1234',
-      dateAdded: '2024-01-08'
-    }
-  ];
 
-  filteredCustomers: Customer[] = [];
+  customers: Customer[] = [];
+
+  filteredCustomers:any;
   selectedStatus: string = 'all';
   searchQuery: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private apiservice: ApiService) { }
 
   ngOnInit() {
-    this.filteredCustomers = [...this.customers];
+    debugger
+    this.getallCustomeres();
+    // this.filteredCustomers = [...this.customers];
     this.checkMobileView();
     // Start collapsed on desktop for hover-to-expand experience
     if (!this.isMobileView) {
@@ -140,16 +78,16 @@ export class CustomersComponent implements OnInit {
 
   onLoadConversation(messages: any[]) {
     // Navigate to chat UI with loaded conversation
-    this.router.navigate(['/']);
+    this.router.navigate(['/chat']);
   }
 
   onClearCurrentChat() {
     // Navigate to chat UI to clear current chat
-    this.router.navigate(['/']);
+    this.router.navigate(['/chat']);
   }
 
   onNewChat() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/chat']);
   }
 
   onStatusFilterChange() {
@@ -164,13 +102,13 @@ export class CustomersComponent implements OnInit {
     this.filteredCustomers = this.customers.filter(customer => {
       const matchesStatus = this.selectedStatus === 'all' || customer.status === this.selectedStatus;
       const matchesSearch = customer.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                           customer.email.toLowerCase().includes(this.searchQuery.toLowerCase());
+        customer.email.toLowerCase().includes(this.searchQuery.toLowerCase());
       return matchesStatus && matchesSearch;
     });
   }
 
   getStatusColor(status: string): string {
-    switch(status) {
+    switch (status) {
       case 'lead': return 'bg-yellow-600';
       case 'prospect': return 'bg-blue-600';
       case 'buyer': return 'bg-green-600';
@@ -187,6 +125,18 @@ export class CustomersComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/chat']);
+  }
+
+  getallCustomeres() {
+    debugger
+    this.apiservice.getCustomers().subscribe(res => {
+      this.filteredCustomers = res.customers;
+      this.customers = res.customers;
+      console.log(this.filteredCustomers);
+
+    }, error => {
+
+    })
   }
 }

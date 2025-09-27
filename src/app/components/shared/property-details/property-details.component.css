@@ -1,0 +1,152 @@
+/* Property Details Container - Full Screen Override */
+.property-details-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 999999 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  overflow: hidden !important;
+  background: #111827 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure the component is not affected by parent transforms */
+:host {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 999999 !important;
+  display: block !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  background: #111827 !important;
+}
+
+/* Custom scrollbar for better aesthetics */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #374151;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6B7280;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Smooth transitions for property cards */
+.property-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.property-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Image hover effects */
+.property-image {
+  transition: transform 0.3s ease;
+}
+
+.property-card:hover .property-image {
+  transform: scale(1.05);
+}
+
+/* Custom animation for modal */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content {
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+/* Grid responsive adjustments */
+@media (max-width: 768px) {
+  .property-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .list-view-image {
+    width: 120px;
+    height: 80px;
+  }
+}
+
+/* Status badge styling */
+.status-badge {
+  backdrop-filter: blur(8px);
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Price highlighting */
+.price-highlight {
+  background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* View toggle button styling */
+.view-toggle-btn {
+  transition: all 0.2s ease;
+}
+
+.view-toggle-btn:not(.active):hover {
+  background-color: rgba(107, 114, 128, 0.5);
+}
+
+/* Ensure full screen coverage */
+.property-details-container * {
+  position: relative;
+  z-index: inherit;
+}
+
+/* Override any potential interference */
+.property-details-container {
+  isolation: isolate;
+  contain: layout style;
+}
+
+/* Ensure content area can scroll */
+.property-details-container .flex-1 {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: auto !important;
+  flex: 1 1 0% !important;
+}
+
+/* Improve scrolling on mobile */
+.property-details-container .flex-1 {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #6B7280 #374151;
+} 

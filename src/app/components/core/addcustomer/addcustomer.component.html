@@ -1,0 +1,99 @@
+<!-- <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+  <input formControlName="customer_name" placeholder="Customer Name" />
+  <input formControlName="phone" placeholder="Phone" />
+  <input formControlName="email" placeholder="Email" />
+
+  <div formArrayName="projects_units">
+    <div *ngFor="let project of projectUnits.controls; let i = index" [formGroupName]="i">
+      <input formControlName="project_name" placeholder="Project Name" />
+      <input formControlName="unit_name" placeholder="Unit Name" />
+      <input formControlName="carpet_area" placeholder="Carpet Area" />
+      <input formControlName="total_price" placeholder="Total Price" />
+      <input formControlName="token_amount" placeholder="Token Amount" />
+    </div>
+  </div>
+
+  <button type="submit">Submit</button>
+</form> -->
+
+<form [formGroup]="customerForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto p-6 bg-gray-900 rounded-lg shadow-lg">
+    <!-- Customer Information Section -->
+    <div class="mb-8">
+        <h2 class="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">Customer Information</h2>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-1" for="customer_name">Customer Name</label>
+                <input formControlName="customer_name" id="customer_name" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter customer name" />
+            </div>
+
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-1" for="phone">Phone</label>
+                <input formControlName="phone" id="phone" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter phone number" />
+            </div>
+
+            <div>
+                <label class="block text-gray-300 text-sm font-medium mb-1" for="email">Email</label>
+                <input formControlName="email" id="email" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white 
+                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter email address" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects & Units Section -->
+    <div class="mb-8">
+        <h2 class="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">Projects & Units</h2>
+        <div formArrayName="projects_units" class="space-y-6">
+            <div *ngFor="let project of projectUnits.controls; let i = index" [formGroupName]="i"
+                class="p-4 bg-gray-800 rounded-lg border border-gray-700">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-1">Project Name</label>
+                        <input formControlName="project_name" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white 
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Enter project name" />
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-1">Unit Name</label>
+                        <input formControlName="unit_name" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white 
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Enter unit name" />
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-1">Carpet Area (sq.ft)</label>
+                        <input formControlName="carpet_area" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white 
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Enter carpet area" />
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-1">Total Price (₹)</label>
+                        <input formControlName="total_price" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white 
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Enter total price" />
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-1">Token Amount (₹)</label>
+                        <input formControlName="token_amount" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white 
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Enter token amount" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit"
+        class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md 
+                 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+        Submit
+    </button>
+</form>

@@ -1,0 +1,265 @@
+<!-- Property Details Container -->
+<div class="property-details-container fixed inset-0 bg-gray-900 flex flex-col"
+     style="z-index: 999999 !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100vw !important; height: 100vh !important; overflow: hidden !important;">
+  <!-- Header -->
+  <div class="bg-gray-800 border-b border-gray-700 p-6 flex-shrink-0">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-white">Property Listings</h1>
+        <p class="text-gray-400 mt-1">{{ properties.length }} properties available for you</p>
+      </div>
+      
+      <div class="flex items-center space-x-3">
+        <!-- View Toggle -->
+        <div class="flex bg-gray-700 rounded-lg p-1">
+          <button 
+            (click)="viewMode = 'grid'"
+            [class]="viewMode === 'grid' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'"
+            class="px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+          </button>
+          <button 
+            (click)="viewMode = 'list'"
+            [class]="viewMode === 'list' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'"
+            class="px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Close Button -->
+        <button 
+          (click)="onCloseDetails()"
+          class="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
+          title="Close Property Details">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Properties Content -->
+  <div class="flex-1 overflow-y-auto p-6 bg-gray-900">
+    <!-- Grid View -->
+    <div *ngIf="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div 
+        *ngFor="let property of properties" 
+        (click)="onPropertyClick(property)"
+        class="bg-gray-800 rounded-xl border border-gray-700 hover:border-gray-600 transition-all cursor-pointer hover:shadow-xl group overflow-hidden">
+        
+        <!-- Property Image -->
+        <div class="relative h-48 overflow-hidden">
+          <img [src]="property.image" [alt]="property.title" 
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 left-3">
+            <span [class]="getStatusColor(property.status)" 
+                  class="px-2 py-1 rounded-full text-xs font-medium">
+              {{ property.status }}
+            </span>
+          </div>
+          <div class="absolute top-3 right-3 bg-black bg-opacity-50 text-white px-2 py-1 rounded-full text-xs">
+            {{ property.type }}
+          </div>
+        </div>
+        
+        <!-- Property Info -->
+        <div class="p-4">
+          <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
+            {{ property.title }}
+          </h3>
+          <p class="text-gray-400 text-sm mb-2 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            {{ property.location }}
+          </p>
+          
+          <div class="flex items-center justify-between mb-3">
+            <div class="text-xl font-bold text-purple-400">{{ property.price }}</div>
+            <div class="text-sm text-gray-400">{{ property.area }}</div>
+          </div>
+          
+          <!-- Property Features -->
+          <div class="flex items-center space-x-4 text-sm text-gray-400">
+            <div *ngIf="property.bedrooms > 0" class="flex items-center">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21v-4a2 2 0 012-2h4a2 2 0 012 2v4"/>
+              </svg>
+              {{ property.bedrooms }} Bed
+            </div>
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
+              </svg>
+              {{ property.bathrooms }} Bath
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- List View -->
+    <div *ngIf="viewMode === 'list'" class="space-y-4">
+      <div 
+        *ngFor="let property of properties" 
+        (click)="onPropertyClick(property)"
+        class="bg-gray-800 rounded-xl border border-gray-700 hover:border-gray-600 transition-all cursor-pointer hover:shadow-xl group overflow-hidden">
+        
+        <div class="flex">
+          <!-- Property Image -->
+          <div class="relative w-48 h-32 flex-shrink-0 overflow-hidden">
+            <img [src]="property.image" [alt]="property.title" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute top-2 left-2">
+              <span [class]="getStatusColor(property.status)" 
+                    class="px-2 py-1 rounded-full text-xs font-medium">
+                {{ property.status }}
+              </span>
+            </div>
+          </div>
+          
+          <!-- Property Info -->
+          <div class="flex-1 p-4">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-lg font-semibold text-white group-hover:text-purple-300 transition-colors">
+                {{ property.title }}
+              </h3>
+              <div class="text-xl font-bold text-purple-400">{{ property.price }}</div>
+            </div>
+            
+            <p class="text-gray-400 text-sm mb-3 flex items-center">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              {{ property.location }}
+            </p>
+            
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-6 text-sm text-gray-400">
+                <div *ngIf="property.bedrooms > 0" class="flex items-center">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21v-4a2 2 0 012-2h4a2 2 0 012 2v4"/>
+                  </svg>
+                  {{ property.bedrooms }} Bedrooms
+                </div>
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
+                  </svg>
+                  {{ property.bathrooms }} Bathrooms
+                </div>
+                <div class="text-gray-400">{{ property.area }}</div>
+              </div>
+              <div class="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs">
+                {{ property.type }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Property Modal -->
+  <div *ngIf="selectedProperty" 
+       class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4"
+       style="z-index: 1000000 !important;"
+       (click)="onClosePropertyModal()">
+    <div class="bg-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+         style="overflow-y: auto !important; -webkit-overflow-scrolling: touch;"
+         (click)="$event.stopPropagation()">
+      
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center p-6 border-b border-gray-700">
+        <h2 class="text-2xl font-bold text-white">{{ selectedProperty.title }}</h2>
+        <button 
+          (click)="onClosePropertyModal()"
+          class="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Modal Content -->
+      <div class="p-6">
+        <!-- Property Image -->
+        <div class="relative h-64 mb-6 rounded-xl overflow-hidden">
+          <img [src]="selectedProperty.image" [alt]="selectedProperty.title" 
+               class="w-full h-full object-cover">
+          <div class="absolute top-4 left-4">
+            <span [class]="getStatusColor(selectedProperty.status)" 
+                  class="px-3 py-1 rounded-full text-sm font-medium">
+              {{ selectedProperty.status }}
+            </span>
+          </div>
+        </div>
+        
+        <!-- Property Details -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Property Details</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span class="text-gray-400">Price:</span>
+                <span class="text-purple-400 font-bold">{{ selectedProperty.price }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">Type:</span>
+                <span class="text-white">{{ selectedProperty.type }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">Area:</span>
+                <span class="text-white">{{ selectedProperty.area }}</span>
+              </div>
+              <div *ngIf="selectedProperty.bedrooms > 0" class="flex justify-between">
+                <span class="text-gray-400">Bedrooms:</span>
+                <span class="text-white">{{ selectedProperty.bedrooms }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">Bathrooms:</span>
+                <span class="text-white">{{ selectedProperty.bathrooms }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">Location:</span>
+                <span class="text-white">{{ selectedProperty.location }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Description</h3>
+            <p class="text-gray-300 mb-6">{{ selectedProperty.description }}</p>
+            
+            <h3 class="text-lg font-semibold text-white mb-4">Amenities</h3>
+            <div class="grid grid-cols-2 gap-2">
+              <span *ngFor="let amenity of selectedProperty.amenities" 
+                    class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm">
+                {{ amenity }}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex justify-end space-x-3 mt-6 pt-6 border-t border-gray-700">
+          <button class="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">
+            Contact Agent
+          </button>
+          <button class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+            Schedule Visit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

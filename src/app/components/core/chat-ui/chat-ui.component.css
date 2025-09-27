@@ -1446,3 +1446,18 @@ button:active {
   }
 }
 
+/* Hide elements when property details is open */
+.property-details-open app-navigation-sidebar,
+.property-details-open .fixed.right-0,
+.property-details-open .fixed.left-16,
+.property-details-open .fixed.left-64,
+.property-details-open .fixed.left-0 {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+}
+
+.property-details-open {
+  overflow: hidden !important;
+}
+

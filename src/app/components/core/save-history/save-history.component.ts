@@ -72,6 +72,17 @@ export class SaveHistoryComponent implements OnInit, OnChanges {
       return;
     }
 
+     const title = this.generateConversationTitle(this.currentMessages);
+    const newConversation: SavedConversation = {
+      id: this.generateId(),
+      title,
+      messages: [...this.currentMessages],
+      timestamp: new Date(),
+      lastUpdated: new Date()
+    };
+
+    this.savedConversations.unshift(newConversation);
+
     // Since the conversation is already saved via API when messages are sent,
     // we just need to refresh the history list
     this.refreshHistoryList();
@@ -87,20 +98,21 @@ export class SaveHistoryComponent implements OnInit, OnChanges {
       }
     );
   }
-
   loadConversationById(id: string) {
-    this.apiservice.getHistoryofChat(id).subscribe(
-      (res: any) => {
-        if (res && res.history) {
-          this.loadConversation.emit(res.history);
-        }
-      },
-      error => {
-        console.error('Error loading conversation:', error);
-      }
-    );
-  }
+    let conversation:any;
+    this.apiservice.getHistoryofChat(id).subscribe(res=>{
+        conversation=res;
+         if (conversation) {
+            sessionStorage.setItem('sessionId',id)
+      debugger
+      this.loadConversation.emit(conversation.history);
+    }
+    },error=>{
 
+    })
+    
+   
+  }
   deleteConversation(id: string, event: Event) {
     event.stopPropagation();
     

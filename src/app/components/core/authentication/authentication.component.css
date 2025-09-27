@@ -1,0 +1,9 @@
+.hestia-glow {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.45); /* blue-500 glow */
+  }
+  .gradient-text {
+    background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%); /* blue-600 → blue-500 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hover\:bg-gray-750:hover { background-color: #2d3748; }
