@@ -29,7 +29,7 @@ export class AuthenticationComponent {
   //   })
   // }
   signIn() {
-    window.location.href = 'http://127.0.0.1:8000/google/authorize';
+    window.location.href = 'https://barnacle-noble-nominally.ngrok-free.app/google/authorize';
 
   }
   signInwithMicrosoft() {
