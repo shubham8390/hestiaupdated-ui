@@ -172,10 +172,15 @@ export class ApiService {
     return this.http.get<any>(uri);
   }
 
-  public authorizeMicrosoftuser(): Observable<any> {
-    let uri = `${this.apiUri}microsoft/auth/login?source=local2`
-    return this.http.get<any>(uri);
-  }
+public authorizeMicrosoftuser(): Observable<any> {
+  const uri = `${this.apiUri}microsoft/auth/login?source=local2`;
+
+  const headers = new HttpHeaders({
+    "ngrok-skip-browser-warning": "true"
+  });
+
+  return this.http.get<any>(uri, { headers });
+}
   public authorizeMicrosoftuserCallBack(code:any, email:any): Observable<any> {
     let uri = `${this.apiUri}auth/callback?code=${code}&state=microsoft365&current_user_email=${email}`
     return this.http.get<any>(uri);
