@@ -173,7 +173,7 @@ export class ApiService {
   }
 
   public authorizeMicrosoftuser(): Observable<any> {
-    let uri = `${this.apiUri}auth/login?source=local2`
+    let uri = `${this.apiUri}microsoft/auth/login?source=local2`
     return this.http.get<any>(uri);
   }
   public authorizeMicrosoftuserCallBack(code:any, email:any): Observable<any> {
