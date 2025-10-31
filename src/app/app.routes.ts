@@ -30,7 +30,7 @@ export const routes: Routes = [
   {
     path: 'add-project',
     loadComponent: () => import('./components/core/add-project/add-project.component').then(m => m.AddProjectComponent),
-    canActivate: [authGuard],
+    //canActivate: [authGuard],
   },
 
   {
@@ -81,6 +81,16 @@ export const routes: Routes = [
   {
     path: 'loading',
     loadComponent: () => import('./components/core/loading/loading.component').then(m => m.LoadingComponent),
+   
+  },
+  {
+    path: 'distribution',
+    loadComponent: () => import('./components/core/distribution-waterfall/distribution-waterfall.component').then(m => m.DistributionWaterfallComponent),
+   
+  },
+   {
+    path: 'showtemplate/:id',
+    loadComponent: () => import('./components/core/flyer-template-component/flyer-template-component.component').then(m => m.FlyerTemplateComponentComponent),
    
   }
 ];

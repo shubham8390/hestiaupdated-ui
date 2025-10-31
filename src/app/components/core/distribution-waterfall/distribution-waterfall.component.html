@@ -1,0 +1,91 @@
+<div class="mx-auto max-w-5xl p-4 sm:p-6">
+  <!-- Header -->
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl sm:text-3xl font-semibold">Distribution Waterfall</h1>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-5 rounded bg-lp"></span>
+        <span class="text-sm text-slate-600">LP</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-5 rounded bg-gp"></span>
+        <span class="text-sm text-slate-600">GP</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stair-step waterfall -->
+  <div class="overflow-x-auto">
+    <div class="space-y-4">
+      <div *ngFor="let t of tiers; let i = index" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 p-4">
+          <!-- Tier label + note -->
+          <div class="flex items-center gap-2">
+            <div class="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-700 font-medium">
+              {{ i + 1 }}
+            </div>
+            <div>
+              <div class="font-medium text-slate-700 italic">{{ t.label }}</div>
+              <div *ngIf="t.note" class="text-xs text-slate-500 italic">{{ t.note }}</div>
+            </div>
+          </div>
+
+          <!-- Bar -->
+          <div class="lg:col-span-2">
+            <div class="stair-container">
+              <div class="stair-bar">
+                <div class="stair-chunk bg-lp" [style.width]="lpWidth(t)">
+                  <span class="chunk-label">{{ t.lpShare }}%</span>
+                </div>
+                <div class="stair-chunk bg-gp" [style.width]="gpWidth(t)">
+                  <span class="chunk-label">{{ t.gpShare }}%</span>
+                </div>
+              </div>
+              <!-- little arrow to imply step progression -->
+              <div class="mt-2 text-right">
+                <span class="inline-flex items-center text-xs text-slate-500">
+                  <svg class="h-3.5 w-3.5 mr-1" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 12h14m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  next tier
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+  </div>
+
+  <!-- Stakeholders -->
+  <div class="mt-10">
+    <h2 class="mb-3 text-xl font-semibold">Stakeholders</h2>
+    <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <table class="min-w-full text-left text-sm">
+        <thead class="bg-slate-50 text-slate-600">
+          <tr>
+            <th class="px-4 py-3 font-medium">Name</th>
+            <th class="px-4 py-3 font-medium">Type</th>
+            <th class="px-4 py-3 font-medium">Stake</th>
+            <th class="px-4 py-3 font-medium">Rank</th>
+            <th class="px-4 py-3 font-medium">Exit Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of sortedStakeholders" class="border-t border-slate-100">
+            <td class="px-4 py-3 font-medium text-slate-800">{{ s.name }}</td>
+            <td class="px-4 py-3 text-slate-500 italic">{{ s.type }}</td>
+            <td class="px-4 py-3 text-slate-500 italic">{{ s.stakePct }}%</td>
+            <td class="px-4 py-3 text-slate-500 italic">{{ s.rank }}</td>
+            <td class="px-4 py-3">
+              <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-700">
+                {{ s.rank === 1 ? 'First to exit' : ('After rank ' + (s.rank - 1)) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-2 text-xs text-slate-500">Lower rank = can exit first.</p>
+  </div>
+</div>

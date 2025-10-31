@@ -87,6 +87,8 @@ export class AddProjectComponent implements OnInit {
   editingunits: Units | null = null;
   dragActive: boolean = false;
 
+  stakeholderForm:any
+
   showMemberForm: boolean = false;
   editingMember: TeamMember | null = null;
 
@@ -98,7 +100,7 @@ export class AddProjectComponent implements OnInit {
   bannerImageId: any
   profileImageId: any
   knowledgeId: any
-
+showStakeholderForm:any=false;
   projecteditId: any
   projectData: any
   isEdit: boolean = false;
@@ -189,6 +191,13 @@ export class AddProjectComponent implements OnInit {
       unit_total: [0, [Validators.min(0)]],
       unit_sold: [0, [Validators.min(0)]]
     });
+
+    this.stakeholderForm=this.fb.group({
+      stakeholdername:[''],
+      stakeholdertype: [''],
+      stakeholderstake: [''],
+      stakeholderrank: ['']
+    })
   }
 
   // Sidebar methods
@@ -391,6 +400,10 @@ export class AddProjectComponent implements OnInit {
     this.unitsForm.reset();
 
   }
+
+  closeStakeholderForm(){
+    this.showStakeholderForm=false;
+  }
   saveunit() {
     debugger
     if (this.unitsForm.valid) {
@@ -491,6 +504,23 @@ export class AddProjectComponent implements OnInit {
     }
   }
 
+
+    openSTakeholderForm(stakeholder?: any) {
+   
+      this.showStakeholderForm=true
+    if (stakeholder) {
+       this.editingStakeHolder = true;
+      this.stakeholderForm.patchValue({
+        stakeholdername: stakeholder.stakeholdername,
+        stakeholdertype: stakeholder.stakeholdertype,
+        stakeholderstake: stakeholder.stakeholderstake,
+        stakeholderrank: stakeholder.stakeholderrank
+      });
+    } else {
+      this.stakeholderForm.reset();
+    }
+  }
+
   closeMemberForm() {
     this.showMemberForm = false;
     this.editingMember = null;
@@ -527,6 +557,10 @@ export class AddProjectComponent implements OnInit {
 
   deleteMember(memberId: string) {
     this.teamMembers = this.teamMembers.filter(member => member.email !== memberId);
+  }
+
+  deleteStakeHolderMember(data:any){
+  this.stakeHolderList = this.stakeHolderList.filter((members:any) => members.stakeholdername !== data);
   }
 
   toggleMemberStatus(memberId: string) {
@@ -601,9 +635,10 @@ export class AddProjectComponent implements OnInit {
           "budget": this.projectForm.value.budget,
           "milestones": this.milestones || [],
           "units": this.units || [],
-          "team_members": this.teamMembers || []
+          "team_members": this.teamMembers || [],
+          "stakeholders":this.stakeHolderList || []
         }
-
+        console.log(projectData)
 
         if (this.isEdit) {
           this.apiservice.updateProject(projectData, this.projecteditId).subscribe(res => {
@@ -714,4 +749,35 @@ export class AddProjectComponent implements OnInit {
 
 
   }
+ stakeHolderList:any=[]
+ editingStakeHolder:any=false
+saveStakeHolder() {
+  debugger
+  if (this.stakeholderForm.valid) {
+    const stakeholderData = this.stakeholderForm.value;
+
+    if (this.editingStakeHolder) {
+      // Find the existing stakeholder and update it
+      const index = this.stakeHolderList.findIndex(
+        (s:any) => s.stakeholdername === this.editingStakeHolder!.stakeholdername
+      );
+      if (index > -1) {
+        this.stakeHolderList[index] = { ...this.editingStakeHolder, ...stakeholderData };
+      }
+    } else {
+      // Add new stakeholder
+      const newStakeholder = {
+        ...stakeholderData
+      };
+      this.stakeHolderList.push(newStakeholder);
+    }
+
+    // Close the form after saving
+    this.closeStakeholderForm();
+  } else {
+    // Show error if form is invalid
+    this.toastr.error('Enter valid entries');
+  }
+}
+
 } 

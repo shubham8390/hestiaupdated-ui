@@ -1,0 +1,26 @@
+<!-- flyer-template.component.html -->
+<div class="p-6 bg-gray-900 min-h-screen text-white">
+  <h2 class="text-2xl font-bold mb-6 text-center">Choose Your Flyer Template</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div
+      *ngFor="let template of templates"
+      class="relative bg-gray-800 rounded-xl overflow-hidden border-2 cursor-pointer transition transform hover:scale-105"
+      [ngClass]="{ 'border-blue-500': selectedTemplateId === template.template_id }"
+      (click)="chooseTemplate(template.template_id)"
+    >
+      <img
+        [src]="template.safeImage"
+        [alt]="template.safeImage"
+        class="w-full h-64 object-cover"
+      />
+      <div class="absolute bottom-0 bg-black bg-opacity-60 w-full text-center py-2 text-sm">
+        Template ID: {{ template.template_id }}
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="mt-6 text-center text-blue-400">
+    Sending your selection...
+  </div>
+</div>

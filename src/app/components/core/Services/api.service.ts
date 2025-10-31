@@ -172,6 +172,16 @@ export class ApiService {
     return this.http.get<any>(uri);
   }
 
+    public getsampletemplate(): Observable<any> {
+    let uri = `${this.apiUri}project/flyer-templates`
+     const headers = new HttpHeaders({
+    "ngrok-skip-browser-warning": "true"
+  });
+
+    return this.http.get<any>(uri,{ headers });
+  }
+
+
 public authorizeMicrosoftuser(): Observable<any> {
   const uri = `${this.apiUri}microsoft/auth/login?source=local2`;
 
@@ -185,6 +195,18 @@ public authorizeMicrosoftuser(): Observable<any> {
     let uri = `${this.apiUri}auth/callback?code=${code}&state=microsoft365&current_user_email=${email}`
     return this.http.get<any>(uri);
   }
+
+  getImageBlob(imageUrl: string): Observable<Blob> {
+  const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
+  return this.http.get(imageUrl, { headers, responseType: 'blob' });
+}
+
+createTemplateImageBlob(data: any): Observable<any> {
+  const uri = `${this.apiUri}project/generate-flyer`;
+  return this.http.post(uri, data, { responseType: 'blob' as 'json' });
+}
 
 }
 

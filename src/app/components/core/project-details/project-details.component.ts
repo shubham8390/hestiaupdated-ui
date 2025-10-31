@@ -372,4 +372,8 @@ export class ProjectDetailsComponent implements OnInit {
   addcustomer(id:any , name:any){
       this.router.navigate(['/addCustomer']);
   }
+
+  opentemplate(id:any , name:any){
+  this.router.navigate(['/showtemplate',id]);
+  }
 } 

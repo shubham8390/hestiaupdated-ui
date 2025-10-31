@@ -3,7 +3,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-    debugger
+    
     // Check if the request URL matches specific criteria
     if (req.url.includes('/auth/login') || req.url.includes('/auth/callback')  ) {
         // If the URL doesn't match the criteria, pass the request unchanged
