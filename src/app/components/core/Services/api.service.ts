@@ -208,5 +208,12 @@ createTemplateImageBlob(data: any): Observable<any> {
   return this.http.post(uri, data, { responseType: 'blob' as 'json' });
 }
 
+  //Pratik
+  public getstakeholderdata(name:any,id:any): Observable<any> {
+    let uri = `${this.apiUri}project/stakeholders/?project_id=${id}&project_name=${name}`
+  
+    return this.http.get<any>(uri);
+  }
+
 }
 

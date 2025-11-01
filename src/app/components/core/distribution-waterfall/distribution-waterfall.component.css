@@ -1,12 +1,65 @@
-/* Colors for legend + bars (use Tailwind utility classes via @apply) */
-.bg-lp { @apply bg-green-400; }
-.bg-gp { @apply bg-sky-300; }
+:host {
+  display: block;
+}
 
-/* Stair bar container styles */
-.stair-container { @apply w-full; }
-.stair-bar { @apply flex w-full overflow-hidden rounded-xl ring-1 ring-slate-200; }
-.stair-chunk { @apply relative h-8 flex items-center justify-center; }
+/* Smooth transitions for pie chart interactions */
+.pie-slice {
+  transition: all 0.3s ease;
+}
 
-.chunk-label {
-  @apply absolute inset-0 flex items-center justify-center text-xs font-semibold text-slate-800;
+.pie-slice:hover {
+  transform: scale(1.05);
+}
+
+/* Custom scrollbar for table */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Animation for pie chart loading */
+@keyframes pie-load {
+  from {
+    stroke-dasharray: 0 251.2;
+  }
+}
+
+circle {
+  animation: pie-load 1s ease-out;
+}
+
+/* Responsive design enhancements */
+@media (max-width: 768px) {
+  .pie-container {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .bg-white {
+    background: white !important;
+  }
+  
+  .shadow-sm {
+    box-shadow: none !important;
+  }
+  
+  .border-slate-200 {
+    border-color: #e2e8f0 !important;
+  }
 }

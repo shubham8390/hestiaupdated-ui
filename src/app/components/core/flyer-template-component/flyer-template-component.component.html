@@ -20,7 +20,41 @@
     </div>
   </div>
 
-  <div *ngIf="loading" class="mt-6 text-center text-blue-400">
-    Sending your selection...
+<div *ngIf="loading" class="mt-6 flex flex-col items-center justify-center space-y-3">
+  <!-- Spinner -->
+  <div class="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+  <!-- Loading Text -->
+  <p class="text-blue-400 font-medium">Sending your selection...</p>
+</div>
+</div>
+
+
+<!-- Preview Modal -->
+<div *ngIf="showPreviewModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
+  <div class="bg-white rounded-xl w-[80vw] max-w-lg h-[80vh] max-h-[90vh] shadow-lg flex flex-col p-4">
+
+    <h2 class="text-lg font-semibold mb-3 text-gray-800 text-center">Flyer Preview</h2>
+
+    <!-- Scrollable Image Area -->
+    <div class="flex-1 overflow-auto border rounded-lg mb-4 p-2 flex justify-center">
+      <img *ngIf="flyerPreviewUrl" [src]="flyerPreviewUrl" class="max-w-full max-h-full object-contain">
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end gap-3">
+      <button
+        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+        (click)="closePreview()">
+        Cancel
+      </button>
+
+      <button 
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        (click)="downloadFlyer()">
+        Download
+      </button>
+    </div>
+    
   </div>
 </div>
+

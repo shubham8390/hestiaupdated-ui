@@ -12,19 +12,19 @@ export const routes: Routes = [
   {
     path: 'chat',
     loadComponent: () => import('./components/core/chat-ui/chat-ui.component').then(m => m.ChatUIComponent),
-    canActivate: [authGuard],
+   // canActivate: [authGuard],
   },
 
   {
     path: 'customerchat',
     loadComponent: () => import('./components/core/customer-chat-ui/customer-chat-ui.component').then(m => m.CustomerChatUiComponent),
-    canActivate: [authGuard],
+   // canActivate: [authGuard],
   },
 
   {
     path: 'manage-projects',
     loadComponent: () => import('./components/core/manage-projects/manage-projects.component').then(m => m.ManageProjectsComponent),
-    canActivate: [authGuard],
+  //  canActivate: [authGuard],
   },
 
   {
@@ -36,25 +36,25 @@ export const routes: Routes = [
   {
     path: 'project-details/:id',
     loadComponent: () => import('./components/core/project-details/project-details.component').then(m => m.ProjectDetailsComponent),
-    canActivate: [authGuard],
+   // canActivate: [authGuard],
   },
 
   {
     path: 'customers',
     loadComponent: () => import('./components/core/customers/customers.component').then(m => m.CustomersComponent),
-    canActivate: [authGuard],
+   // canActivate: [authGuard],
   },
 
   {
     path: 'createtask',
     loadComponent: () => import('./components/core/project-task/project-task.component').then(m => m.ProjectTaskComponent),
-    canActivate: [authGuard],
+  //  canActivate: [authGuard],
   },
 
   {
     path: 'updatetask',
     loadComponent: () => import('./components/core/project-task/project-task.component').then(m => m.ProjectTaskComponent),
-    canActivate: [authGuard],
+  //  canActivate: [authGuard],
   },
 
   {
@@ -70,13 +70,13 @@ export const routes: Routes = [
   {
     path: 'addCustomer',
     loadComponent: () => import('./components/core/addcustomer/addcustomer.component').then(m => m.AddcustomerComponent),
-    canActivate: [authGuard],
+   // canActivate: [authGuard],
   },
 
   {
     path: 'emicalculator',
     loadComponent: () => import('./components/core/emicalculator/emicalculator.component').then(m => m.EmicalculatorComponent),
-    canActivate: [authGuard],
+   // canActivate: [authGuard],
   },
   {
     path: 'loading',

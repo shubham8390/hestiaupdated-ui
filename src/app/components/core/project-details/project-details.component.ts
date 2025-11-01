@@ -376,4 +376,10 @@ export class ProjectDetailsComponent implements OnInit {
   opentemplate(id:any , name:any){
   this.router.navigate(['/showtemplate',id]);
   }
+
+  openStakeHolder(id:any , name:any){
+    sessionStorage.setItem("projectId",id);
+       sessionStorage.setItem("projectname",name);
+        this.router.navigate(['/distribution']);
+  }
 } 

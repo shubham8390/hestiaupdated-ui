@@ -193,10 +193,10 @@ showStakeholderForm:any=false;
     });
 
     this.stakeholderForm=this.fb.group({
-      stakeholdername:[''],
-      stakeholdertype: [''],
-      stakeholderstake: [''],
-      stakeholderrank: ['']
+      name:[''],
+      type: [''],
+      stake: [''],
+      rank: ['']
     })
   }
 
@@ -511,10 +511,10 @@ showStakeholderForm:any=false;
     if (stakeholder) {
        this.editingStakeHolder = true;
       this.stakeholderForm.patchValue({
-        stakeholdername: stakeholder.stakeholdername,
-        stakeholdertype: stakeholder.stakeholdertype,
-        stakeholderstake: stakeholder.stakeholderstake,
-        stakeholderrank: stakeholder.stakeholderrank
+        name: stakeholder.name,
+        type: stakeholder.type,
+        stake: stakeholder.stake,
+        rank: stakeholder.rank
       });
     } else {
       this.stakeholderForm.reset();
@@ -560,7 +560,7 @@ showStakeholderForm:any=false;
   }
 
   deleteStakeHolderMember(data:any){
-  this.stakeHolderList = this.stakeHolderList.filter((members:any) => members.stakeholdername !== data);
+  this.stakeHolderList = this.stakeHolderList.filter((members:any) => members.name !== data);
   }
 
   toggleMemberStatus(memberId: string) {
@@ -759,7 +759,7 @@ saveStakeHolder() {
     if (this.editingStakeHolder) {
       // Find the existing stakeholder and update it
       const index = this.stakeHolderList.findIndex(
-        (s:any) => s.stakeholdername === this.editingStakeHolder!.stakeholdername
+        (s:any) => s.name === this.editingStakeHolder!.name
       );
       if (index > -1) {
         this.stakeHolderList[index] = { ...this.editingStakeHolder, ...stakeholderData };

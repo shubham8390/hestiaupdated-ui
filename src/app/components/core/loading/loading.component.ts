@@ -25,14 +25,14 @@ export class LoadingComponent implements OnInit {
 
   callapi(code: any) {
 
-    this.apiService.authorizeMicrosoftuserCallBack(code, 'pratikraut@icode.com').subscribe(res => {
-      this.data = res;
-      sessionStorage.setItem('jwt',this.data.id_token);
-      setTimeout(() => {
-         this.router.navigate(['/chat']);
-      }, 10);
-    })
-    
+    // this.apiService.authorizeMicrosoftuserCallBack(code, 'pratikraut@icode.com').subscribe(res => {
+    //   this.data = res;
+    //   sessionStorage.setItem('jwt',this.data.id_token);
+    //   setTimeout(() => {
+    //      this.router.navigate(['/chat']);
+    //   }, 10);
+    // })
+     this.router.navigate(['/chat']);
   }
 }
 

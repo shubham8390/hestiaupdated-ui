@@ -17,6 +17,9 @@ export class FlyerTemplateComponentComponent implements OnInit {
   selectedTemplateId: number | null = null;
  loading = false;
 projectId:any
+flyerPreviewUrl: string | null = null;
+showPreviewModal = false;
+isLoad = true;
 
   ngOnInit(): void {
 
@@ -46,26 +49,47 @@ chooseTemplate(templateId: number) {
     this.loading = true;
   let data={
   "template_id": this.selectedTemplateId,
-  "project_id": "68d2be19064b887cf7b6c5ab"
+  "project_id": this.projectId
 }
    this.apiservice.createTemplateImageBlob(data).subscribe((blob: Blob) => {
     const imgUrl = URL.createObjectURL(blob);
 
-    const link = document.createElement('a');
-    link.href = imgUrl;
-    link.download = 'template-flyer.png'; // default name or parse from header
-    link.click();
+    // const link = document.createElement('a');
+    // link.href = imgUrl;
+    // link.download = 'template-flyer.png'; // default name or parse from header
+    // link.click();
 
-    URL.revokeObjectURL(imgUrl);
+    // URL.revokeObjectURL(imgUrl);
 
     //  const imgUrl = URL.createObjectURL(blob);
     // window.open(imgUrl, "_blank"); // ✅ open flyer in new tab
     // this.loading = false;
     this.loading = false;
+     this.flyerPreviewUrl = URL.createObjectURL(blob);
+      this.showPreviewModal = true; // open popup
+      this.isLoad = false;
+  },error=>{
+          this.loading = false;
   });
   }
 
 
+downloadFlyer() {
+  if (!this.flyerPreviewUrl) return;
 
+  const link = document.createElement('a');
+  link.href = this.flyerPreviewUrl;
+  link.download = 'template-flyer.png';
+  link.click();
+}
+
+// Close popup & clear preview
+closePreview() {
+  this.showPreviewModal = false;
+  if (this.flyerPreviewUrl) {
+    URL.revokeObjectURL(this.flyerPreviewUrl);
+    this.flyerPreviewUrl = null;
+  }
+}
 
 }
