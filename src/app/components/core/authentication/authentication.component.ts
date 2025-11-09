@@ -36,7 +36,7 @@ export class AuthenticationComponent {
   signInwithMicrosoft() {
     // window.location.href = 'http://127.0.0.1:8000/google/authorize';
 
-   window.location.href = 'http://127.0.0.1:8000/microsoft/login';
+   window.location.href = 'https://barnacle-noble-nominally.ngrok-free.app/microsoft/login';
 
   }
 }
