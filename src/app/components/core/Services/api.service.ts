@@ -215,5 +215,29 @@ createTemplateImageBlob(data: any): Observable<any> {
     return this.http.get<any>(uri);
   }
 
+   public getJwtTokenForgoogle(nonce:any,provider:any): Observable<any> {
+    let uri = `${this.apiUri}/google/auth/token?nonce=${nonce}&provider=google`
+  
+    return this.http.get<any>(uri);
+  }
+
+   public getJwtTokenForMicrosoft(nonce:any,provider:any): Observable<any> {
+    let uri = `${this.apiUri}/microsoft/auth/token?nonce=${nonce}&provider=microsoft`
+  
+    return this.http.get<any>(uri);
+  }
+    public logoutMicrosoft(): Observable<any> {
+    let uri = `${this.apiUri}microsoft/logout`
+  
+    return this.http.get<any>(uri);
+  }
+
+    public logoutgoogle(): Observable<any> {
+    let uri = `${this.apiUri}/google/logout`
+  
+    return this.http.get<any>(uri);
+  }
+
+
 }
 

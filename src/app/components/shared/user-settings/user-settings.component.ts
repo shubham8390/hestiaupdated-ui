@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../core/Services/api.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -22,6 +23,7 @@ export class UserSettingsComponent implements OnInit {
     this.isDarkTheme = savedTheme === 'dark' || savedTheme === null; // Default to dark if no preference
     this.applyTheme();
   }
+  constructor(private apiservice: ApiService) {}
 
   // Close popup when clicking outside
   @HostListener('document:click', ['$event'])
@@ -53,13 +55,32 @@ export class UserSettingsComponent implements OnInit {
   onSignOut() {
     console.log('Sign out clicked');
     if (confirm('Are you sure you want to sign out?')) {
-      // Clear user session and any stored data
-      localStorage.removeItem('userToken');
+
+    let provider=sessionStorage.getItem('provider');
+
+      if(provider==='google'){
+        this.apiservice.logoutgoogle().subscribe(res=>{
+ localStorage.removeItem('userToken');
       localStorage.removeItem('userEmail');
       localStorage.removeItem('userName');
       // Add any other logout logic here
       console.log('User signed out successfully');
+      sessionStorage.removeItem('jwt');
       this.closePopup.emit();
+        })
+      }else if(provider==='microsoft'){
+this.apiservice.logoutMicrosoft().subscribe(res=>{
+   localStorage.removeItem('userToken');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userName');
+      // Add any other logout logic here
+      console.log('User signed out successfully');
+      sessionStorage.removeItem('jwt');
+      this.closePopup.emit();
+})
+      }
+      // Clear user session and any stored data
+     
     }
   }
 }

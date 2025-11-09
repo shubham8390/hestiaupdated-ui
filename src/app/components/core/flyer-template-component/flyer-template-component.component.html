@@ -2,6 +2,24 @@
 <div class="p-6 bg-gray-900 min-h-screen text-white">
   <h2 class="text-2xl font-bold mb-6 text-center">Choose Your Flyer Template</h2>
 
+  <!-- Template Images Loading Overlay -->
+  <div *ngIf="isLoad" class="fixed inset-0 z-50 flex items-center justify-center">
+    <!-- Backdrop with blur effect -->
+    <div class="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-md"></div>
+    
+    <!-- Loading content -->
+    <div class="relative bg-white bg-opacity-20 backdrop-blur-xl rounded-2xl border border-white border-opacity-30 shadow-2xl p-8 flex flex-col items-center justify-center space-y-6 min-w-[280px]">
+      <!-- Spinner -->
+      <div class="w-16 h-16 border-4 border-white border-opacity-70 border-t-transparent rounded-full animate-spin"></div>
+      
+      <!-- Loading Text -->
+      <div class="text-center">
+        <p class="text-white text-lg font-medium">Loading Templates...</p>
+        <p class="text-white text-opacity-80 text-sm mt-2">Please wait while we prepare your templates</p>
+      </div>
+    </div>
+  </div>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     <div
       *ngFor="let template of templates"
@@ -20,41 +38,142 @@
     </div>
   </div>
 
-<div *ngIf="loading" class="mt-6 flex flex-col items-center justify-center space-y-3">
-  <!-- Spinner -->
-  <div class="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
-  <!-- Loading Text -->
-  <p class="text-blue-400 font-medium">Sending your selection...</p>
+  <!-- Selection Loading Overlay -->
+  <div *ngIf="loading" class="fixed inset-0 z-50 flex items-center justify-center">
+    <!-- Backdrop with blur effect -->
+    <div class="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-md"></div>
+    
+    <!-- Loading content -->
+    <div class="relative bg-white bg-opacity-20 backdrop-blur-xl rounded-2xl border border-white border-opacity-30 shadow-2xl p-8 flex flex-col items-center justify-center space-y-6 min-w-[280px]">
+      <!-- Spinner -->
+      <div class="w-16 h-16 border-4 border-white border-opacity-70 border-t-transparent rounded-full animate-spin"></div>
+      
+      <!-- Loading Text -->
+      <div class="text-center">
+        <p class="text-white text-lg font-medium">Sending your selection...</p>
+        <p class="text-white text-opacity-80 text-sm mt-2">Please wait while we process your request</p>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
 
+<!-- Glass Morphism Preview Modal -->
+<div *ngIf="showPreviewModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <!-- Backdrop with blur effect -->
+  <div class="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-lg"></div>
+  
+  <!-- Modal Container -->
+  <div class="relative bg-gray-800 bg-opacity-80 backdrop-blur-xl rounded-2xl border border-gray-600 border-opacity-50 shadow-2xl w-[90vw] max-w-4xl h-[90vh] max-h-[95vh] flex flex-col p-6">
+    
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold text-white">Flyer Preview</h2>
+      <button 
+        (click)="closePreview()"
+        class="text-gray-400 hover:text-white transition-colors duration-200 text-2xl font-light"
+      >
+        ×
+      </button>
+    </div>
 
-<!-- Preview Modal -->
-<div *ngIf="showPreviewModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
-  <div class="bg-white rounded-xl w-[80vw] max-w-lg h-[80vh] max-h-[90vh] shadow-lg flex flex-col p-4">
+    <!-- Zoom Controls -->
+    <div class="flex justify-between items-center mb-4">
+      <div class="flex items-center gap-3">
+        <!-- Zoom Level Display -->
+        <span class="text-sm text-gray-300 font-medium min-w-[60px]">
+          {{ (zoomLevel * 100).toFixed(0) }}%
+        </span>
+        
+        <!-- Zoom Controls -->
+        <div class="flex items-center gap-2 bg-gray-700 rounded-lg p-1">
+          <button 
+            (click)="zoomOut()"
+            [disabled]="zoomLevel <= minZoom"
+            class="w-8 h-8 flex items-center justify-center text-white hover:bg-gray-600 rounded disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            title="Zoom Out"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+            </svg>
+          </button>
+          
+          <button 
+            (click)="resetZoom()"
+            class="w-8 h-8 flex items-center justify-center text-white hover:bg-gray-600 rounded transition-all text-sm font-medium"
+            title="Reset Zoom"
+          >
+            100%
+          </button>
+          
+          <button 
+            (click)="zoomIn()"
+            [disabled]="zoomLevel >= maxZoom"
+            class="w-8 h-8 flex items-center justify-center text-white hover:bg-gray-600 rounded disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            title="Zoom In"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+          </button>
+        </div>
 
-    <h2 class="text-lg font-semibold mb-3 text-gray-800 text-center">Flyer Preview</h2>
+        <!-- Fit to Screen Button -->
+        <button 
+          (click)="fitToScreen()"
+          class="px-3 py-1 text-sm bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-all border border-gray-600"
+          title="Fit to Screen"
+        >
+          Fit to Screen
+        </button>
+      </div>
+
+      <!-- Drag Instruction -->
+      <div class="text-sm text-gray-400 hidden sm:block">
+        Drag to pan when zoomed in
+      </div>
+    </div>
 
     <!-- Scrollable Image Area -->
-    <div class="flex-1 overflow-auto border rounded-lg mb-4 p-2 flex justify-center">
-      <img *ngIf="flyerPreviewUrl" [src]="flyerPreviewUrl" class="max-w-full max-h-full object-contain">
+    <div 
+      class="flex-1 overflow-auto rounded-xl mb-6 bg-gray-900 bg-opacity-50 border border-gray-700 relative cursor-grab active:cursor-grabbing"
+      (mousedown)="startDrag($event)"
+      (mousemove)="onDrag($event)"
+      (mouseup)="endDrag()"
+      (mouseleave)="endDrag()"
+      (wheel)="onWheel($event)"
+    >
+      <div 
+        class="flex justify-center items-center h-full min-h-[400px] p-4"
+        [style.transform]="'scale(' + zoomLevel + ') translate(' + dragOffset.x + 'px, ' + dragOffset.y + 'px)'"
+        [style.transition]="isDragging ? 'none' : 'transform 0.2s ease'"
+      >
+        <img 
+          *ngIf="flyerPreviewUrl" 
+          [src]="flyerPreviewUrl" 
+          class="max-w-full max-h-full object-contain rounded-lg shadow-lg select-none"
+          alt="Flyer Preview"
+          draggable="false"
+        />
+        <div *ngIf="!flyerPreviewUrl" class="text-gray-400 text-center">
+          <p>No preview available</p>
+        </div>
+      </div>
     </div>
 
     <!-- Buttons -->
-    <div class="flex justify-end gap-3">
+    <div class="flex justify-end gap-4">
       <button
-        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+        class="px-6 py-3 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-all duration-200 border border-gray-600 font-medium"
         (click)="closePreview()">
         Cancel
       </button>
 
       <button 
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        class="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 border border-blue-500 font-medium shadow-lg"
         (click)="downloadFlyer()">
-        Download
+        Download Flyer
       </button>
     </div>
     
   </div>
 </div>
-

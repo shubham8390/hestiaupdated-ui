@@ -44,7 +44,7 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
   // Tools functionality
   selectedTool: Tool | null = null;
   isToolsPopupOpen: boolean = false;
-    isCalender:boolean=false;
+  isCalender:boolean=false;
   // Sidebar states
   isNavigationSidebarExpanded: boolean = true;
   isHistorySidebarOpen: boolean = false;
@@ -202,7 +202,8 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
 
 
   selectTool(toolId: string) {
-    const tool = this.tools.find(t => t.id === toolId);
+    debugger;
+    const tool = this.tools.find(t => t.id == toolId);
     if (tool) {
       this.selectedTool = tool;
       this.isToolsPopupOpen = false;
@@ -364,7 +365,7 @@ export class ChatUIComponent implements OnInit, AfterViewChecked {
         "properties": false,
         "research": this.propertyResearch,
          "calendar": this.isCalender,
-  "user_id": "6872166531b8abcca37c2d2c",
+  "user_id": "68d808a49ba67d602e48af19",
   "project_id": this.projecteditId
     }
         }else{

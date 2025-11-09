@@ -29,19 +29,14 @@ export class AuthenticationComponent {
   //   })
   // }
   signIn() {
-   window.location.href = 'https://barnacle-noble-nominally.ngrok-free.app/google/authorize';
-  // window.location.href = 'http://127.0.0.1:8000/google/authorize';
+   window.location.href = 'https://barnacle-noble-nominally.ngrok-free.app/google/login';
+  // window.location.href = 'http://127.0.0.1:8000/google/login';
 
   }
   signInwithMicrosoft() {
     // window.location.href = 'http://127.0.0.1:8000/google/authorize';
 
-    this.apiservice.authorizeMicrosoftuser().subscribe(res => {
-      this.data = res;
-      if (res && res.login_url) {
-        //  window.open(res.authorization_url, '_blank');
-        window.location.href = res.login_url;
-      }
-    })
+   window.location.href = 'http://127.0.0.1:8000/microsoft/login';
+
   }
 }

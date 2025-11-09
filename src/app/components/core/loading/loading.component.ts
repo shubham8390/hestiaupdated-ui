@@ -16,14 +16,37 @@ export class LoadingComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      var code = params['code'];
-      sessionStorage.setItem('token', code);
-      this.callapi(code);
+      const nonce = params['nonce'];
+      const provider = params['provider'];
+
+      this.callapi(nonce,provider);
     });
 
   }
 
-  callapi(code: any) {
+  callapi(nonce: any,provider:any) {
+     sessionStorage.setItem('provider',provider);
+    if(provider==='gooogle'){
+      this.apiService.getJwtTokenForgoogle(nonce,provider).subscribe(res=>{
+        this.data=res;
+       sessionStorage.setItem('jwt',this.data.token);
+       this.router.navigate(['/chat']);
+      },error=>{
+      this.router.navigate(['/sign']);
+      })
+    }
+
+
+     if(provider==='microsoft'){
+      this.apiService.getJwtTokenForMicrosoft(nonce,provider).subscribe(res=>{
+        this.data=res;
+       sessionStorage.setItem('jwt',this.data.token);
+       this.router.navigate(['/chat']);
+      },error=>{
+      this.router.navigate(['/sign']);
+      })
+    }
+
 
     // this.apiService.authorizeMicrosoftuserCallBack(code, 'pratikraut@icode.com').subscribe(res => {
     //   this.data = res;
@@ -32,7 +55,7 @@ export class LoadingComponent implements OnInit {
     //      this.router.navigate(['/chat']);
     //   }, 10);
     // })
-     this.router.navigate(['/chat']);
+     //this.router.navigate(['/chat']);
   }
 }
 

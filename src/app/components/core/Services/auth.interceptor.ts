@@ -5,13 +5,13 @@ import { HttpInterceptorFn } from '@angular/common/http';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     
     // Check if the request URL matches specific criteria
-    if (req.url.includes('/auth/login') || req.url.includes('/auth/callback')  ) {
+    if (req.url.includes('google') || req.url.includes('microsoft')  ) {
         // If the URL doesn't match the criteria, pass the request unchanged
         return next(req);
     }
 
     // Retrieve the token from sessionStorage
-    const token = localStorage?.getItem('jwt');
+    const token = sessionStorage?.getItem('jwt');
 
     if (token) {
         // Clone the request and set the Authorization header with the Bearer token
