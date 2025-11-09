@@ -26,7 +26,7 @@ export class LoadingComponent implements OnInit {
 
   callapi(nonce: any,provider:any) {
      sessionStorage.setItem('provider',provider);
-    if(provider==='gooogle'){
+    if(provider==='google'){
       this.apiService.getJwtTokenForgoogle(nonce,provider).subscribe(res=>{
         this.data=res;
        sessionStorage.setItem('jwt',this.data.token);
