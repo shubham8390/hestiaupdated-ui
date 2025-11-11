@@ -24,54 +24,78 @@ export class ApiService {
 
 
   public getChatResponse(data: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}chat`
-    return this.http.post<any>(uri, data);
+    return this.http.post<any>(uri, data,{headers: headers});
   }
 
   public getHistoryofChat(sessionId: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}chat/${sessionId}`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
   public getchatHistoryList(sessionId: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/chat/sessions?project_id=${sessionId}`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
   public getAllChatHistory(): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}chat/sessions?user_id=6872166531b8abcca37c2d2c`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
   public getTaskDetails(id: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/task/${id}`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
 
   public uploadImage(file: File): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     const uri = `${this.apiUri}project/upload-image/`;
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post<any>(uri, formData);
+    return this.http.post<any>(uri, formData,{headers: headers});
   }
 
 
 
 
   public uploadDocuments(file: File): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     const uri = `${this.apiUri}project/knowledge-base?user_id=6872166531b8abcca37c2d2c`;
     const formData = new FormData();
     formData.append('files', file);
 
-    return this.http.post<any>(uri, formData);
+    return this.http.post<any>(uri, formData,{headers: headers});
   }
 
 
   public savedProject(projectData: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     const uri = `${this.apiUri}project`;
-    return this.http.post<any>(uri, projectData);
+    return this.http.post<any>(uri, projectData,{headers: headers});
   }
 
 
@@ -88,91 +112,139 @@ export class ApiService {
 
 
   public updateProject(projectData: any, projectId: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     const uri = `${this.apiUri}project?project_id=${projectId}`;
-    return this.http.put<any>(uri, projectData);
+    return this.http.put<any>(uri, projectData,{headers: headers});
   }
 
   public getProjectDetails(projectId: any): Observable<any> {
     let uri = `${this.apiUri}project?project_id=${projectId}`
-    return this.http.get<any>(uri);
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
+    return this.http.get<any>(uri,{headers});
   }
 
   public getProjectList(): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}projects?user_id=6872166531b8abcca37c2d2c`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
 
   public deleteProject(id: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project?project_id=${id}`
-    return this.http.delete<any>(uri);
+    return this.http.delete<any>(uri,{headers});
   }
 
 
   public getPropertyList(): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/property-list/`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
   /// Project taks by  Pratik
   public posttaskofProject(id: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/task/?project_id=${id}`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
   public updatetaskofProject(id: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/task/?project_id=${id}`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,headers);
   }
   public deletealltaskofProject(id: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/task/?project_id=${id}`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,headers);
   }
   public getalltaskofProject(id: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/tasks/?project_id=${id}`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
   public deleteTaskbyId(taskid: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/task/${taskid}`
-    return this.http.delete<any>(uri);
+    return this.http.delete<any>(uri,{headers});
   }
 
   public addprojecttask(taskdetails: any): Observable<any> {
-
+ const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/task/`
-    return this.http.post<any>(uri, taskdetails);
+    return this.http.post<any>(uri, taskdetails,{headers: headers});
   }
 
 
   public updateprojecttask(taskdetails: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/task/{id}`
-    return this.http.put<any>(uri, taskdetails);
+    return this.http.put<any>(uri, taskdetails,{headers: headers});
   }
 
 
   public getCustomerChatResponse(data: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}customer/chat`
-    return this.http.post<any>(uri, data);
+    return this.http.post<any>(uri, data,{headers: headers});
   }
 
   //Pratik
   public getCustomers(): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}customer/customers?project_name`
     console.log(this.http.get<any>(uri));
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
   public addCustomer(addCutomer: any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}customer/customers`
-    return this.http.post<any>(uri, addCutomer);
+    return this.http.post<any>(uri, addCutomer,{headers: headers});
   }
 
   public authorizeUser(): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}google/authorize`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
     public getsampletemplate(): Observable<any> {
+      
     let uri = `${this.apiUri}project/flyer-templates`
      const headers = new HttpHeaders({
     "ngrok-skip-browser-warning": "true"
@@ -192,8 +264,11 @@ public authorizeMicrosoftuser(): Observable<any> {
   return this.http.get<any>(uri, { headers });
 }
   public authorizeMicrosoftuserCallBack(code:any, email:any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}auth/callback?code=${code}&state=microsoft365&current_user_email=${email}`
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
   getImageBlob(imageUrl: string): Observable<Blob> {
@@ -204,38 +279,56 @@ public authorizeMicrosoftuser(): Observable<any> {
 }
 
 createTemplateImageBlob(data: any): Observable<any> {
+   const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
   const uri = `${this.apiUri}project/generate-flyer`;
-  return this.http.post(uri, data, { responseType: 'blob' as 'json' });
+  return this.http.post(uri, data, { headers: headers, responseType: 'blob' as 'json' });
 }
 
   //Pratik
   public getstakeholderdata(name:any,id:any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}project/stakeholders/?project_id=${id}&project_name=${name}`
   
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
    public getJwtTokenForgoogle(nonce:any,provider:any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}/google/auth/token?nonce=${nonce}&provider=google`
   
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
    public getJwtTokenForMicrosoft(nonce:any,provider:any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}/microsoft/auth/token?nonce=${nonce}&provider=microsoft`
   
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
     public logoutMicrosoft(): Observable<any> {
+       const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}microsoft/logout`
   
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
     public logoutgoogle(): Observable<any> {
+       const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
     let uri = `${this.apiUri}/google/logout`
   
-    return this.http.get<any>(uri);
+    return this.http.get<any>(uri,{headers});
   }
 
 
