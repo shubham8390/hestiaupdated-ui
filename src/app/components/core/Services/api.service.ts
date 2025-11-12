@@ -300,7 +300,7 @@ createTemplateImageBlob(data: any): Observable<any> {
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}/google/auth/token?nonce=${nonce}&provider=google`
+    let uri = `${this.apiUri}google/auth/token?nonce=${nonce}&provider=google`
   
     return this.http.get<any>(uri,{headers});
   }
@@ -309,7 +309,7 @@ createTemplateImageBlob(data: any): Observable<any> {
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}/microsoft/auth/token?nonce=${nonce}&provider=microsoft`
+    let uri = `${this.apiUri}microsoft/auth/token?nonce=${nonce}&provider=microsoft`
   
     return this.http.get<any>(uri,{headers});
   }
