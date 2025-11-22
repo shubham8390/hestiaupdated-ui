@@ -48,10 +48,11 @@ export class ApiService {
   }
 
   public getAllChatHistory(): Observable<any> {
+    let userId = sessionStorage.getItem("user_id");
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}chat/sessions?user_id=6872166531b8abcca37c2d2c`
+    let uri = `${this.apiUri}chat/sessions?user_id=${userId}`
     return this.http.get<any>(uri,{headers});
   }
 
@@ -79,10 +80,11 @@ export class ApiService {
 
 
   public uploadDocuments(file: File): Observable<any> {
+    let userId = sessionStorage.getItem("user_id");
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    const uri = `${this.apiUri}project/knowledge-base?user_id=6872166531b8abcca37c2d2c`;
+    const uri = `${this.apiUri}project/knowledge-base?user_id=${userId}`;
     const formData = new FormData();
     formData.append('files', file);
 
@@ -128,10 +130,11 @@ export class ApiService {
   }
 
   public getProjectList(): Observable<any> {
+    let userId = sessionStorage.getItem("user_id");
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}projects?user_id=6872166531b8abcca37c2d2c`
+    let uri = `${this.apiUri}projects?user_id=${userId}`
     return this.http.get<any>(uri,{headers});
   }
 

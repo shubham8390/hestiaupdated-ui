@@ -155,8 +155,9 @@ export class ChatUIComponent implements OnInit, AfterViewChecked, OnDestroy {
     private route: ActivatedRoute,
     private router: Router
   ) {}
-
+user_id :any;
   ngOnInit() {
+    this.user_id = sessionStorage.getItem("user_id");
     this.initializeChat();
     this.setupRouteSubscriptions();
     this.setupResizeListener();
@@ -460,7 +461,7 @@ export class ChatUIComponent implements OnInit, AfterViewChecked, OnDestroy {
       properties: this.propertyserach,
       research: this.propertyResearch,
       calendar: this.isCalender,
-      user_id: "6872166531b8abcca37c2d2c", // This should probably come from auth service
+      user_id: this.user_id, // This should probably come from auth service
       project_id: this.projecteditId || '',
       files: this.uploadedFiles.length > 0 ? this.uploadedFiles : undefined
     };

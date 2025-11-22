@@ -122,8 +122,11 @@ showStakeholderForm:any=false;
     this.initializeForms();
   }
 
+  userId : any;
+
   ngOnInit() {
     debugger
+    this.userId = sessionStorage.getItem("user_id");
     const editId = this.route.snapshot.queryParamMap.get('edit');
     if (editId) {
       this.projecteditId = editId;
@@ -626,7 +629,7 @@ showStakeholderForm:any=false;
           "location": this.projectForm.value.location,
           "banner_id": this.bannerImageId || '',
           "image_id": this.profileImageId,
-          "user_id": "6872166531b8abcca37c2d2c",
+          "user_id": this.userId,
           "start_date": this.projectForm.value.startDate,
           "end_date": this.projectForm.value.endDate,
           "priority": this.projectForm.value.priority,

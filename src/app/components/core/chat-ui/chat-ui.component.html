@@ -43,7 +43,7 @@
             <button *ngFor="let suggestion of suggestions" 
                     (click)="useSuggestion(suggestion)"
                     class="bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-gray-600 rounded-xl p-4 text-left transition-all duration-200 hover:scale-[1.02]">
-              <p class="text-gray-200 text-sm">{{ suggestion }}</p>
+              <p class="text-gray-200 text-sm">{{ suggestion.text }}</p>
             </button>
           </div>
         </div>

@@ -31,6 +31,7 @@ export class LoadingComponent implements OnInit {
       this.apiService.getJwtTokenForgoogle(nonce,provider).subscribe(res=>{
         this.data=res;
        sessionStorage.setItem('jwt',this.data.token);
+       sessionStorage.setItem('user_id',this.data.user.id);
        this.router.navigate(['/chat']);
       },error=>{
       this.router.navigate(['/sign']);

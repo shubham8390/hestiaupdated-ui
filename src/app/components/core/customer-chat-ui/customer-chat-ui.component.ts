@@ -79,9 +79,10 @@ export class CustomerChatUiComponent {
     ];
   
     constructor(private apiService: ApiService,  private route: ActivatedRoute,private router:Router ) {}
-  
+  userId :any;
     ngOnInit() {
       debugger
+      this.userId = sessionStorage.getItem("user_id");
        const projectId = this.route.snapshot.queryParamMap.get('projectId');
         if (projectId) {
      this.projecteditId=projectId;
@@ -327,14 +328,14 @@ export class CustomerChatUiComponent {
                requstObj={
          "session_id": this.sessionId,
          "query": this.currentMessage, 
-         "user_id": "6872166531b8abcca37c2d2c",
+         "user_id": this.userId,
          "project_id": '6884907941af66607c9c5c07'
       }
           }else{
         requstObj={
          "session_id": "",
          "query": this.currentMessage,
-         "user_id": "6872166531b8abcca37c2d2c",
+         "user_id": this.userId,
          "project_id": '6884907941af66607c9c5c07'
       }
           }}else{
@@ -342,14 +343,14 @@ export class CustomerChatUiComponent {
                requstObj={
          "session_id": this.sessionId,
          "query": this.currentMessage,
-         "user_id": "6872166531b8abcca37c2d2c",
+         "user_id": this.userId,
          "project_id": this.projecteditId || '6884907941af66607c9c5c07'
       }
           }else{
         requstObj={
          "session_id": "",
          "query": this.currentMessage,
-         "user_id": "6872166531b8abcca37c2d2c",
+         "user_id": this.userId,
          "project_id": this.projecteditId || '6884907941af66607c9c5c07'
       }
           }
