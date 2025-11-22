@@ -29,14 +29,14 @@ export class AuthenticationComponent {
   //   })
   // }
   signIn() {
-   window.location.href = 'https://barnacle-noble-nominally.ngrok-free.app/google/login';
+   window.location.href = 'https://lamonica-prechloric-nonrefractively.ngrok-free.dev/google/login';
   // window.location.href = 'http://127.0.0.1:8000/google/login';
 
   }
   signInwithMicrosoft() {
     // window.location.href = 'http://127.0.0.1:8000/google/authorize';
 
-   window.location.href = 'https://barnacle-noble-nominally.ngrok-free.app/microsoft/login';
+   window.location.href = 'https://lamonica-prechloric-nonrefractively.ngrok-free.dev/microsoft/login';
 
   }
 }
