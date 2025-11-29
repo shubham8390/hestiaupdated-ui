@@ -122,7 +122,7 @@ export class ProjectTaskComponent implements OnInit {
   // === FORM FUNCTIONALITY ===
   initializeForm(): void {
     this.projectForm = this.fb.group({
-      project_id: [this.projectId || '', Validators.required],
+      project_id: [this.projectId || ''], // Removed Validators.required
       name: ['', [Validators.required, Validators.minLength(3)]],
       assignee: [''],
       due_date: [''],
@@ -291,6 +291,15 @@ export class ProjectTaskComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/project-details', this.projectId]);
+  }
+
+  // Helper method for label input
+  onLabelInputEnter(inputElement: HTMLInputElement): void {
+    const labelText = inputElement.value.trim();
+    if (labelText) {
+      this.addLabel(labelText);
+      inputElement.value = '';
+    }
   }
 
   // Method to get individual task details if needed
