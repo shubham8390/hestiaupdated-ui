@@ -203,13 +203,13 @@ export class ApiService {
   }
 
 
-  public updateprojecttask(taskdetails: any): Observable<any> {
-     const headers = new HttpHeaders({
+public updateprojecttask(taskdetails: any): Observable<any> {
+  const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}project/task/{id}`
-    return this.http.put<any>(uri, taskdetails,{headers: headers});
-  }
+  let uri = `${this.apiUri}project/task/${taskdetails.id}`; // Fixed URL
+  return this.http.put<any>(uri, taskdetails, {headers: headers});
+}
 
 
   public getCustomerChatResponse(data: any): Observable<any> {

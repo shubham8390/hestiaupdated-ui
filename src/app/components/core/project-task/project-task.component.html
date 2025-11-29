@@ -1,187 +1,480 @@
-<div class="min-h-screen bg-gray-900 text-white p-4">
-  <div class="max-w-4xl mx-auto">
-    <!-- Header Section -->
-    <div class="mb-8">
-      <button type="button" (click)="goBack()"
-              class="inline-flex items-center text-gray-400 hover:text-white transition-colors duration-200 mb-6 back-button">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-        Back to Project
-      </button>
-
-      <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
-        {{ isUpdate ? 'Update Task' : 'Create New Task' }}
-      </h1>
-      <p class="text-gray-400 text-lg">
-        {{ isUpdate ? 'Modify task details and status' : 'Add a new task to your project board' }}
-      </p>
-    </div>
-
-    <!-- Task Form -->
-    <form [formGroup]="projectForm" class="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg form-section">
-      
-      <!-- Main Form Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <!-- Task Name -->
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-300 flex items-center">
-            <svg class="w-4 h-4 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Task Name *
-          </label>
-          <input formControlName="name" type="text"
-                 class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 form-input"
-                 placeholder="Enter task name">
-        </div>
-
-        <!-- Assignee -->
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-300 flex items-center">
-            <svg class="w-4 h-4 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            Assignee
-          </label>
-          <input formControlName="assignee" type="text"
-                 class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 form-input"
-                 placeholder="Assign to team member">
-        </div>
-
-        <!-- Due Date -->
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-300 flex items-center">
-            <svg class="w-4 h-4 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            Due Date
-          </label>
-          <input type="date" formControlName="due_date"
-                 class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 form-input">
-        </div>
-
-        <!-- Priority -->
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-300 flex items-center">
-            <svg class="w-4 h-4 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Priority
-          </label>
-          <select formControlName="priority"
-                  class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 form-input">
-            <option value="">Select Priority</option>
-            <option value="HIGH" class="bg-gray-800">High</option>
-            <option value="MEDIUM" class="bg-gray-800">Medium</option>
-            <option value="LOW" class="bg-gray-800">Low</option>
-          </select>
-        </div>
-
-        <!-- Status -->
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-gray-300 flex items-center">
-            <svg class="w-4 h-4 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            Status
-          </label>
-          <select formControlName="status"
-                  class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 form-input">
-            <option value="TO DO" class="bg-gray-800">TO DO</option>
-            <option value="IN PROGRESS" class="bg-gray-800">IN PROGRESS</option>
-            <option value="DONE" class="bg-gray-800">DONE</option>
-          </select>
-        </div>
-
-        <!-- Project ID (Hidden but styled) -->
-        <!-- <div class="space-y-2 lg:col-span-2" *ngIf="projectId">
-          <label class="block text-sm font-medium text-gray-300 flex items-center">
-            <svg class="w-4 h-4 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-            Project ID
-          </label>
-          <input formControlName="project_id" readonly
-                 class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 form-input">
-        </div> -->
-      </div>
-
-      <!-- Comments Section -->
-      <div formArrayName="comments" class="mt-8">
-        <div class="flex items-center justify-between mb-4">
-          <label class="block text-lg font-semibold text-white flex items-center">
-            <svg class="w-5 h-5 mr-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
-            Comments
-            <span class="ml-2 px-2 py-1 bg-gray-700 text-gray-300 text-sm rounded-full">
-              {{ comments.length }}
-            </span>
-          </label>
-          
-          <button type="button" (click)="addComment('')"
-                  class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            Add Comment
-          </button>
-        </div>
-
-        <!-- Comments List -->
-        <div class="space-y-3">
-          <div *ngFor="let comment of comments.controls; let i = index" 
-               class="bg-gray-700 rounded-lg p-4 border-l-4 border-purple-500 transition-all duration-200 comment-item">
-            <div class="flex items-start justify-between">
-              <input [formControlName]="i" type="text"
-                     class="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-0 border-none form-input"
-                     placeholder="Enter comment...">
-              <button type="button" (click)="removeComment(i)"
-                      class="ml-3 text-red-400 hover:text-red-300 transition-colors duration-200 remove-btn">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </button>
-            </div>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+  <div class="max-w-7xl mx-auto">
+    
+    <!-- BOARD VIEW -->
+    <div *ngIf="currentView === 'board'">
+      <!-- Header -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Project Board</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">Drag and drop tasks between columns</p>
           </div>
-        </div>
-
-        <!-- Empty State for Comments -->
-        <div *ngIf="comments.length === 0" class="text-center py-8 border-2 border-dashed border-gray-600 rounded-lg">
-          <svg class="mx-auto h-12 w-12 text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-          </svg>
-          <h3 class="text-lg font-medium text-gray-300 mb-2">No comments yet</h3>
-          <p class="text-gray-500">Add comments to provide context or updates</p>
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="mt-8 pt-6 border-t border-gray-700">
-        <div class="flex flex-col sm:flex-row gap-4 justify-end">
-          <button type="button" (click)="goBack()"
-                  class="px-6 py-3 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200 btn-secondary">
-            Cancel
-          </button>
-          
-          <button *ngIf="!isUpdate" type="button" (click)="submit()" [disabled]="projectForm.invalid"
-                  class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center btn-primary">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button (click)="showCreateForm()" 
+                  class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             Create Task
           </button>
-          
-          <button *ngIf="isUpdate" type="button" (click)="UpdateTask()" [disabled]="projectForm.invalid"
-                  class="px-6 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center btn-primary">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            Update Task
-          </button>
         </div>
       </div>
-    </form>
+
+      <!-- Board Columns -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- TO DO Column -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold text-gray-900 dark:text-white">TO DO</h3>
+              <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-sm rounded-full">
+                {{ todo.length }}
+              </span>
+            </div>
+          </div>
+          <div cdkDropList id="todoList" [cdkDropListData]="todo" (cdkDropListDropped)="drop($event)"
+               class="min-h-[400px] p-4 space-y-3">
+            <div *ngFor="let task of todo" cdkDrag
+                 class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 shadow-sm cursor-move hover:shadow-md transition-shadow duration-200 task-card">
+              <div class="flex items-start justify-between mb-2">
+                <span class="text-sm font-medium text-blue-600 dark:text-blue-400">TASK-{{ task.id }}</span>
+                <div class="flex gap-1">
+                  <button (click)="showEditForm(task)" class="text-gray-400 hover:text-blue-500 transition-colors duration-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button (click)="deleteTask(task.id)" class="text-gray-400 hover:text-red-500 transition-colors duration-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <h4 class="font-medium text-gray-900 dark:text-white mb-2">{{ task.name }}</h4>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{{ task.description || 'No description' }}</p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div *ngIf="task.assignee" class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-medium">
+                    {{ getInitials(task.assignee) }}
+                  </div>
+                  <div *ngIf="!task.assignee" class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center text-white text-xs font-medium">
+                    ?
+                  </div>
+                </div>
+                <div [class]="getPriorityClass(task.priority)" class="text-xs font-medium px-2 py-1 rounded">
+                  {{ task.priority }}
+                </div>
+              </div>
+              <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                {{ task.due_date ? ('Due: ' + task.due_date) : 'No due date' }}
+              </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div *ngIf="todo.length === 0" class="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+              <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <p class="text-gray-500 dark:text-gray-400 text-sm">No tasks in TO DO</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- IN PROGRESS Column -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold text-gray-900 dark:text-white">IN PROGRESS</h3>
+              <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 text-sm rounded-full">
+                {{ inProgress.length }}
+              </span>
+            </div>
+          </div>
+          <div cdkDropList id="inProgressList" [cdkDropListData]="inProgress" (cdkDropListDropped)="drop($event)"
+               class="min-h-[400px] p-4 space-y-3">
+            <div *ngFor="let task of inProgress" cdkDrag
+                 class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 shadow-sm cursor-move hover:shadow-md transition-shadow duration-200 task-card">
+              <div class="flex items-start justify-between mb-2">
+                <span class="text-sm font-medium text-blue-600 dark:text-blue-400">TASK-{{ task.id }}</span>
+                <div class="flex gap-1">
+                  <button (click)="showEditForm(task)" class="text-gray-400 hover:text-blue-500 transition-colors duration-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button (click)="deleteTask(task.id)" class="text-gray-400 hover:text-red-500 transition-colors duration-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <h4 class="font-medium text-gray-900 dark:text-white mb-2">{{ task.name }}</h4>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{{ task.description || 'No description' }}</p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div *ngIf="task.assignee" class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-medium">
+                    {{ getInitials(task.assignee) }}
+                  </div>
+                  <div *ngIf="!task.assignee" class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center text-white text-xs font-medium">
+                    ?
+                  </div>
+                </div>
+                <div [class]="getPriorityClass(task.priority)" class="text-xs font-medium px-2 py-1 rounded">
+                  {{ task.priority }}
+                </div>
+              </div>
+              <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                {{ task.due_date ? ('Due: ' + task.due_date) : 'No due date' }}
+              </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div *ngIf="inProgress.length === 0" class="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+              <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <p class="text-gray-500 dark:text-gray-400 text-sm">No tasks in progress</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DONE Column -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-semibold text-gray-900 dark:text-white">DONE</h3>
+              <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 text-sm rounded-full">
+                {{ done.length }}
+              </span>
+            </div>
+          </div>
+          <div cdkDropList id="doneList" [cdkDropListData]="done" (cdkDropListDropped)="drop($event)"
+               class="min-h-[400px] p-4 space-y-3">
+            <div *ngFor="let task of done" cdkDrag
+                 class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 shadow-sm cursor-move hover:shadow-md transition-shadow duration-200 task-card">
+              <div class="flex items-start justify-between mb-2">
+                <span class="text-sm font-medium text-blue-600 dark:text-blue-400">TASK-{{ task.id }}</span>
+                <div class="flex gap-1">
+                  <button (click)="showEditForm(task)" class="text-gray-400 hover:text-blue-500 transition-colors duration-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button (click)="deleteTask(task.id)" class="text-gray-400 hover:text-red-500 transition-colors duration-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <h4 class="font-medium text-gray-900 dark:text-white mb-2">{{ task.name }}</h4>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{{ task.description || 'No description' }}</p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div *ngIf="task.assignee" class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-medium">
+                    {{ getInitials(task.assignee) }}
+                  </div>
+                  <div *ngIf="!task.assignee" class="w-6 h-6 bg-gray-400 rounded-full flex items-center justify-center text-white text-xs font-medium">
+                    ?
+                  </div>
+                </div>
+                <div [class]="getPriorityClass(task.priority)" class="text-xs font-medium px-2 py-1 rounded">
+                  {{ task.priority }}
+                </div>
+              </div>
+              <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                {{ task.due_date ? ('Due: ' + task.due_date) : 'No due date' }}
+              </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div *ngIf="done.length === 0" class="text-center py-8 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+              <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p class="text-gray-500 dark:text-gray-400 text-sm">No completed tasks</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM VIEW -->
+    <div *ngIf="currentView === 'form'">
+      <!-- Header -->
+      <div class="mb-8">
+        <button type="button" (click)="showBoard()"
+                class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 mb-6 back-button">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Board
+        </button>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {{ isUpdate ? 'Update Task' : 'Create New Task' }}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">
+              {{ isUpdate ? 'Modify task details and status' : 'Add a new task to your project board' }}
+            </p>
+          </div>
+          
+          <!-- Quick Actions -->
+          <div class="flex gap-2">
+            <button *ngIf="isUpdate" type="button" (click)="deleteTask(taskId)"
+                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Delete Task
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jira-style Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column - Task Details -->
+        <div class="lg:col-span-2">
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm form-section">
+            <!-- Task Header -->
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <!-- Task Key -->
+                  <div class="flex items-center mb-2">
+                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400 mr-2">
+                      {{ taskKey }}
+                    </span>
+                    <div class="h-1 w-1 bg-gray-400 rounded-full mr-2"></div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">
+                      Task
+                    </span>
+                  </div>
+                  
+                  <!-- Task Name -->
+                  <input formControlName="name" type="text"
+                         class="w-full text-2xl font-semibold bg-transparent border-none focus:outline-none focus:ring-0 text-gray-900 dark:text-white placeholder-gray-500 form-input"
+                         placeholder="Enter task name">
+                </div>
+                
+                <!-- Status Badge -->
+                <div class="flex items-center gap-2">
+                  <div [class]="getStatusClass(projectForm.get('status')?.value)" class="px-3 py-1 rounded-full text-sm font-medium">
+                    {{ projectForm.get('status')?.value }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Task Details Grid -->
+            <div class="p-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Assignee -->
+                <div class="space-y-2">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Assignee
+                  </label>
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium mr-3">
+                      {{ getInitials(projectForm.get('assignee')?.value) }}
+                    </div>
+                    <input formControlName="assignee" type="text"
+                           class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent form-input"
+                           placeholder="Unassigned">
+                  </div>
+                </div>
+
+                <!-- Due Date -->
+                <div class="space-y-2">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Due Date
+                  </label>
+                  <input type="date" formControlName="due_date"
+                         class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent form-input">
+                </div>
+
+                <!-- Priority -->
+                <div class="space-y-2">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Priority
+                  </label>
+                  <select formControlName="priority"
+                          class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent form-input">
+                    <option value="HIGH">High</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="LOW">Low</option>
+                  </select>
+                </div>
+
+                <!-- Status -->
+                <div class="space-y-2">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Status
+                  </label>
+                  <select formControlName="status"
+                          class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent form-input">
+                    <option value="TO DO">TO DO</option>
+                    <option value="IN PROGRESS">IN PROGRESS</option>
+                    <option value="DONE">DONE</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="mt-6 space-y-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Description
+                </label>
+                <textarea formControlName="description"
+                          class="w-full h-32 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none form-input"
+                          placeholder="Add a description..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments Section -->
+          <div class="mt-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+            <div class="p-6">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Comments</h3>
+              
+              <!-- Comments List -->
+              <div class="space-y-4 mb-6">
+                <div *ngFor="let comment of comments.controls; let i = index" 
+                     class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 comment-item">
+                  <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center">
+                      <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-medium mr-2">
+                        YT
+                      </div>
+                      <span class="text-sm font-medium text-gray-900 dark:text-white">You</span>
+                      <span class="mx-2 text-gray-400">•</span>
+                      <span class="text-sm text-gray-500 dark:text-gray-400">Now</span>
+                    </div>
+                    <button type="button" (click)="removeComment(i)"
+                            class="text-gray-400 hover:text-red-500 transition-colors duration-200 remove-btn">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  <input [formControlName]="i" type="text"
+                         class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-gray-900 dark:text-white placeholder-gray-500 form-input"
+                         placeholder="Enter comment...">
+                </div>
+              </div>
+
+              <!-- Add Comment -->
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium flex-shrink-0">
+                  YT
+                </div>
+                <div class="flex-1 flex gap-2">
+                  <input type="text" #newCommentInput
+                         class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent form-input"
+                         placeholder="Add a comment...">
+                  <button type="button" (click)="addComment(newCommentInput.value); newCommentInput.value = ''"
+                          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
+                    Comment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Sidebar -->
+        <div class="space-y-6">
+          <!-- Details Panel -->
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+              <h3 class="font-semibold text-gray-900 dark:text-white">Details</h3>
+            </div>
+            <div class="p-4 space-y-4">
+              <!-- Project ID -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Project ID
+                </label>
+                <input formControlName="project_id" readonly
+                       class="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 dark:text-gray-400 form-input">
+              </div>
+
+              <!-- Labels -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Labels
+                </label>
+                <div class="flex flex-wrap gap-2">
+                  <span *ngFor="let label of labels" 
+                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                    {{ label }}
+                    <button type="button" (click)="removeLabel(label)" class="ml-1 text-gray-500 hover:text-gray-700">
+                      ×
+                    </button>
+                  </span>
+                  <input type="text" #labelInput 
+                         (keyup.enter)="addLabel(labelInput.value); labelInput.value = ''"
+                         class="flex-1 min-w-0 px-2 py-1 text-sm border-0 focus:outline-none focus:ring-0 bg-transparent form-input"
+                         placeholder="Add label...">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Panel -->
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+              <h3 class="font-semibold text-gray-900 dark:text-white">Activity</h3>
+            </div>
+            <div class="p-4">
+              <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-medium flex-shrink-0 mt-1">
+                    YT
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm text-gray-900 dark:text-white">
+                      <span class="font-medium">You</span> 
+                      {{ isUpdate ? 'updated' : 'created' }} this task
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Just now</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-6 flex justify-end gap-3">
+        <button type="button" (click)="showBoard()"
+                class="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 btn-secondary">
+          Cancel
+        </button>
+        
+        <button *ngIf="!isUpdate" type="button" (click)="submit()" [disabled]="projectForm.invalid"
+                class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center btn-primary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Create Task
+        </button>
+        
+        <button *ngIf="isUpdate" type="button" (click)="UpdateTask()" [disabled]="projectForm.invalid"
+                class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center btn-primary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Update Task
+        </button>
+      </div>
+    </div>
   </div>
 </div>
