@@ -1,0 +1,218 @@
+/* Form animations */
+.form-section {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input field enhancements */
+.form-input {
+  transition: all 0.3s ease-in-out;
+}
+
+.form-input:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+.form-input:focus-within {
+  border-color: rgba(139, 92, 246, 0.8);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* Comment item animations */
+.comment-item {
+  transition: all 0.3s ease-in-out;
+  animation: fadeInScale 0.4s ease-out;
+}
+
+.comment-item:hover {
+  transform: translateY(-2px);
+  background-color: rgba(55, 65, 81, 0.8);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Remove button animations */
+.remove-btn {
+  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(4px);
+}
+
+.remove-btn:hover {
+  transform: scale(1.1);
+  background-color: rgba(220, 38, 38, 0.9);
+}
+
+/* Button enhancements */
+.btn-primary {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+  transition: all 0.6s ease-in-out;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #7c3aed, #db2777);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+
+.btn-secondary {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(55, 65, 81, 0.8);
+  transform: translateY(-1px);
+}
+
+/* Back button animation */
+.back-button {
+  transition: all 0.3s ease-in-out;
+}
+
+.back-button:hover {
+  transform: translateX(-4px);
+  color: rgba(139, 92, 246, 1);
+}
+
+/* Form validation styles */
+.field-error {
+  animation: shakeError 0.5s ease-in-out;
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .form-section {
+    padding: 1rem;
+  }
+  
+  .max-w-4xl {
+    margin: 0 1rem;
+  }
+  
+  .grid-cols-1 {
+    grid-template-columns: 1fr;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-lg {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .p-6 {
+    padding: 1rem;
+  }
+  
+  .flex-col {
+    flex-direction: column;
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .comments-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+
+/* Dark theme enhancements */
+.bg-gray-800 {
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9));
+  backdrop-filter: blur(10px);
+}
+
+/* Custom scrollbar */
+.comments-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.comments-container::-webkit-scrollbar-track {
+  background: rgb(31, 41, 55);
+  border-radius: 3px;
+}
+
+.comments-container::-webkit-scrollbar-thumb {
+  background: rgb(75, 85, 99);
+  border-radius: 3px;
+}
+
+.comments-container::-webkit-scrollbar-thumb:hover {
+  background: rgb(107, 114, 128);
+}
+
+/* Loading states */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Focus styles for accessibility */
+.form-input:focus-visible {
+  outline: 2px solid rgba(139, 92, 246, 0.8);
+  outline-offset: 2px;
+}
+
+/* Status indicator colors */
+.status-todo { border-left-color: rgb(75, 85, 99); }
+.status-in-progress { border-left-color: rgb(245, 158, 11); }
+.status-done { border-left-color: rgb(34, 197, 94); }
+
+/* Priority indicator colors */
+.priority-high { color: rgb(239, 68, 68); }
+.priority-medium { color: rgb(245, 158, 11); }
+.priority-low { color: rgb(34, 197, 94); }

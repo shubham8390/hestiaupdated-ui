@@ -1,38 +1,41 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '../Services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-project-task',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './project-task.component.html',
-  styleUrl: './project-task.component.css'
+  styleUrls: ['./project-task.component.css']
 })
-
 export class ProjectTaskComponent implements OnInit {
-
-
-
-  projectForm !: FormGroup;
-  projectId: any
-  taskId: any
-  taskData: any
+  projectForm!: FormGroup;
+  projectId: any;
+  taskId: any;
+  taskData: any;
   isUpdate: any = false;
-  constructor(private fb: FormBuilder, private apiservice: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
+
+  constructor(
+    private fb: FormBuilder, 
+    private apiservice: ApiService, 
+    private route: ActivatedRoute, 
+    private toastr: ToastrService, 
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const currentUrl = this.router.url;
+    
     if (currentUrl.includes('updatetask')) {
       const taskId = this.route.snapshot.queryParamMap.get('taskId');
       if (taskId) {
-        this.taskId = taskId
+        this.taskId = taskId;
         this.getTaskDetails(this.taskId);
-        this.isUpdate = true
+        this.isUpdate = true;
       }
     } else {
       const projectId = this.route.snapshot.queryParamMap.get('projectId');
@@ -41,67 +44,66 @@ export class ProjectTaskComponent implements OnInit {
       }
     }
 
+    this.initializeForm();
+  }
 
-
+  initializeForm(): void {
     this.projectForm = this.fb.group({
-      project_id: [this.projectId || ''],
-      name: [''],
+      project_id: [this.projectId || '', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       assignee: [''],
       due_date: [''],
-      priority: [''],
-      status: [''],
-      comments: this.fb.array([]) // Empty array, can be added dynamically
+      priority: ['MEDIUM'],
+      status: ['TO DO'],
+      comments: this.fb.array([])
     });
   }
 
+  submit(): void {
+    if (this.projectForm.valid) {
+      const reqobject = this.projectForm.value;
 
-  submit() {
-    // let reqobject = {
-    //   "project_id": "68923871445c62ac3a74f59f",
-    //   "name": "",
-    //   "assignee": "",
-    //   "due_date": "",
-    //   "priority": "",
-    //   "status": "",
-    //   "comments": []
-    // }
-
-    let reqobject = this.projectForm.value;
-
-    this.apiservice.addprojecttask(reqobject).subscribe(
-      rs => {
-        this.toastr.success("Task Added SuccessFully");
+      this.apiservice.addprojecttask(reqobject).subscribe(
+        rs => {
+          this.toastr.success("Task Added Successfully");
           this.projectForm.reset();
-
-      }
-    );
+          this.goBack();
+        },
+        error => {
+          this.toastr.error("Failed to add task");
+        }
+      );
+    } else {
+      this.toastr.warning("Please fill all required fields");
+    }
   }
 
   get comments(): FormArray {
     return this.projectForm.get('comments') as FormArray;
-  
   }
 
   addComment(commentText: string): void {
     this.comments.push(this.fb.control(commentText));
   }
 
-  removeComment(num: any) {
-
+  removeComment(index: number): void {
+    this.comments.removeAt(index);
   }
 
-  getTaskDetails(id: any) {
-    this.apiservice.getTaskDetails(id).subscribe(res => {
-      this.taskData = res;
-      this.bindTaskDetails(this.taskData);
-    }, error => {
-
-    })
+  getTaskDetails(id: any): void {
+    this.apiservice.getTaskDetails(id).subscribe(
+      res => {
+        this.taskData = res;
+        this.bindTaskDetails(this.taskData);
+      }, 
+      error => {
+        this.toastr.error("Failed to load task details");
+      }
+    );
   }
 
-
-  bindTaskDetails(data: any) {
-    this.projectId = data.project_id
+  bindTaskDetails(data: any): void {
+    this.projectId = data.project_id;
     this.projectForm.patchValue({
       project_id: data.project_id,
       name: data.name,
@@ -111,26 +113,37 @@ export class ProjectTaskComponent implements OnInit {
       status: data.status
     });
 
+    // Bind comments if they exist
+    if (data.comments && data.comments.length > 0) {
+      this.comments.clear();
+      data.comments.forEach((comment: string) => {
+        this.addComment(comment);
+      });
+    }
   }
 
-  UpdateTask() {
-    let reqobject = {
-      ...this.projectForm.value,
-      id: this.taskId
-    };
+  UpdateTask(): void {
+    if (this.projectForm.valid) {
+      const reqobject = {
+        ...this.projectForm.value,
+        id: this.taskId
+      };
 
-
-    this.apiservice.updateprojecttask(reqobject).subscribe(
-      rs => {
-        this.toastr.success("Task updated SuccessFully");
-        this.router.navigate(['/project-details', this.projectId]);
-      }
-    );
+      this.apiservice.updateprojecttask(reqobject).subscribe(
+        rs => {
+          this.toastr.success("Task Updated Successfully");
+          this.router.navigate(['/project-details', this.projectId]);
+        },
+        error => {
+          this.toastr.error("Failed to update task");
+        }
+      );
+    } else {
+      this.toastr.warning("Please fill all required fields");
+    }
   }
 
-goBack(){
-     this.router.navigate(['/project-details', this.projectId]);
-}
-
-
+  goBack(): void {
+    this.router.navigate(['/project-details', this.projectId]);
+  }
 }
