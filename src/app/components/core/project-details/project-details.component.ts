@@ -101,6 +101,9 @@ export class ProjectDetailsComponent implements OnInit {
     // Implementation for moving tasks between statuses
   }
 
+  viewJira(projectId:any){
+ this.router.navigate(['/jira'], { queryParams: { projectId: projectId } });
+  }
 
 
 
