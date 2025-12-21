@@ -103,7 +103,7 @@ export class SaveHistoryComponent implements OnInit, OnChanges {
     this.apiservice.getHistoryofChat(id).subscribe(res=>{
         conversation=res;
          if (conversation) {
-            sessionStorage.setItem('sessionId',id)
+            localStorage.setItem('sessionId',id)
       debugger
       this.loadConversation.emit(conversation.history);
     }

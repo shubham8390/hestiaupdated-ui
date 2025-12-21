@@ -126,7 +126,7 @@ showStakeholderForm:any=false;
 
   ngOnInit() {
     debugger
-    this.userId = sessionStorage.getItem("user_id");
+    this.userId = localStorage.getItem("user_id");
     const editId = this.route.snapshot.queryParamMap.get('edit');
     if (editId) {
       this.projecteditId = editId;

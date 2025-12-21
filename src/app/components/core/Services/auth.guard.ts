@@ -4,7 +4,7 @@ import { CanActivateFn, Router } from '@angular/router';
 
 export const authGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
-    const token = sessionStorage.getItem('jwt');
+    const token = localStorage.getItem('jwt');
 
     if (token) {
         return true; // allow navigation

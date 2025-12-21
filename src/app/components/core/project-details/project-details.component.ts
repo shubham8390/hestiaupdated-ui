@@ -343,7 +343,7 @@ export class ProjectDetailsComponent implements OnInit {
 
 
   loadChatHistory(sessionId: any, project_id: any) {
-    sessionStorage.setItem('sessionId', sessionId)
+    localStorage.setItem('sessionId', sessionId)
     this.router.navigate(['/chat'], { queryParams: { projectId: project_id } });
   }
 
@@ -381,8 +381,8 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   openStakeHolder(id:any , name:any){
-    sessionStorage.setItem("projectId",id);
-       sessionStorage.setItem("projectname",name);
+    localStorage.setItem("projectId",id);
+       localStorage.setItem("projectname",name);
         this.router.navigate(['/distribution']);
   }
 } 

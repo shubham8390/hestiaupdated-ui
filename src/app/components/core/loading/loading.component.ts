@@ -25,13 +25,13 @@ export class LoadingComponent implements OnInit {
   }
 
   callapi(nonce: any,provider:any) {
-     sessionStorage.setItem('provider',provider);
+     localStorage.setItem('provider',provider);
     if(provider==='google'){
       debugger;
       this.apiService.getJwtTokenForgoogle(nonce,provider).subscribe(res=>{
         this.data=res;
-       sessionStorage.setItem('jwt',this.data.token);
-       sessionStorage.setItem('user_id',this.data.user.id);
+       localStorage.setItem('jwt',this.data.token);
+       localStorage.setItem('user_id',this.data.user.id);
        this.router.navigate(['/chat']);
       },error=>{
       this.router.navigate(['/sign']);
@@ -42,7 +42,7 @@ export class LoadingComponent implements OnInit {
      if(provider==='microsoft'){
       this.apiService.getJwtTokenForMicrosoft(nonce,provider).subscribe(res=>{
         this.data=res;
-       sessionStorage.setItem('jwt',this.data.token);
+       localStorage.setItem('jwt',this.data.token);
        this.router.navigate(['/chat']);
       },error=>{
       this.router.navigate(['/sign']);
@@ -52,7 +52,7 @@ export class LoadingComponent implements OnInit {
 
     // this.apiService.authorizeMicrosoftuserCallBack(code, 'pratikraut@icode.com').subscribe(res => {
     //   this.data = res;
-    //   sessionStorage.setItem('jwt',this.data.id_token);
+    //   localStorage.setItem('jwt',this.data.id_token);
     //   setTimeout(() => {
     //      this.router.navigate(['/chat']);
     //   }, 10);

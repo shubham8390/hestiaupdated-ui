@@ -157,7 +157,7 @@ export class ChatUIComponent implements OnInit, AfterViewChecked, OnDestroy {
   ) {}
 user_id :any;
   ngOnInit() {
-    this.user_id = sessionStorage.getItem("user_id");
+    this.user_id = localStorage.getItem("user_id");
     this.initializeChat();
     this.setupRouteSubscriptions();
     this.setupResizeListener();
@@ -217,7 +217,7 @@ user_id :any;
   }
 
   private loadExistingSession(): void {
-    const sessionId = sessionStorage.getItem('sessionId');
+    const sessionId = localStorage.getItem('sessionId');
     if (sessionId) {
       this.sessionId = sessionId;
       this.getHistoryofChat();
@@ -453,7 +453,7 @@ user_id :any;
   }
 
   private prepareRequestObject(): any {
-    const sessionId = sessionStorage.getItem('sessionId') || '';
+    const sessionId = localStorage.getItem('sessionId') || '';
 
     return {
       session_id: sessionId,
@@ -472,7 +472,7 @@ user_id :any;
     this.sessionId = response.session_id;
     
     if (this.sessionId) {
-      sessionStorage.setItem('sessionId', this.sessionId);
+      localStorage.setItem('sessionId', this.sessionId);
     }
 
     const assistantMessage: ChatMessage = {
@@ -542,7 +542,7 @@ user_id :any;
     this.propertyResearch = false;
     this.showSuggestions = true;
     
-    sessionStorage.removeItem('sessionId');
+    localStorage.removeItem('sessionId');
     this.router.navigate(['/chat']);
   }
 

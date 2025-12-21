@@ -82,13 +82,13 @@ export class CustomerChatUiComponent {
   userId :any;
     ngOnInit() {
       debugger
-      this.userId = sessionStorage.getItem("user_id");
+      this.userId = localStorage.getItem("user_id");
        const projectId = this.route.snapshot.queryParamMap.get('projectId');
         if (projectId) {
      this.projecteditId=projectId;
     }
   
-   let id=sessionStorage?.getItem('sessionId');
+   let id=localStorage?.getItem('sessionId');
   
       if(id){
         this.sessionId=id;
@@ -319,7 +319,7 @@ export class CustomerChatUiComponent {
         });
         
         this.isLoading = true;
-        let id=sessionStorage?.getItem('sessionId');
+        let id=localStorage?.getItem('sessionId');
         if(id){
           this.sessionId=id;
         }
@@ -379,7 +379,7 @@ export class CustomerChatUiComponent {
             this.isSessionCreated=true;
             this.sessionId=response.session_id
             if(this.sessionId)
-            sessionStorage.setItem('sessionId', this.sessionId)
+            localStorage.setItem('sessionId', this.sessionId)
             this.isLoading = false;
   
             const assistantMessage: ChatMessage = {
@@ -420,7 +420,7 @@ export class CustomerChatUiComponent {
       this.isToolsPopupOpen = false;
       this.projecteditId=''
       this.adjustTextareaHeight();
-      sessionStorage.removeItem('sessionId')
+      localStorage.removeItem('sessionId')
       this.propertyResearch=false
      this.router.navigate(['/chat']);
     }

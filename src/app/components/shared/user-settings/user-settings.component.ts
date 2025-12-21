@@ -56,7 +56,7 @@ export class UserSettingsComponent implements OnInit {
     console.log('Sign out clicked');
     if (confirm('Are you sure you want to sign out?')) {
 
-    let provider=sessionStorage.getItem('provider');
+    let provider=localStorage.getItem('provider');
 
       if(provider==='google'){
         this.apiservice.logoutgoogle().subscribe(res=>{
@@ -65,7 +65,7 @@ export class UserSettingsComponent implements OnInit {
       localStorage.removeItem('userName');
       // Add any other logout logic here
       console.log('User signed out successfully');
-      sessionStorage.removeItem('jwt');
+      localStorage.removeItem('jwt');
       this.closePopup.emit();
         })
       }else if(provider==='microsoft'){
@@ -75,7 +75,7 @@ this.apiservice.logoutMicrosoft().subscribe(res=>{
       localStorage.removeItem('userName');
       // Add any other logout logic here
       console.log('User signed out successfully');
-      sessionStorage.removeItem('jwt');
+      localStorage.removeItem('jwt');
       this.closePopup.emit();
 })
       }
