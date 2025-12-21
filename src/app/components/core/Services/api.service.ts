@@ -48,7 +48,7 @@ export class ApiService {
   }
 
   public getAllChatHistory(): Observable<any> {
-    let userId = sessionStorage.getItem("user_id");
+    let userId = localStorage.getItem("user_id");
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
@@ -80,7 +80,7 @@ export class ApiService {
 
 
   public uploadDocuments(file: File): Observable<any> {
-    let userId = sessionStorage.getItem("user_id");
+    let userId = localStorage.getItem("user_id");
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
@@ -130,7 +130,7 @@ export class ApiService {
   }
 
   public getProjectList(): Observable<any> {
-    let userId = sessionStorage.getItem("user_id");
+    let userId = localStorage.getItem("user_id");
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
@@ -183,7 +183,7 @@ export class ApiService {
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}project/tasks/?project_id=${id}`
+    let uri = `${this.apiUri}tasks/?project_id=${id}`
     return this.http.get<any>(uri,{headers});
   }
   public deleteTaskbyId(taskid: any): Observable<any> {
@@ -194,11 +194,11 @@ export class ApiService {
     return this.http.delete<any>(uri,{headers});
   }
 
-  public addprojecttask(taskdetails: any): Observable<any> {
+  public addprojecttask(taskdetails: any,projetid:any): Observable<any> {
  const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}project/task/`
+    let uri = `${this.apiUri}task/?project_id=${projetid}`
     return this.http.post<any>(uri, taskdetails,{headers: headers});
   }
 
@@ -207,7 +207,7 @@ export class ApiService {
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}project/task/{id}`
+    let uri = `${this.apiUri}project/task/`
     return this.http.put<any>(uri, taskdetails,{headers: headers});
   }
 

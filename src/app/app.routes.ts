@@ -91,6 +91,9 @@ export const routes: Routes = [
    {
     path: 'showtemplate/:id',
     loadComponent: () => import('./components/core/flyer-template-component/flyer-template-component.component').then(m => m.FlyerTemplateComponentComponent),
-   
+  },
+  {
+        path: 'jira',
+    loadComponent: () => import('./components/core/jira-board/jira-board.component').then(m => m.JiraBoardComponent),
   }
 ];
