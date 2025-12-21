@@ -76,65 +76,93 @@ export class JiraBoardComponent implements OnInit {
     { id: 'done', name: 'Done', color: 'bg-green-500', tasks: [] }
   ];
 
-  // Dummy users data
-  users: User[] = [
-    {
-      id: 'user1',
-      name: 'John Doe',
-      email: 'john@example.com',
-      picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop',
-      role: 'Frontend Developer'
-    },
-    {
-      id: 'user2',
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      picture: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop',
-      role: 'Backend Developer'
-    },
-    {
-      id: 'user3',
-      name: 'Mike Johnson',
-      email: 'mike@example.com',
-      picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop',
-      role: 'DevOps Engineer'
-    },
-    {
-      id: 'user4',
-      name: 'Sarah Wilson',
-      email: 'sarah@example.com',
-      picture: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop',
-      role: 'QA Engineer'
-    },
-    {
-      id: 'user5',
-      name: 'Alex Chen',
-      email: 'alex@example.com',
-      picture: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop',
-      role: 'UI/UX Designer'
-    },
-    {
-      id: 'user6',
-      name: 'Emily Brown',
-      email: 'emily@example.com',
-      picture: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=40&h=40&fit=crop',
-      role: 'Project Manager'
-    },
-    {
-      id: 'user7',
-      name: 'David Lee',
-      email: 'david@example.com',
-      picture: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop',
-      role: 'Full Stack Developer'
-    },
-    {
-      id: 'user8',
-      name: 'Lisa Taylor',
-      email: 'lisa@example.com',
-      picture: 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=40&h=40&fit=crop',
-      role: 'Mobile Developer'
-    }
-  ];
+// Dummy users data for construction industry
+users: User[] = [
+  {
+    id: 'user1',
+    name: 'Carlos Rodriguez',
+    email: 'carlos@buildersco.com',
+    picture: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop',
+    role: 'Project Manager'
+  },
+  {
+    id: 'user2',
+    name: 'Mike Thompson',
+    email: 'mike@steelworks.com',
+    picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop',
+    role: 'Structural Engineer'
+  },
+  {
+    id: 'user3',
+    name: 'James Wilson',
+    email: 'james@sparkyelectric.com',
+    picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop',
+    role: 'Electrical Foreman'
+  },
+  {
+    id: 'user4',
+    name: 'Robert Garcia',
+    email: 'robert@aquaflow.com',
+    picture: 'https://images.unsplash.com/photo-1507591064344-4c6ce005-128?w=40&h=40&fit=crop',
+    role: 'Plumbing Supervisor'
+  },
+  {
+    id: 'user5',
+    name: 'Thomas Baker',
+    email: 'thomas@drywallmasters.com',
+    picture: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=40&h=40&fit=crop',
+    role: 'Drywall Specialist'
+  },
+  {
+    id: 'user6',
+    name: 'David Miller',
+    email: 'david@toproofing.com',
+    picture: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=40&h=40&fit=crop',
+    role: 'Roofing Contractor'
+  },
+  {
+    id: 'user7',
+    name: 'Samuel Carter',
+    email: 'samuel@concretepros.com',
+    picture: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=40&h=40&fit=crop',
+    role: 'Concrete Foreman'
+  },
+  {
+    id: 'user8',
+    name: 'Maria Hernandez',
+    email: 'maria@buildersco.com',
+    picture: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop',
+    role: 'Site Supervisor'
+  },
+  {
+    id: 'user9',
+    name: 'William Chen',
+    email: 'william@hvacpros.com',
+    picture: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop',
+    role: 'HVAC Technician'
+  },
+  {
+    id: 'user10',
+    name: 'Jennifer Lewis',
+    email: 'jennifer@buildersco.com',
+    picture: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=40&h=40&fit=crop',
+    role: 'Architect'
+  },
+  {
+    id: 'user11',
+    name: 'Anthony Moore',
+    email: 'anthony@finishingtouches.com',
+    picture: 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=40&h=40&fit=crop',
+    role: 'Finish Carpenter'
+  },
+  {
+    id: 'user12',
+    name: 'Patricia Allen',
+    email: 'patricia@buildersco.com',
+    picture: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop',
+    role: 'Safety Officer'
+  }
+];
 
   // Tasks data
   tasks: Task[] = [];
@@ -159,88 +187,139 @@ export class JiraBoardComponent implements OnInit {
   searchTerm: string = '';
 
   // Dummy data with proper typing
-  dummyTasks: Task[] = [
-    {
-      _id: '1',
-      project_id: '69215e0f2e00995abecedd82',
-      name: 'Design Homepage',
-      description: 'Create homepage design with modern UI elements',
-      assignee_id: 'user5',
-      assignee: {
-        name: 'Alex Chen',
-        email: 'alex@example.com',
-        picture: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop'
-      },
-      start_date: '2024-01-15',
-      due_date: '2024-01-25',
-      priority: 2,
-      status: 0,
-      subtasks: [
-        { _id: 'sub1', name: 'Create wireframes', status: 1, due_date: '2024-01-18' },
-        { _id: 'sub2', name: 'Design color scheme', status: 0, due_date: '2024-01-20' }
-      ],
-      tags: ['UI/UX', 'Design']
+// Dummy data for construction/building projects
+dummyTasks: Task[] = [
+  {
+    _id: '1',
+    project_id: '69215e0f2e00995abecedd82',
+    name: 'Foundation Pouring',
+    description: 'Pour concrete foundation for residential building',
+    assignee_id: 'foreman1',
+    assignee: {
+      name: 'Carlos Rodriguez',
+      email: 'carlos@buildersco.com',
+      picture: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop'
     },
-    {
-      _id: '2',
-      project_id: '69215e0f2e00995abecedd82',
-      name: 'API Integration',
-      description: 'Integrate backend APIs with frontend',
-      assignee_id: 'user2',
-      assignee: {
-        name: 'Jane Smith',
-        email: 'jane@example.com',
-        picture: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop'
-      },
-      start_date: '2024-01-10',
-      due_date: '2024-01-30',
-      priority: 1,
-      status: 1,
-      subtasks: [],
-      tags: ['Backend', 'API']
+    start_date: '2024-03-15',
+    due_date: '2024-03-20',
+    priority: 2,
+    status: 0,
+    subtasks: [
+      { _id: 'sub1', name: 'Excavation complete', status: 1, due_date: '2024-03-12' },
+      { _id: 'sub2', name: 'Formwork installation', status: 0, due_date: '2024-03-18' },
+      { _id: 'sub3', name: 'Rebar placement', status: 0, due_date: '2024-03-19' }
+    ],
+    tags: ['Foundation', 'Concrete']
+  },
+  {
+    _id: '2',
+    project_id: '69215e0f2e00995abecedd82',
+    name: 'Structural Framing',
+    description: 'Install structural steel beams and columns',
+    assignee_id: 'steel1',
+    assignee: {
+      name: 'Mike Thompson',
+      email: 'mike@steelworks.com',
+      picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop'
     },
-    {
-      _id: '3',
-      project_id: '69215e0f2e00995abecedd82',
-      name: 'Database Optimization',
-      description: 'Optimize database queries and indexing',
-      assignee_id: 'user3',
-      assignee: {
-        name: 'Mike Johnson',
-        email: 'mike@example.com',
-        picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop'
-      },
-      start_date: '2024-01-20',
-      due_date: '2024-02-05',
-      priority: 0,
-      status: 2,
-      subtasks: [
-        { _id: 'sub3', name: 'Analyze query performance', status: 0, due_date: '2024-01-25' }
-      ],
-      tags: ['Database', 'Performance']
+    start_date: '2024-03-22',
+    due_date: '2024-04-10',
+    priority: 1,
+    status: 1,
+    subtasks: [
+      { _id: 'sub4', name: 'Beam delivery on site', status: 1, due_date: '2024-03-20' },
+      { _id: 'sub5', name: 'Column installation', status: 0, due_date: '2024-03-28' }
+    ],
+    tags: ['Structural', 'Steelwork']
+  },
+  {
+    _id: '3',
+    project_id: '69215e0f2e00995abecedd82',
+    name: 'Electrical Rough-In',
+    description: 'Install electrical wiring and conduit before drywall',
+    assignee_id: 'electric1',
+    assignee: {
+      name: 'James Wilson',
+      email: 'james@sparkyelectric.com',
+      picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop'
     },
-    {
-      _id: '4',
-      project_id: '69215e0f2e00995abecedd82',
-      name: 'Mobile App Testing',
-      description: 'Test mobile application on different devices',
-      assignee_id: 'user4',
-      assignee: {
-        name: 'Sarah Wilson',
-        email: 'sarah@example.com',
-        picture: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop'
-      },
-      start_date: '2024-01-25',
-      due_date: '2024-02-10',
-      priority: 1,
-      status: 3,
-      subtasks: [
-        { _id: 'sub4', name: 'iOS testing', status: 1, due_date: '2024-01-30' },
-        { _id: 'sub5', name: 'Android testing', status: 1, due_date: '2024-01-30' }
-      ],
-      tags: ['Testing', 'Mobile']
-    }
-  ];
+    start_date: '2024-04-05',
+    due_date: '2024-04-15',
+    priority: 0,
+    status: 2,
+    subtasks: [
+      { _id: 'sub6', name: 'Main panel installation', status: 1, due_date: '2024-04-05' },
+      { _id: 'sub7', name: 'Circuit wiring complete', status: 1, due_date: '2024-04-12' },
+      { _id: 'sub8', name: 'Inspection scheduled', status: 0, due_date: '2024-04-16' }
+    ],
+    tags: ['Electrical', 'Rough-In']
+  },
+  {
+    _id: '4',
+    project_id: '69215e0f2e00995abecedd82',
+    name: 'Plumbing Installation',
+    description: 'Install water supply and drainage systems',
+    assignee_id: 'plumb1',
+    assignee: {
+      name: 'Robert Garcia',
+      email: 'robert@aquaflow.com',
+      picture: 'https://images.unsplash.com/photo-1507591064344-4c6ce005-128?w=40&h=40&fit=crop'
+    },
+    start_date: '2024-04-03',
+    due_date: '2024-04-12',
+    priority: 1,
+    status: 3,
+    subtasks: [
+      { _id: 'sub9', name: 'Water main connection', status: 1, due_date: '2024-04-03' },
+      { _id: 'sub10', name: 'Drainage system install', status: 1, due_date: '2024-04-10' },
+      { _id: 'sub11', name: 'Fixture rough-in', status: 1, due_date: '2024-04-12' }
+    ],
+    tags: ['Plumbing', 'Installation']
+  },
+  {
+    _id: '5',
+    project_id: '69215e0f2e00995abecedd82',
+    name: 'Drywall Installation',
+    description: 'Hang and finish drywall throughout building',
+    assignee_id: 'drywall1',
+    assignee: {
+      name: 'Thomas Baker',
+      email: 'thomas@drywallmasters.com',
+      picture: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=40&h=40&fit=crop'
+    },
+    start_date: '2024-04-18',
+    due_date: '2024-04-30',
+    priority: 2,
+    status: 0,
+    subtasks: [
+      { _id: 'sub12', name: 'Material delivery', status: 0, due_date: '2024-04-17' },
+      { _id: 'sub13', name: 'Drywall hanging', status: 0, due_date: '2024-04-25' },
+      { _id: 'sub14', name: 'Taping and mudding', status: 0, due_date: '2024-04-30' }
+    ],
+    tags: ['Drywall', 'Interior']
+  },
+  {
+    _id: '6',
+    project_id: '69215e0f2e00995abecedd82',
+    name: 'Roofing Installation',
+    description: 'Install asphalt shingle roofing system',
+    assignee_id: 'roof1',
+    assignee: {
+      name: 'David Miller',
+      email: 'david@toproofing.com',
+      picture: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=40&h=40&fit=crop'
+    },
+    start_date: '2024-03-25',
+    due_date: '2024-04-05',
+    priority: 1,
+    status: 1,
+    subtasks: [
+      { _id: 'sub15', name: 'Underlayment installed', status: 1, due_date: '2024-03-28' },
+      { _id: 'sub16', name: 'Shingle installation', status: 0, due_date: '2024-04-03' }
+    ],
+    tags: ['Roofing', 'Exterior']
+  }
+];
 
   // Priority options
   priorityOptions = [
