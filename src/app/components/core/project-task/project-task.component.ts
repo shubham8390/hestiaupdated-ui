@@ -52,7 +52,6 @@ export class ProjectTaskComponent implements OnInit {
       project_id: [this.projectId || '', Validators.required],
       name: ['', [Validators.required, Validators.minLength(3)]],
       assignee: [''],
-       start_date: [''],
       due_date: [''],
       priority: ['MEDIUM'],
       status: ['TO DO'],
@@ -60,54 +59,11 @@ export class ProjectTaskComponent implements OnInit {
     });
   }
 
-GetStatusId(status:any){
-    if(status==='TO DO'){
-      return 0;
-    }
-     if(status==='IN PROGRESS'){
-      return 1;
-    }
-     if(status==='DONE'){
-      return 2;
-    }
-    return 0;
-  }
-  GetPriorityStatus(priority:any){
- if(priority==='MEDIUM'){
-      return 2;
-    }
-     if(priority==='HIGH'){
-      return 1;
-    }
-     if(priority==='LOW'){
-      return 0;
-    }
-    return 0;
-  }
-userId:any
- submit(): void {
-    debugger
+  submit(): void {
     if (this.projectForm.valid) {
-      this.userId = localStorage.getItem("user_id");
       const reqobject = this.projectForm.value;
-      console.log(reqobject)
-      let obj={
-  "project_id":reqobject.project_id,
-  "name": reqobject.name,
-  "assignee_id": this.userId ,
-  "assignee": { 
-    "name": "string",
-    "email": "string",
-    "picture": "string"
-  },
-  "start_date": reqobject.start_date,
-  "due_date": reqobject.due_date,
-  "priority":   this.GetPriorityStatus(reqobject.priority),
-  "status": this.GetStatusId(reqobject.status)
-}
 
-
-      this.apiservice.addprojecttask(obj,reqobject.project_id).subscribe(
+      this.apiservice.addprojecttask(reqobject).subscribe(
         rs => {
           this.toastr.success("Task Added Successfully");
           this.projectForm.reset();
@@ -121,7 +77,6 @@ userId:any
       this.toastr.warning("Please fill all required fields");
     }
   }
-
 
   get comments(): FormArray {
     return this.projectForm.get('comments') as FormArray;

@@ -30,6 +30,21 @@ export class DistributionWaterfallComponent implements OnInit {
       name: "Metro Bank & Trust",
       type: "Bank",
       percentage: 60
+    },
+    {
+      name: "Anderson Development Group",
+      type: "Developer",
+      percentage: 25
+    },
+    {
+      name: "Global Investment Partners",
+      type: "Investor",
+      percentage: 10
+    },
+    {
+      name: "City Municipal Authority",
+      type: "Government",
+      percentage: 5
     }
   ];
 
@@ -66,17 +81,14 @@ export class DistributionWaterfallComponent implements OnInit {
 
 projectData:any
   getStakeHolderData(){
-    let id=  localStorage.getItem("projectId");
-     let name=  localStorage.getItem("projectname");
+    let id=  sessionStorage.getItem("projectId");
+     let name=  sessionStorage.getItem("projectname");
     this.apiservice.getstakeholderdata(name,id).subscribe(res=>{
       this.projectData=res;
-      this.stakeholders=[]
-      this.stakeholders=this.projectData.stakeholders
     })
   }
 
   private generatePieSlices() {
-    debugger
     let currentAngle = 0;
     const radius = 16;
     const centerX = 21;
