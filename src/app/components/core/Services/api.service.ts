@@ -190,8 +190,16 @@ export class ApiService {
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}project/task/${taskid}`
+    let uri = `${this.apiUri}task/?id=${taskid}`
     return this.http.delete<any>(uri,{headers});
+  }
+
+    public MoveTaskbyId(taskid: any,status:any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
+    let uri = `${this.apiUri}task/move?task_id=${taskid}&status=${status}`
+    return this.http.patch<any>(uri,{headers});
   }
 
   public addprojecttask(taskdetails: any,projetid:any): Observable<any> {
@@ -202,12 +210,20 @@ export class ApiService {
     return this.http.post<any>(uri, taskdetails,{headers: headers});
   }
 
+    public addprojecttasksubtask(taskdetails: any,taskId:any): Observable<any> {
+ const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
+    let uri = `${this.apiUri}task/subtask/?task_id=${taskId}`
+    return this.http.post<any>(uri, taskdetails,{headers: headers});
+  }
+
 
   public updateprojecttask(taskdetails: any): Observable<any> {
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
   });
-    let uri = `${this.apiUri}project/task/`
+    let uri = `${this.apiUri}task/`
     return this.http.put<any>(uri, taskdetails,{headers: headers});
   }
 

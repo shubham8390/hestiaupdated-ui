@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ApiService } from '../Services/api.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 // Define interfaces
 interface User {
@@ -71,98 +74,70 @@ export class JiraBoardComponent implements OnInit {
   // Status columns with proper typing
   statusColumns: StatusColumn[] = [
     { id: 'todo', name: 'To Do', color: 'bg-blue-500', tasks: [] },
-    { id: 'in-progress', name: 'In Progress', color: 'bg-yellow-500', tasks: [] },
+    { id: 'inprogress', name: 'In Progress', color: 'bg-yellow-500', tasks: [] },
     { id: 'review', name: 'Review', color: 'bg-purple-500', tasks: [] },
     { id: 'done', name: 'Done', color: 'bg-green-500', tasks: [] }
   ];
 
-// Dummy users data for construction industry
-users: User[] = [
-  {
-    id: 'user1',
-    name: 'Carlos Rodriguez',
-    email: 'carlos@buildersco.com',
-    picture: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop',
-    role: 'Project Manager'
-  },
-  {
-    id: 'user2',
-    name: 'Mike Thompson',
-    email: 'mike@steelworks.com',
-    picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop',
-    role: 'Structural Engineer'
-  },
-  {
-    id: 'user3',
-    name: 'James Wilson',
-    email: 'james@sparkyelectric.com',
-    picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop',
-    role: 'Electrical Foreman'
-  },
-  {
-    id: 'user4',
-    name: 'Robert Garcia',
-    email: 'robert@aquaflow.com',
-    picture: 'https://images.unsplash.com/photo-1507591064344-4c6ce005-128?w=40&h=40&fit=crop',
-    role: 'Plumbing Supervisor'
-  },
-  {
-    id: 'user5',
-    name: 'Thomas Baker',
-    email: 'thomas@drywallmasters.com',
-    picture: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=40&h=40&fit=crop',
-    role: 'Drywall Specialist'
-  },
-  {
-    id: 'user6',
-    name: 'David Miller',
-    email: 'david@toproofing.com',
-    picture: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=40&h=40&fit=crop',
-    role: 'Roofing Contractor'
-  },
-  {
-    id: 'user7',
-    name: 'Samuel Carter',
-    email: 'samuel@concretepros.com',
-    picture: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=40&h=40&fit=crop',
-    role: 'Concrete Foreman'
-  },
-  {
-    id: 'user8',
-    name: 'Maria Hernandez',
-    email: 'maria@buildersco.com',
-    picture: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop',
-    role: 'Site Supervisor'
-  },
-  {
-    id: 'user9',
-    name: 'William Chen',
-    email: 'william@hvacpros.com',
-    picture: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop',
-    role: 'HVAC Technician'
-  },
-  {
-    id: 'user10',
-    name: 'Jennifer Lewis',
-    email: 'jennifer@buildersco.com',
-    picture: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=40&h=40&fit=crop',
-    role: 'Architect'
-  },
-  {
-    id: 'user11',
-    name: 'Anthony Moore',
-    email: 'anthony@finishingtouches.com',
-    picture: 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=40&h=40&fit=crop',
-    role: 'Finish Carpenter'
-  },
-  {
-    id: 'user12',
-    name: 'Patricia Allen',
-    email: 'patricia@buildersco.com',
-    picture: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop',
-    role: 'Safety Officer'
-  }
-];
+  // Dummy users data
+  users: User[] = [
+    {
+      id: 'user1',
+      name: 'John Doe',
+      email: 'john@example.com',
+      picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop',
+      role: 'Frontend Developer'
+    },
+    {
+      id: 'user2',
+      name: 'Jane Smith',
+      email: 'jane@example.com',
+      picture: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop',
+      role: 'Backend Developer'
+    },
+    {
+      id: 'user3',
+      name: 'Mike Johnson',
+      email: 'mike@example.com',
+      picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop',
+      role: 'DevOps Engineer'
+    },
+    {
+      id: 'user4',
+      name: 'Sarah Wilson',
+      email: 'sarah@example.com',
+      picture: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop',
+      role: 'QA Engineer'
+    },
+    {
+      id: 'user5',
+      name: 'Alex Chen',
+      email: 'alex@example.com',
+      picture: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop',
+      role: 'UI/UX Designer'
+    },
+    {
+      id: 'user6',
+      name: 'Emily Brown',
+      email: 'emily@example.com',
+      picture: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=40&h=40&fit=crop',
+      role: 'Project Manager'
+    },
+    {
+      id: 'user7',
+      name: 'David Lee',
+      email: 'david@example.com',
+      picture: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop',
+      role: 'Full Stack Developer'
+    },
+    {
+      id: 'user8',
+      name: 'Lisa Taylor',
+      email: 'lisa@example.com',
+      picture: 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=40&h=40&fit=crop',
+      role: 'Mobile Developer'
+    }
+  ];
 
   // Tasks data
   tasks: Task[] = [];
@@ -185,141 +160,90 @@ users: User[] = [
   // Loading states
   isLoading = false;
   searchTerm: string = '';
-
+projectId:any
   // Dummy data with proper typing
-// Dummy data for construction/building projects
-dummyTasks: Task[] = [
-  {
-    _id: '1',
-    project_id: '69215e0f2e00995abecedd82',
-    name: 'Foundation Pouring',
-    description: 'Pour concrete foundation for residential building',
-    assignee_id: 'foreman1',
-    assignee: {
-      name: 'Carlos Rodriguez',
-      email: 'carlos@buildersco.com',
-      picture: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop'
-    },
-    start_date: '2024-03-15',
-    due_date: '2024-03-20',
-    priority: 2,
-    status: 0,
-    subtasks: [
-      { _id: 'sub1', name: 'Excavation complete', status: 1, due_date: '2024-03-12' },
-      { _id: 'sub2', name: 'Formwork installation', status: 0, due_date: '2024-03-18' },
-      { _id: 'sub3', name: 'Rebar placement', status: 0, due_date: '2024-03-19' }
-    ],
-    tags: ['Foundation', 'Concrete']
-  },
-  {
-    _id: '2',
-    project_id: '69215e0f2e00995abecedd82',
-    name: 'Structural Framing',
-    description: 'Install structural steel beams and columns',
-    assignee_id: 'steel1',
-    assignee: {
-      name: 'Mike Thompson',
-      email: 'mike@steelworks.com',
-      picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop'
-    },
-    start_date: '2024-03-22',
-    due_date: '2024-04-10',
-    priority: 1,
-    status: 1,
-    subtasks: [
-      { _id: 'sub4', name: 'Beam delivery on site', status: 1, due_date: '2024-03-20' },
-      { _id: 'sub5', name: 'Column installation', status: 0, due_date: '2024-03-28' }
-    ],
-    tags: ['Structural', 'Steelwork']
-  },
-  {
-    _id: '3',
-    project_id: '69215e0f2e00995abecedd82',
-    name: 'Electrical Rough-In',
-    description: 'Install electrical wiring and conduit before drywall',
-    assignee_id: 'electric1',
-    assignee: {
-      name: 'James Wilson',
-      email: 'james@sparkyelectric.com',
-      picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop'
-    },
-    start_date: '2024-04-05',
-    due_date: '2024-04-15',
-    priority: 0,
-    status: 2,
-    subtasks: [
-      { _id: 'sub6', name: 'Main panel installation', status: 1, due_date: '2024-04-05' },
-      { _id: 'sub7', name: 'Circuit wiring complete', status: 1, due_date: '2024-04-12' },
-      { _id: 'sub8', name: 'Inspection scheduled', status: 0, due_date: '2024-04-16' }
-    ],
-    tags: ['Electrical', 'Rough-In']
-  },
-  {
-    _id: '4',
-    project_id: '69215e0f2e00995abecedd82',
-    name: 'Plumbing Installation',
-    description: 'Install water supply and drainage systems',
-    assignee_id: 'plumb1',
-    assignee: {
-      name: 'Robert Garcia',
-      email: 'robert@aquaflow.com',
-      picture: 'https://images.unsplash.com/photo-1507591064344-4c6ce005-128?w=40&h=40&fit=crop'
-    },
-    start_date: '2024-04-03',
-    due_date: '2024-04-12',
-    priority: 1,
-    status: 3,
-    subtasks: [
-      { _id: 'sub9', name: 'Water main connection', status: 1, due_date: '2024-04-03' },
-      { _id: 'sub10', name: 'Drainage system install', status: 1, due_date: '2024-04-10' },
-      { _id: 'sub11', name: 'Fixture rough-in', status: 1, due_date: '2024-04-12' }
-    ],
-    tags: ['Plumbing', 'Installation']
-  },
-  {
-    _id: '5',
-    project_id: '69215e0f2e00995abecedd82',
-    name: 'Drywall Installation',
-    description: 'Hang and finish drywall throughout building',
-    assignee_id: 'drywall1',
-    assignee: {
-      name: 'Thomas Baker',
-      email: 'thomas@drywallmasters.com',
-      picture: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=40&h=40&fit=crop'
-    },
-    start_date: '2024-04-18',
-    due_date: '2024-04-30',
-    priority: 2,
-    status: 0,
-    subtasks: [
-      { _id: 'sub12', name: 'Material delivery', status: 0, due_date: '2024-04-17' },
-      { _id: 'sub13', name: 'Drywall hanging', status: 0, due_date: '2024-04-25' },
-      { _id: 'sub14', name: 'Taping and mudding', status: 0, due_date: '2024-04-30' }
-    ],
-    tags: ['Drywall', 'Interior']
-  },
-  {
-    _id: '6',
-    project_id: '69215e0f2e00995abecedd82',
-    name: 'Roofing Installation',
-    description: 'Install asphalt shingle roofing system',
-    assignee_id: 'roof1',
-    assignee: {
-      name: 'David Miller',
-      email: 'david@toproofing.com',
-      picture: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=40&h=40&fit=crop'
-    },
-    start_date: '2024-03-25',
-    due_date: '2024-04-05',
-    priority: 1,
-    status: 1,
-    subtasks: [
-      { _id: 'sub15', name: 'Underlayment installed', status: 1, due_date: '2024-03-28' },
-      { _id: 'sub16', name: 'Shingle installation', status: 0, due_date: '2024-04-03' }
-    ],
-    tags: ['Roofing', 'Exterior']
-  }
-];
+  // dummyTasks: Task[] = [
+  //   {
+  //     _id: '1',
+  //     project_id: '69215e0f2e00995abecedd82',
+  //     name: 'Design Homepage',
+  //     description: 'Create homepage design with modern UI elements',
+  //     assignee_id: 'user5',
+  //     assignee: {
+  //       name: 'Alex Chen',
+  //       email: 'alex@example.com',
+  //       picture: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop'
+  //     },
+  //     start_date: '2024-01-15',
+  //     due_date: '2024-01-25',
+  //     priority: 2,
+  //     status: 0,
+  //     subtasks: [
+  //       { _id: 'sub1', name: 'Create wireframes', status: 1, due_date: '2024-01-18' },
+  //       { _id: 'sub2', name: 'Design color scheme', status: 0, due_date: '2024-01-20' }
+  //     ],
+  //     tags: ['UI/UX', 'Design']
+  //   },
+  //   {
+  //     _id: '2',
+  //     project_id: '69215e0f2e00995abecedd82',
+  //     name: 'API Integration',
+  //     description: 'Integrate backend APIs with frontend',
+  //     assignee_id: 'user2',
+  //     assignee: {
+  //       name: 'Jane Smith',
+  //       email: 'jane@example.com',
+  //       picture: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop'
+  //     },
+  //     start_date: '2024-01-10',
+  //     due_date: '2024-01-30',
+  //     priority: 1,
+  //     status: 1,
+  //     subtasks: [],
+  //     tags: ['Backend', 'API']
+  //   },
+  //   {
+  //     _id: '3',
+  //     project_id: '69215e0f2e00995abecedd82',
+  //     name: 'Database Optimization',
+  //     description: 'Optimize database queries and indexing',
+  //     assignee_id: 'user3',
+  //     assignee: {
+  //       name: 'Mike Johnson',
+  //       email: 'mike@example.com',
+  //       picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop'
+  //     },
+  //     start_date: '2024-01-20',
+  //     due_date: '2024-02-05',
+  //     priority: 0,
+  //     status: 2,
+  //     subtasks: [
+  //       { _id: 'sub3', name: 'Analyze query performance', status: 0, due_date: '2024-01-25' }
+  //     ],
+  //     tags: ['Database', 'Performance']
+  //   },
+  //   {
+  //     _id: '4',
+  //     project_id: '69215e0f2e00995abecedd82',
+  //     name: 'Mobile App Testing',
+  //     description: 'Test mobile application on different devices',
+  //     assignee_id: 'user4',
+  //     assignee: {
+  //       name: 'Sarah Wilson',
+  //       email: 'sarah@example.com',
+  //       picture: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop'
+  //     },
+  //     start_date: '2024-01-25',
+  //     due_date: '2024-02-10',
+  //     priority: 1,
+  //     status: 3,
+  //     subtasks: [
+  //       { _id: 'sub4', name: 'iOS testing', status: 1, due_date: '2024-01-30' },
+  //       { _id: 'sub5', name: 'Android testing', status: 1, due_date: '2024-01-30' }
+  //     ],
+  //     tags: ['Testing', 'Mobile']
+  //   }
+  // ];
 
   // Priority options
   priorityOptions = [
@@ -329,13 +253,25 @@ dummyTasks: Task[] = [
   ];
 
   ngOnInit() {
+     const projectId = this.route.snapshot.queryParamMap.get('projectId');
+      if (projectId) {
+        this.projectId = projectId;
+      }
     this.initializeForms();
     this.loadTasks();
   }
 
+    constructor(
+     
+      private apiservice: ApiService, 
+      private route: ActivatedRoute, 
+      private toastr: ToastrService, 
+      private router: Router
+    ) { }
+
   initializeForms() {
     this.taskForm = this.fb.group({
-      project_id: ['69215e0f2e00995abecedd82', Validators.required],
+      project_id: ['', Validators.required],
       name: ['', Validators.required],
       description: [''],
       assignee_id: [''],
@@ -359,37 +295,47 @@ dummyTasks: Task[] = [
         picture: ['']
       }),
       due_date: [''],
-      priority: [0],
-      status: [0]
+      priority: [''],
+      status: ['']
     });
   }
 
   loadTasks() {
     this.isLoading = true;
-    
+    this.apiservice.getalltaskofProject(this.projectId).subscribe(res=>{
+      this.tasks=res
+    })
     // Simulate API call with dummy data
     setTimeout(() => {
-      this.tasks = [...this.dummyTasks];
-      this.distributeTasksToColumns();
+     
+      this.distributeTasksToColumns( this.tasks);
       this.isLoading = false;
     }, 1000);
   }
 
-  distributeTasksToColumns() {
-    // Clear existing tasks in columns
-    this.statusColumns.forEach(col => col.tasks = []);
+  // distributeTasksToColumns() {
+  //   debugger
+  //   // Clear existing tasks in columns
+  //   this.statusColumns.forEach(col => col.tasks = []);
     
-    // Distribute tasks to appropriate columns
-    this.tasks.forEach(task => {
-      const column = this.statusColumns[task.status];
-      if (column) {
-        column.tasks.push(task);
-      }
-    });
-  }
+  //   // Distribute tasks to appropriate columns
+  //   this.tasks.forEach(task => {
+  //     const column = task;
+  //     if (column) {
+  //       column.tasks.push(task);
+  //     }
+  //   });
+  // }
+
+  distributeTasksToColumns(boardData: any) {
+  this.statusColumns.forEach(col => {
+    col.tasks = boardData[col.id] || [];
+  });
+}
 
   // FIXED: Updated the drop method signature
   drop(event: CdkDragDrop<Task[]>) {
+    debugger
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -404,7 +350,7 @@ dummyTasks: Task[] = [
       const task = event.container.data[event.currentIndex];
       const newColumnIndex = this.statusColumns.findIndex(col => col.id === event.container.id);
       if (newColumnIndex !== -1) {
-        task.status = newColumnIndex;
+      //  task.status = newColumnIndex;
         this.updateTaskStatus(task._id, newColumnIndex);
       }
     }
@@ -412,7 +358,11 @@ dummyTasks: Task[] = [
 
   updateTaskStatus(taskId: string, status: number) {
     console.log('Updating task status:', taskId, status);
-    // API call would go here
+   this.apiservice.MoveTaskbyId(taskId,status).subscribe(res=>{
+    this.loadTasks
+   },error=>{
+
+   })
   }
 
   // Filter tasks based on search term
@@ -476,46 +426,72 @@ dummyTasks: Task[] = [
     
     if (this.modalMode === 'create') {
       // Simulate API call
-      const newTask: Task = {
-        _id: (this.tasks.length + 1).toString(),
-        ...taskData,
-        assignee_id: formData.assignee_id,
-        subtasks: [],
-        tags: []
-      };
-      this.tasks.push(newTask);
-      this.distributeTasksToColumns();
+      this.submit()
       this.closeTaskModal();
     } else {
+      debugger
       // Simulate API call
-      const index = this.tasks.findIndex(t => t._id === this.selectedTask?._id);
-      if (index !== -1 && this.selectedTask) {
-        this.tasks[index] = { 
-          ...this.tasks[index], 
-          ...taskData,
-          assignee_id: formData.assignee_id
-        };
-        this.distributeTasksToColumns();
-      }
+      // const index = this.tasks.findIndex(t => t._id === this.selectedTask?._id);
+      // if (index !== -1 && this.selectedTask) {
+      //   this.tasks[index] = { 
+      //     ...this.tasks[index], 
+      //     ...taskData,
+      //     assignee_id: formData.assignee_id
+      //   };
+      //   //this.distributeTasksToColumns();
+      // }
+  this.userId = localStorage.getItem("user_id");
+   
+      let obj={
+  "task_id": this.selectedTask?._id,
+  "project_id": this.projectId,
+  "name": this.taskForm.value.name,
+  "assignee_id": this.userId ,
+  "assignee": {
+    "name": "string",
+    "email": "string",
+    "picture": "string"
+  },
+  "start_date":this.taskForm.value.start_date,
+  "due_date":this.taskForm.value.due_date,
+  "priority": this.taskForm.value.priority,
+  "status": this.taskForm.value.status
+}
+  this.apiservice.updateprojecttask(obj).subscribe(res=>{
+    this.toastr.success("Task Updated Successfully...")
+      this.loadTasks();
+  },error=>[
+       this.toastr.warning("Something went wrong...")
+  ])
+
       this.closeTaskModal();
     }
   }
 
   confirmDeleteTask(task: Task) {
+    debugger
     this.selectedTask = task;
     this.isDeleteModalOpen = true;
   }
 
   deleteTask() {
+    debugger
     // Simulate API call
-    this.tasks = this.tasks.filter(t => t._id !== this.selectedTask?._id);
-    this.distributeTasksToColumns();
+    // this.tasks = this.tasks.filter(t => t._id !== this.selectedTask?._id);
+    //this.distributeTasksToColumns();
+    this.apiservice.deleteTaskbyId(this.selectedTask?._id).subscribe(res=>{
+      this.toastr.success("Task Deleted Successfully..")
+    },error=>[
+  this.toastr.warning("Something went wrong..")
+    ])
     this.isDeleteModalOpen = false;
+    this.loadTasks()
     this.selectedTask = null;
   }
 
   // Subtask CRUD Operations
   openSubtaskModal(mode: 'create' | 'edit', task: Task, subtask?: Subtask) {
+    debugger
     this.selectedTask = task;
     this.selectedSubtask = subtask || null;
     this.modalMode = mode;
@@ -543,43 +519,54 @@ dummyTasks: Task[] = [
   }
 
   saveSubtask() {
-    if (this.subtaskForm.invalid || !this.selectedTask) return;
+    // if (this.subtaskForm.invalid || !this.selectedTask) return;
 
-    const formData = this.subtaskForm.value;
-    const selectedUser = this.getSelectedUser(formData.assignee_id);
+    // const formData = this.subtaskForm.value;
+    // const selectedUser = this.getSelectedUser(formData.assignee_id);
     
-    const subtaskData = {
-      ...formData,
-      assignee: selectedUser ? {
-        name: selectedUser.name,
-        email: selectedUser.email,
-        picture: selectedUser.picture
-      } : undefined
-    };
+    // const subtaskData = {
+    //   ...formData,
+    //   assignee: selectedUser ? {
+    //     name: selectedUser.name,
+    //     email: selectedUser.email,
+    //     picture: selectedUser.picture
+    //   } : undefined
+    // };
     
-    if (this.modalMode === 'create') {
-      // Simulate API call
-      const newSubtask: Subtask = {
-        _id: `sub${Date.now()}`,
-        ...subtaskData
-      };
-      
-      if (!this.selectedTask.subtasks) {
-        this.selectedTask.subtasks = [];
-      }
-      this.selectedTask.subtasks.push(newSubtask);
-      this.closeSubtaskModal();
-    } else {
-      // Simulate API call
-      const index = this.selectedTask.subtasks.findIndex(s => s._id === this.selectedSubtask?._id);
-      if (index !== -1 && this.selectedSubtask) {
-        this.selectedTask.subtasks[index] = { 
-          ...this.selectedTask.subtasks[index], 
-          ...subtaskData 
-        };
-      }
-      this.closeSubtaskModal();
-    }
+    // if (this.modalMode === 'create') {
+    //   // Simulate API call
+    //   this.submit()
+    //   this.closeSubtaskModal();
+    // } else {
+    //   // Simulate API call
+    //   const index = this.selectedTask.subtasks.findIndex(s => s._id === this.selectedSubtask?._id);
+    //   if (index !== -1 && this.selectedSubtask) {
+    //     this.selectedTask.subtasks[index] = { 
+    //       ...this.selectedTask.subtasks[index], 
+    //       ...subtaskData 
+    //     };
+    //   }
+    //   this.closeSubtaskModal();
+    // }
+ this.userId = localStorage.getItem("user_id");
+    let obj={
+  "name": this.subtaskForm.value.name,
+  "assignee_id":this.userId,
+  "assignee": {
+    "name": "",
+    "email": "",
+    "picture": ""
+  },
+  "due_date": this.subtaskForm.value.due_date,
+  "priority": this.subtaskForm.value.priority,
+  "status": this.subtaskForm.value.status
+}
+this.apiservice.addprojecttasksubtask(obj,this.selectedTask?._id).subscribe(res=>{
+  this.toastr.success("Subtask added succesfully..")
+},error=>[
+    this.toastr.warning("something went wrong..")
+])
+     this.closeSubtaskModal();
   }
 
   confirmDeleteSubtask(task: Task, subtask: Subtask) {
@@ -649,5 +636,67 @@ dummyTasks: Task[] = [
     } catch (e) {
       return '';
     }
+  }
+
+GetStatusId(status:any){
+    if(status==='todo'){
+      return 0;
+    }
+     if(status==='in-progress'){
+      return 1;
+    }
+     if(status==='done'){
+      return 2;
+    }
+    if(status==='review'){
+      return 3
+    }
+
+
+    return 0;
+  }
+  GetPriorityStatus(priority:any){
+ if(priority==='MEDIUM'){
+      return 2;
+    }
+     if(priority==='HIGH'){
+      return 1;
+    }
+     if(priority==='LOW'){
+      return 0;
+    }
+    return 0;
+  }
+
+  userId:any
+ submit(): void {
+    debugger
+    
+      this.userId = localStorage.getItem("user_id");
+   
+      let obj={
+  "project_id":this.projectId,
+  "name": this.taskForm.value.name,
+  "assignee_id": this.userId ,
+  "assignee": { 
+    "name": "",
+    "email": "",
+    "picture": ""
+  },
+  "start_date": this.taskForm.value.start_date,
+  "due_date": this.taskForm.value.due_date,
+  "priority":  this.taskForm.value.priority,
+  "status": this.taskForm.value.status
+}
+      this.apiservice.addprojecttask(obj,this.projectId).subscribe(
+        rs => {
+          this.toastr.success("Task Added Successfully");
+       
+        },
+        error => {
+          this.toastr.error("Failed to add task");
+        }
+      );
+   
   }
 }

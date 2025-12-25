@@ -29,8 +29,8 @@ export class AuthenticationComponent {
   //   })
   // }
   signIn() {
-   window.location.href = 'https://lamonica-prechloric-nonrefractively.ngrok-free.dev/google/login';
-  // window.location.href = 'http://127.0.0.1:8000/google/login';
+  window.location.href = 'https://lamonica-prechloric-nonrefractively.ngrok-free.dev/google/login';
+  //  window.location.href = 'http://127.0.0.1:8000/google/login';
 
   }
   signInwithMicrosoft() {
