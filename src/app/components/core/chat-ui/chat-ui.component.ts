@@ -79,6 +79,7 @@ export class ChatUIComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   // Project & Auth
   projecteditId: string = '';
+  projectName:any=''
   private routeSubscription!: Subscription;
 
   // Available tools
@@ -190,12 +191,14 @@ user_id :any;
     this.routeSubscription = this.route.queryParams.subscribe(params => {
       const code = params['code'];
       const projectId = params['projectId'];
-      
+      const projectName=params['projectname']
+   
       if (code) {
         localStorage.setItem('token', code);
       }
       
       if (projectId) {
+           this.projectName=projectName
         this.projecteditId = projectId;
       }
     });

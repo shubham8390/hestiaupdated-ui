@@ -194,6 +194,15 @@ export class ApiService {
     return this.http.delete<any>(uri,{headers});
   }
 
+  public deleteProjectTaskSubTask(taskid: any,subTaskId:any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
+    let uri = `${this.apiUri}task/subtask/?task_id=${taskid.task_id}&subtask_id=${subTaskId}`
+    return this.http.delete<any>(uri,{headers});
+  }
+
+
     public MoveTaskbyId(taskid: any,status:any): Observable<any> {
      const headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true'
@@ -224,6 +233,14 @@ export class ApiService {
     'ngrok-skip-browser-warning': 'true'
   });
     let uri = `${this.apiUri}task/`
+    return this.http.put<any>(uri, taskdetails,{headers: headers});
+  }
+  
+    public updateprojectSubtask(taskdetails: any,taskId:any,subTaskId:any): Observable<any> {
+     const headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true'
+  });
+    let uri = `${this.apiUri}task/subtask/?task_id=${taskId.task_id}&subtask_id=${subTaskId}`
     return this.http.put<any>(uri, taskdetails,{headers: headers});
   }
 

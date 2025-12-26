@@ -313,8 +313,8 @@ export class ProjectDetailsComponent implements OnInit {
     // window.open(document.url, '_blank');
   }
 
- chatProject(projectId: any) {
-    this.router.navigate(['/chat'], { queryParams: { projectId: projectId } });
+ chatProject(projectId: any,projectname:any) {
+    this.router.navigate(['/projectchat'], { queryParams: { projectId: projectId ,projectname:projectname } });
   }
 
   // Delete project methods

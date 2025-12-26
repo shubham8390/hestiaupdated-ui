@@ -14,7 +14,11 @@ export const routes: Routes = [
     loadComponent: () => import('./components/core/chat-ui/chat-ui.component').then(m => m.ChatUIComponent),
    // canActivate: [authGuard],
   },
-
+  {
+    path: 'projectchat',
+    loadComponent: () => import('./components/core/chat-ui/chat-ui.component').then(m => m.ChatUIComponent),
+   // canActivate: [authGuard],
+  },
   {
     path: 'customerchat',
     loadComponent: () => import('./components/core/customer-chat-ui/customer-chat-ui.component').then(m => m.CustomerChatUiComponent),

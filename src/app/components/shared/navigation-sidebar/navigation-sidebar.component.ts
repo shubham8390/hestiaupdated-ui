@@ -127,6 +127,7 @@ export class NavigationSidebarComponent implements OnInit, OnDestroy {
 
   // User settings methods
   onToggleUserSettings() {
+    debugger
     this.isUserSettingsOpen = !this.isUserSettingsOpen;
   }
 

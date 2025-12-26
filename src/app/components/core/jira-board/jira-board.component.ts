@@ -161,89 +161,7 @@ export class JiraBoardComponent implements OnInit {
   isLoading = false;
   searchTerm: string = '';
 projectId:any
-  // Dummy data with proper typing
-  // dummyTasks: Task[] = [
-  //   {
-  //     _id: '1',
-  //     project_id: '69215e0f2e00995abecedd82',
-  //     name: 'Design Homepage',
-  //     description: 'Create homepage design with modern UI elements',
-  //     assignee_id: 'user5',
-  //     assignee: {
-  //       name: 'Alex Chen',
-  //       email: 'alex@example.com',
-  //       picture: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=40&h=40&fit=crop'
-  //     },
-  //     start_date: '2024-01-15',
-  //     due_date: '2024-01-25',
-  //     priority: 2,
-  //     status: 0,
-  //     subtasks: [
-  //       { _id: 'sub1', name: 'Create wireframes', status: 1, due_date: '2024-01-18' },
-  //       { _id: 'sub2', name: 'Design color scheme', status: 0, due_date: '2024-01-20' }
-  //     ],
-  //     tags: ['UI/UX', 'Design']
-  //   },
-  //   {
-  //     _id: '2',
-  //     project_id: '69215e0f2e00995abecedd82',
-  //     name: 'API Integration',
-  //     description: 'Integrate backend APIs with frontend',
-  //     assignee_id: 'user2',
-  //     assignee: {
-  //       name: 'Jane Smith',
-  //       email: 'jane@example.com',
-  //       picture: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop'
-  //     },
-  //     start_date: '2024-01-10',
-  //     due_date: '2024-01-30',
-  //     priority: 1,
-  //     status: 1,
-  //     subtasks: [],
-  //     tags: ['Backend', 'API']
-  //   },
-  //   {
-  //     _id: '3',
-  //     project_id: '69215e0f2e00995abecedd82',
-  //     name: 'Database Optimization',
-  //     description: 'Optimize database queries and indexing',
-  //     assignee_id: 'user3',
-  //     assignee: {
-  //       name: 'Mike Johnson',
-  //       email: 'mike@example.com',
-  //       picture: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop'
-  //     },
-  //     start_date: '2024-01-20',
-  //     due_date: '2024-02-05',
-  //     priority: 0,
-  //     status: 2,
-  //     subtasks: [
-  //       { _id: 'sub3', name: 'Analyze query performance', status: 0, due_date: '2024-01-25' }
-  //     ],
-  //     tags: ['Database', 'Performance']
-  //   },
-  //   {
-  //     _id: '4',
-  //     project_id: '69215e0f2e00995abecedd82',
-  //     name: 'Mobile App Testing',
-  //     description: 'Test mobile application on different devices',
-  //     assignee_id: 'user4',
-  //     assignee: {
-  //       name: 'Sarah Wilson',
-  //       email: 'sarah@example.com',
-  //       picture: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop'
-  //     },
-  //     start_date: '2024-01-25',
-  //     due_date: '2024-02-10',
-  //     priority: 1,
-  //     status: 3,
-  //     subtasks: [
-  //       { _id: 'sub4', name: 'iOS testing', status: 1, due_date: '2024-01-30' },
-  //       { _id: 'sub5', name: 'Android testing', status: 1, due_date: '2024-01-30' }
-  //     ],
-  //     tags: ['Testing', 'Mobile']
-  //   }
-  // ];
+
 
   // Priority options
   priorityOptions = [
@@ -282,8 +200,8 @@ projectId:any
       }),
       start_date: [''],
       due_date: [''],
-      priority: [0],
-      status: [0]
+      priority: [''],
+      status: ['']
     });
 
     this.subtaskForm = this.fb.group({
@@ -294,15 +212,18 @@ projectId:any
         email: [''],
         picture: ['']
       }),
+       start_date: [''],
       due_date: [''],
       priority: [''],
-      status: ['']
+      status: [''],
+       description: [''],
     });
   }
 
   loadTasks() {
     this.isLoading = true;
     this.apiservice.getalltaskofProject(this.projectId).subscribe(res=>{
+      this.tasks=[]
       this.tasks=res
     })
     // Simulate API call with dummy data
@@ -313,20 +234,7 @@ projectId:any
     }, 1000);
   }
 
-  // distributeTasksToColumns() {
-  //   debugger
-  //   // Clear existing tasks in columns
-  //   this.statusColumns.forEach(col => col.tasks = []);
-    
-  //   // Distribute tasks to appropriate columns
-  //   this.tasks.forEach(task => {
-  //     const column = task;
-  //     if (column) {
-  //       column.tasks.push(task);
-  //     }
-  //   });
-  // }
-
+  
   distributeTasksToColumns(boardData: any) {
   this.statusColumns.forEach(col => {
     col.tasks = boardData[col.id] || [];
@@ -430,17 +338,7 @@ projectId:any
       this.closeTaskModal();
     } else {
       debugger
-      // Simulate API call
-      // const index = this.tasks.findIndex(t => t._id === this.selectedTask?._id);
-      // if (index !== -1 && this.selectedTask) {
-      //   this.tasks[index] = { 
-      //     ...this.tasks[index], 
-      //     ...taskData,
-      //     assignee_id: formData.assignee_id
-      //   };
-      //   //this.distributeTasksToColumns();
-      // }
-  this.userId = localStorage.getItem("user_id");
+       this.userId = localStorage.getItem("user_id");
    
       let obj={
   "task_id": this.selectedTask?._id,
@@ -455,7 +353,8 @@ projectId:any
   "start_date":this.taskForm.value.start_date,
   "due_date":this.taskForm.value.due_date,
   "priority": this.taskForm.value.priority,
-  "status": this.taskForm.value.status
+  "status": this.taskForm.value.status,
+   "description": this.taskForm.value.description
 }
   this.apiservice.updateprojecttask(obj).subscribe(res=>{
     this.toastr.success("Task Updated Successfully...")
@@ -466,6 +365,7 @@ projectId:any
 
       this.closeTaskModal();
     }
+    this.loadTasks()
   }
 
   confirmDeleteTask(task: Task) {
@@ -481,8 +381,9 @@ projectId:any
     //this.distributeTasksToColumns();
     this.apiservice.deleteTaskbyId(this.selectedTask?._id).subscribe(res=>{
       this.toastr.success("Task Deleted Successfully..")
+       this.loadTasks()
     },error=>[
-  this.toastr.warning("Something went wrong..")
+    this.toastr.warning("Something went wrong..")
     ])
     this.isDeleteModalOpen = false;
     this.loadTasks()
@@ -519,36 +420,9 @@ projectId:any
   }
 
   saveSubtask() {
-    // if (this.subtaskForm.invalid || !this.selectedTask) return;
-
-    // const formData = this.subtaskForm.value;
-    // const selectedUser = this.getSelectedUser(formData.assignee_id);
-    
-    // const subtaskData = {
-    //   ...formData,
-    //   assignee: selectedUser ? {
-    //     name: selectedUser.name,
-    //     email: selectedUser.email,
-    //     picture: selectedUser.picture
-    //   } : undefined
-    // };
-    
-    // if (this.modalMode === 'create') {
-    //   // Simulate API call
-    //   this.submit()
-    //   this.closeSubtaskModal();
-    // } else {
-    //   // Simulate API call
-    //   const index = this.selectedTask.subtasks.findIndex(s => s._id === this.selectedSubtask?._id);
-    //   if (index !== -1 && this.selectedSubtask) {
-    //     this.selectedTask.subtasks[index] = { 
-    //       ...this.selectedTask.subtasks[index], 
-    //       ...subtaskData 
-    //     };
-    //   }
-    //   this.closeSubtaskModal();
-    // }
- this.userId = localStorage.getItem("user_id");
+ debugger
+ if(this.modalMode==='edit'){
+  this.userId = localStorage.getItem("user_id");
     let obj={
   "name": this.subtaskForm.value.name,
   "assignee_id":this.userId,
@@ -557,15 +431,41 @@ projectId:any
     "email": "",
     "picture": ""
   },
+   "start_date": this.subtaskForm.value.start_date,
   "due_date": this.subtaskForm.value.due_date,
   "priority": this.subtaskForm.value.priority,
-  "status": this.subtaskForm.value.status
+  "status": this.subtaskForm.value.status,
+   "description": this.subtaskForm.value.description
+}
+this.apiservice.updateprojectSubtask(obj,this.selectedSubtask,this.selectedSubtask?._id).subscribe(res=>{
+  this.toastr.success("Subtask updated succesfully..")
+  this.loadTasks();
+},error=>[
+    this.toastr.warning("something went wrong..")
+])
+ }else{
+this.userId = localStorage.getItem("user_id");
+    let obj={
+  "name": this.subtaskForm.value.name,
+  "assignee_id":this.userId,
+  "assignee": {
+    "name": "",
+    "email": "",
+    "picture": ""
+  },
+   "start_date": this.subtaskForm.value.start_date,
+  "due_date": this.subtaskForm.value.due_date,
+  "priority": this.subtaskForm.value.priority,
+  "status": this.subtaskForm.value.status,
+   "description": this.subtaskForm.value.description
 }
 this.apiservice.addprojecttasksubtask(obj,this.selectedTask?._id).subscribe(res=>{
   this.toastr.success("Subtask added succesfully..")
 },error=>[
     this.toastr.warning("something went wrong..")
 ])
+ }
+ 
      this.closeSubtaskModal();
   }
 
@@ -573,14 +473,20 @@ this.apiservice.addprojecttasksubtask(obj,this.selectedTask?._id).subscribe(res=
     this.selectedTask = task;
     this.selectedSubtask = subtask;
     this.isSubtaskDeleteModalOpen = true;
+    
   }
 
   deleteSubtask() {
+    debugger
     // Simulate API call
-    if (this.selectedTask && this.selectedSubtask) {
-      this.selectedTask.subtasks = this.selectedTask.subtasks.filter(s => s._id !== this.selectedSubtask?._id);
-    }
+  this.apiservice.deleteProjectTaskSubTask(this.selectedSubtask,this.selectedSubtask?._id).subscribe(res=>{
+   this.toastr.success('task deleted successfully')
+     this.loadTasks()
+  },error=>{
+
+  })
     this.isSubtaskDeleteModalOpen = false;
+    this.loadTasks()
     this.selectedTask = null;
     this.selectedSubtask = null;
   }
@@ -686,7 +592,8 @@ GetStatusId(status:any){
   "start_date": this.taskForm.value.start_date,
   "due_date": this.taskForm.value.due_date,
   "priority":  this.taskForm.value.priority,
-  "status": this.taskForm.value.status
+  "status": this.taskForm.value.status,
+  "description": this.taskForm.value.description
 }
       this.apiservice.addprojecttask(obj,this.projectId).subscribe(
         rs => {

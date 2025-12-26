@@ -147,22 +147,22 @@
                   Jira Board
                 </button>
 
-                <button (click)="chatProject(project._id)"
+                <button (click)="chatProject(project._id,project.project_name)"
                   class="inline-flex items-center px-3 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
                   Chat
                 </button>
 
-                <button (click)="addcustomer(project._id, project.name)"
+                <button (click)="addcustomer(project._id, project.project_name)"
                   class="inline-flex items-center px-3 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
                   Add Customer
                 </button>
 
-                <button (click)="opentemplate(project._id, project.name)"
+                <button (click)="opentemplate(project._id, project.project_name)"
                   class="inline-flex items-center px-3 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
                   Template
                 </button>
 
-                <button (click)="openStakeHolder(project._id, project.name)"
+                <button (click)="openStakeHolder(project._id, project.project_name)"
                   class="inline-flex items-center px-3 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
                   Stakeholder
                 </button>
